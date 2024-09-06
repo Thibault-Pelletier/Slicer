@@ -28,7 +28,7 @@
 #define __vtkMRMLMarkupsPlaneJsonStorageNode_h
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 #include "vtkMRMLMarkupsJsonStorageNode.h"
 
 class vtkMRMLMarkupsJsonElement;

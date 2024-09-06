@@ -29,7 +29,7 @@
 #include <vtkMRMLMarkupsNode.h>
 
 // Export
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 class vtkCallbackCommand;
 

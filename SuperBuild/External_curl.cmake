@@ -110,8 +110,6 @@ if((NOT DEFINED CURL_INCLUDE_DIR
       ${${proj}_DEPENDENCIES}
     )
 
-  ExternalProject_GenerateProjectDescription_Step(${proj})
-
   if(UNIX)
     set(curl_IMPORT_SUFFIX .a)
     if(APPLE)
@@ -136,6 +134,3 @@ mark_as_superbuild(
     CURL_LIBRARY:FILEPATH
   LABELS "FIND_PACKAGE"
   )
-
-ExternalProject_Message(${proj} "CURL_INCLUDE_DIR:${CURL_INCLUDE_DIR}")
-ExternalProject_Message(${proj} "CURL_LIBRARY:${CURL_LIBRARY}")

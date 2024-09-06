@@ -156,7 +156,7 @@ void vtkSegmentationConverterFactory::CopyConverterRules(RuleListType &rules)
 }
 
 //----------------------------------------------------------------------------
-const vtkSegmentationConverterFactory::RuleListType& vtkSegmentationConverterFactory::GetConverterRules()
+vtkSegmentationConverterFactory::RuleListType vtkSegmentationConverterFactory::GetConverterRules()
 {
   return this->Rules;
 }

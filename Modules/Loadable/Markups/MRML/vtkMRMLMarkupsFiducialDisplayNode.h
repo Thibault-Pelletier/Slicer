@@ -24,7 +24,7 @@
 #ifndef __vtkMRMLMarkupsFiducialDisplayNode_h
 #define __vtkMRMLMarkupsFiducialDisplayNode_h
 
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 #include "vtkMRMLMarkupsDisplayNode.h"
 

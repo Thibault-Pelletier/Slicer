@@ -26,7 +26,7 @@
 #include "vtkMRMLModelNode.h"
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 #include "vtkMRMLMarkupsDisplayNode.h"
 #include "vtkMRMLMarkupsNode.h"
 

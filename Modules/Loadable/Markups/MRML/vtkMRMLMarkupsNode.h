@@ -25,7 +25,7 @@
 #include "vtkMRMLSelectionNode.h"
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 // VTK includes
 #include <vtkParallelTransportFrame.h>
@@ -468,7 +468,7 @@ public:
   void UnsetNthControlPointPosition(int pointIndex);
 
   /// Set control point status to ignored.
-  void SetNthControlPointPositionMissing(int pointIndex);
+  void SetControlPointPositionMissing(int pointIndex);
 
   /// Set control point status to preview
   void ResetNthControlPointPosition(int n);

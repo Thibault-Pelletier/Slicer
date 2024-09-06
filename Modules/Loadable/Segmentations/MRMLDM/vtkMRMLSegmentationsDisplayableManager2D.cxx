@@ -58,7 +58,6 @@
 #include <vtkLookupTable.h>
 #include <vtkMatrix4x4.h>
 #include <vtkNew.h>
-#include <vtkObjectFactory.h>
 #include <vtkPlane.h>
 #include <vtkPointData.h>
 #include <vtkPointLocator.h>

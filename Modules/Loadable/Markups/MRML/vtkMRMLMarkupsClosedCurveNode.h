@@ -22,7 +22,7 @@
 #include "vtkMRMLDisplayableNode.h"
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 #include "vtkMRMLMarkupsDisplayNode.h"
 #include "vtkMRMLMarkupsCurveNode.h"
 

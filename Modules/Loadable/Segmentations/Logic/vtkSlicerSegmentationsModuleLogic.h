@@ -28,7 +28,7 @@
 
 // Slicer includes
 #include "vtkSlicerModuleLogic.h"
-#include "vtkSlicerSegmentationsModuleLogicExport.h"
+#include "vtkSlicerSegmentationsModuleLogicModule.h"
 
 // Segmentations includes
 #include "vtkMRMLSegmentationNode.h"

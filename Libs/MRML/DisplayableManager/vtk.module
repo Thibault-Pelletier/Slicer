@@ -1,0 +1,14 @@
+NAME
+  VTK::MRMLDisplayableManager
+LIBRARY_NAME
+  vtkMRMLDisplayableManager
+IMPLEMENTABLE
+DEPENDS
+  VTK::MRMLLogic
+  VTK::RenderingAnnotation
+  VTK::ITKFactoryRegistration
+TEST_DEPENDS
+  VTK::TestingCore
+  VTK::TestingRendering
+DESCRIPTION
+  "vtkMRMLDisplayableManager"

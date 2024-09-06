@@ -1,0 +1,10 @@
+NAME
+  VTK::SlicerSegmentationsModuleLogic
+LIBRARY_NAME
+  vtkSlicerSegmentationsModuleLogic
+DEPENDS
+  VTK::SlicerSegmentationsModuleMRML
+  VTK::SlicerTerminologiesModuleLogic
+  VTK::SlicerMarkupsModuleMRML
+DESCRIPTION
+  "vtkSlicerSegmentationsModuleLogic"

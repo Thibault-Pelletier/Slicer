@@ -1,0 +1,15 @@
+NAME
+  VTK::MRMLLogic
+LIBRARY_NAME
+  vtkMRMLLogic
+DEPENDS
+  VTK::ImagingGeneral
+  VTK::MRMLCore
+  VTK::Teem
+  VTK::RemoteIO
+  VTK::ITKFactoryRegistration
+TEST_DEPENDS
+  VTK::TestingCore
+  VTK::TestingRendering
+DESCRIPTION
+  "vtkMRMLLogic"

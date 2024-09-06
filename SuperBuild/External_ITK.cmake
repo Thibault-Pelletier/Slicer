@@ -2,7 +2,7 @@
 set(proj ITK)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES "zlib" "VTK")
+set(${proj}_DEPENDENCIES "zlib")
 if(Slicer_BUILD_DICOM_SUPPORT)
   list(APPEND ${proj}_DEPENDENCIES DCMTK)
 endif()
@@ -95,17 +95,17 @@ if(NOT DEFINED ITK_DIR AND NOT Slicer_USE_SYSTEM_${proj})
     SOURCE_DIR ${EP_SOURCE_DIR}
     BINARY_DIR ${EP_BINARY_DIR}
     CMAKE_CACHE_ARGS
+      -DCMAKE_SYSTEM_VERSION:STRING=999.0.0
       -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
       -DCMAKE_CXX_FLAGS:STRING=${ep_common_cxx_flags}
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
-      -DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD}
-      -DCMAKE_CXX_STANDARD_REQUIRED:BOOL=${CMAKE_CXX_STANDARD_REQUIRED}
-      -DCMAKE_CXX_EXTENSIONS:BOOL=${CMAKE_CXX_EXTENSIONS}
+      -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
       -DITK_CXX_OPTIMIZATION_FLAGS:STRING= # Force compiler-default instruction set to ensure compatibility with older CPUs
       -DITK_C_OPTIMIZATION_FLAGS:STRING=  # Force compiler-default instruction set to ensure compatibility with older CPUs
       -DITK_INSTALL_ARCHIVE_DIR:PATH=${Slicer_INSTALL_LIB_DIR}
       -DITK_INSTALL_LIBRARY_DIR:PATH=${Slicer_INSTALL_LIB_DIR}
+      -DITK_SKIP_PATH_LENGTH_CHECKS:BOOL=ON
       -DBUILD_TESTING:BOOL=OFF
       -DBUILD_EXAMPLES:BOOL=OFF
       -DITK_BUILD_DEFAULT_MODULES:BOOL=ON
@@ -119,7 +119,7 @@ if(NOT DEFINED ITK_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       -DModule_SimpleITKFilters:BOOL=${Slicer_USE_SimpleITK}
       -DModule_GenericLabelInterpolator:BOOL=ON
       -DModule_AdaptiveDenoising:BOOL=ON
-      -DBUILD_SHARED_LIBS:BOOL=ON
+      -DBUILD_SHARED_LIBS:BOOL=OFF
       -DITK_INSTALL_NO_DEVELOPMENT:BOOL=ON
       -DKWSYS_USE_MD5:BOOL=ON # Required by SlicerExecutionModel
       -DITK_WRAPPING:BOOL=OFF #${BUILD_SHARED_LIBS} ## HACK:  QUICK CHANGE
@@ -142,8 +142,6 @@ if(NOT DEFINED ITK_DIR AND NOT Slicer_USE_SYSTEM_${proj})
     DEPENDS
       ${${proj}_DEPENDENCIES}
     )
-
-  ExternalProject_GenerateProjectDescription_Step(${proj})
 
   set(ITK_DIR ${EP_BINARY_DIR})
 

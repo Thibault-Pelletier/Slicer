@@ -24,7 +24,7 @@
 #define vtkMRMLMarkupsJsonElement_h
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 #include "vtkMRMLMessageCollection.h"
 
 #include "vtkSmartPointer.h"

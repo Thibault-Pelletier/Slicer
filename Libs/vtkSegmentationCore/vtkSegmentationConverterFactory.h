@@ -60,7 +60,7 @@ public:
   void UnregisterConverterRule(vtkSegmentationConverterRule* rule);
 
   /// Get all registered converter rules
-  const RuleListType& GetConverterRules();
+  RuleListType GetConverterRules();
 
   /// Disable a converter rule, preventing it from being used. Achieved by unregistering the rule
   /// that can create the representation.

@@ -22,7 +22,7 @@
 #define __vtkMRMLVolumeRenderingDisplayableManager_h
 
 // VolumeRendering includes
-#include "vtkSlicerVolumeRenderingModuleMRMLDisplayableManagerExport.h"
+#include "vtkSlicerVolumeRenderingModuleMRMLDisplayableManagerModule.h"
 
 // MRML DisplayableManager includes
 #include <vtkMRMLAbstractThreeDViewDisplayableManager.h>

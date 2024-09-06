@@ -25,7 +25,7 @@
 #ifndef __vtkMRMLMarkupsROIDisplayNode_h
 #define __vtkMRMLMarkupsROIDisplayNode_h
 
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 #include "vtkMRMLMarkupsDisplayNode.h"
 
 class  VTK_SLICER_MARKUPS_MODULE_MRML_EXPORT vtkMRMLMarkupsROIDisplayNode : public vtkMRMLMarkupsDisplayNode

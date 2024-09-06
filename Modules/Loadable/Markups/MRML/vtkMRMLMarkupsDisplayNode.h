@@ -24,7 +24,7 @@
 #ifndef __vtkMRMLMarkupsDisplayNode_h
 #define __vtkMRMLMarkupsDisplayNode_h
 
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 #include "vtkMRMLDisplayNode.h"
 #include "vtkMRMLMarkupsNode.h"

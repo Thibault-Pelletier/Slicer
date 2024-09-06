@@ -27,7 +27,7 @@
 #include <vtkObject.h>
 
 // Terminology includes
-#include "vtkSlicerTerminologiesModuleLogicExport.h"
+#include "vtkSlicerTerminologiesModuleLogicModule.h"
 
 #include "vtkSlicerTerminologyCategory.h"
 #include "vtkSlicerTerminologyType.h"

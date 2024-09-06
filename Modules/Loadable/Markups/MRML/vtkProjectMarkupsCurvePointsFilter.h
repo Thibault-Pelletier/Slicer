@@ -18,7 +18,7 @@
 #ifndef __vtkProjectMarkupsCurvePointsFilter_h
 #define __vtkProjectMarkupsCurvePointsFilter_h
 
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 #include <vtkInformation.h>
 #include <vtkPolyDataAlgorithm.h>

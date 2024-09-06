@@ -1,0 +1,17 @@
+NAME
+  VTK::Teem
+LIBRARY_NAME
+  vtkTeem
+DEPENDS
+  VTK::CommonComputationalGeometry
+  VTK::CommonCore
+  VTK::CommonDataModel
+  VTK::CommonExecutionModel
+  VTK::FiltersHybrid
+  VTK::FiltersModeling
+  VTK::IOCore
+  VTK::IOImage
+  VTK::Addon
+  VTK::ITKFactoryRegistration
+DESCRIPTION
+  "vtkTeem"

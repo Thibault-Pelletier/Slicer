@@ -1,41 +1,23 @@
-project(vtkSlicer${MODULE_NAME}ModuleMRMLDisplayableManager)
-
-set(KIT ${PROJECT_NAME})
-
-set(${KIT}_EXPORT_DIRECTIVE "VTK_SLICER_${MODULE_NAME_UPPER}_MODULE_MRMLDISPLAYABLEMANAGER_EXPORT")
-
-set(${KIT}_INCLUDE_DIRECTORIES
-  ${vtkSlicerSegmentationsModuleMRML_INCLUDE_DIRS}
+set(classes
+  vtkMRMLSegmentationsDisplayableManager3D
+  vtkMRMLSegmentationsDisplayableManager2D
   )
 
-set(displayable_manager_SRCS
-  vtkMRML${MODULE_NAME}DisplayableManager3D.cxx
-  vtkMRML${MODULE_NAME}DisplayableManager2D.cxx
-  )
+foreach(class IN LISTS classes)
+  vtk_object_factory_declare(BASE ${class} OVERRIDE ${class})
+endforeach()
 
-SlicerConfigureDisplayableManagerObjectFactory(
-  TARGET_NAME ${KIT}
-  SRCS "${displayable_manager_SRCS}"
-  EXPORT_MACRO "${${KIT}_EXPORT_DIRECTIVE}"
-  EXPORT_HEADER "${KIT}Export.h"
-  OUTPUT_SRCS_VAR displayable_manager_instantiator_SRCS
-  )
+vtk_object_factory_configure(
+  SOURCE_FILE vtk_object_factory_source
+  HEADER_FILE vtk_object_factory_header
+  EXPORT_MACRO "")
 
-set(${KIT}_SRCS
-  ${displayable_manager_instantiator_SRCS}
-  ${displayable_manager_SRCS}
-  )
+vtk_module_add_module(VTK::SlicerSegmentationsModuleMRMLDisplayableManager
+  EXPORT_MACRO_PREFIX VTK_SLICER_SEGMENTATION_MODULE_MRMLDISPLAYABLEMANAGER
+  CLASSES ${classes}
+  SOURCES ${vtk_object_factory_source}
+  PRIVATE_HEADERS ${vtk_object_factory_header}
+)
 
-set(${KIT}_TARGET_LIBRARIES
-  ${MRML_LIBRARIES}
-  vtkSlicerSegmentationsModuleMRML
-  )
-
-#-----------------------------------------------------------------------------
-SlicerMacroBuildModuleLogic(
-  NAME ${KIT}
-  EXPORT_DIRECTIVE ${${KIT}_EXPORT_DIRECTIVE}
-  INCLUDE_DIRECTORIES ${${KIT}_INCLUDE_DIRECTORIES}
-  SRCS ${${KIT}_SRCS}
-  TARGET_LIBRARIES ${${KIT}_TARGET_LIBRARIES}
-  )
+vtk_module_definitions(VTK::SlicerSegmentationsModuleMRMLDisplayableManager PRIVATE
+  "vtkSlicerSegmentationsModuleMRMLDisplayableManager_AUTOINIT=1(vtkSlicerSegmentationsModuleMRMLDisplayableManager)")

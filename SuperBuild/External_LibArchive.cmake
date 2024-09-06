@@ -102,8 +102,6 @@ if((NOT DEFINED LibArchive_INCLUDE_DIR
       )
   endif()
 
-  ExternalProject_GenerateProjectDescription_Step(${proj})
-
   set(LibArchive_DIR ${CMAKE_BINARY_DIR}/LibArchive-install)
 
   set(LibArchive_INCLUDE_DIR ${LibArchive_DIR}/include)
@@ -139,8 +137,3 @@ mark_as_superbuild(
     LibArchive_LIBRARY:FILEPATH
   LABELS "FIND_PACKAGE"
   )
-
-if(Slicer_USE_SYSTEM_${proj})
-  ExternalProject_Message(${proj} "LibArchive_INCLUDE_DIR:${LibArchive_INCLUDE_DIR}")
-  ExternalProject_Message(${proj} "LibArchive_LIBRARY:${LibArchive_LIBRARY}")
-endif()

@@ -1,7 +1,7 @@
 #ifndef vtkImageGrowCutSegment_h
 #define vtkImageGrowCutSegment_h
 
-#include "vtkSlicerSegmentationsModuleLogicExport.h"
+#include "vtkSlicerSegmentationsModuleLogicModule.h"
 
 #include <vtkImageAlgorithm.h>
 #include <vtkImageData.h>

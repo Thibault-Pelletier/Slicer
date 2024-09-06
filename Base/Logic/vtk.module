@@ -1,0 +1,15 @@
+NAME
+  VTK::SlicerBaseLogic
+LIBRARY_NAME
+  vtkSlicerBaseLogic
+DEPENDS
+  VTK::ImagingGeneral
+  VTK::MRMLDisplayableManager
+  VTK::MRMLLogic
+  VTK::RemoteIO
+  VTK::ITKFactoryRegistration
+TEST_DEPENDS
+  VTK::TestingCore
+  VTK::TestingRendering
+DESCRIPTION
+  "vtkSlicerBaseLogic"

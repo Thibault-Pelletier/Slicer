@@ -16,7 +16,7 @@
 #define __vtkMRMLVolumeRenderingDisplayNode_h
 
 // Volume Rendering includes
-#include "vtkSlicerVolumeRenderingModuleMRMLExport.h"
+#include "vtkSlicerVolumeRenderingModuleMRMLModule.h"
 
 // MRML includes
 #include "vtkMRMLDisplayNode.h"

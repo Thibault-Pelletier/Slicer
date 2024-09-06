@@ -1,47 +1,11 @@
-project(MRMLDisplayableManager)
-
-#-----------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.16.3...3.19.7 FATAL_ERROR)
-#-----------------------------------------------------------------------------
-
-# --------------------------------------------------------------------------
-# Options
-# --------------------------------------------------------------------------
-if(Slicer_USE_PYTHONQT AND VTK_WRAP_PYTHON)
-  set(MRMLDisplayableManager_USE_PYTHON ON)
-else()
-  set(MRMLDisplayableManager_USE_PYTHON OFF)
-endif()
-
-if(NOT DEFINED BUILD_SHARED_LIBS)
-  option(BUILD_SHARED_LIBS "Build with shared libraries." ON)
-endif()
-
-# --------------------------------------------------------------------------
-# Dependencies
-# --------------------------------------------------------------------------
-
 #
-# VTK
+# ITK
 #
-if(Slicer_USE_PYTHONQT AND NOT VTK_WRAP_PYTHON)
-  message(FATAL_ERROR "Since Slicer_USE_PYTHONQT is ON, VTK_WRAP_PYTHON is expected to be ON. "
-                      "Re-configure VTK with python wrapping.")
-endif()
-
-# --------------------------------------------------------------------------
-# Include dirs
-# --------------------------------------------------------------------------
-set(include_dirs
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${MRMLCore_INCLUDE_DIRS}
-  ${MRMLLogic_INCLUDE_DIRS}
+set(${PROJECT_NAME}_ITK_COMPONENTS
+  ITKCommon
   )
-if(MRMLDisplayableManager_USE_PYTHON)
-  list(APPEND include_dirs ${PYTHON_INCLUDE_DIR})
-endif()
-include_directories(${include_dirs})
+find_package(ITK 4.6 COMPONENTS ${${PROJECT_NAME}_ITK_COMPONENTS} REQUIRED)
+include(${ITK_USE_FILE})
 
 # --------------------------------------------------------------------------
 # Configure headers
@@ -52,88 +16,65 @@ configure_file(
   ${CMAKE_CURRENT_BINARY_DIR}/${configure_header_file}
   )
 
-# --------------------------------------------------------------------------
-# Install headers
-# --------------------------------------------------------------------------
-if(NOT DEFINED ${PROJECT_NAME}_INSTALL_NO_DEVELOPMENT)
-  set(${PROJECT_NAME}_INSTALL_NO_DEVELOPMENT ON)
-endif()
-if(NOT ${PROJECT_NAME}_INSTALL_NO_DEVELOPMENT)
-  file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-  install(
-    FILES ${headers} ${CMAKE_CURRENT_BINARY_DIR}/${configure_header_file}
-    DESTINATION include/${PROJECT_NAME} COMPONENT Development)
-endif()
-
-# --------------------------------------------------------------------------
-# Sources
-# --------------------------------------------------------------------------
-set(DisplayableManager_SRCS
-
+set(classes
   # DisplayableManager associated with ThreeDView
-  vtkMRMLCameraDisplayableManager.cxx
-  vtkMRMLModelDisplayableManager.cxx
-  vtkMRMLViewDisplayableManager.cxx
-  vtkMRMLThreeDReformatDisplayableManager.cxx
+  vtkMRMLCameraDisplayableManager
+  vtkMRMLModelDisplayableManager
+  vtkMRMLViewDisplayableManager
+  vtkMRMLThreeDReformatDisplayableManager
 
   # DisplayableManager associated with SliceView
-  vtkMRMLCrosshairDisplayableManager.cxx
-  vtkMRMLCrosshairDisplayableManager3D.cxx
-  vtkMRMLModelSliceDisplayableManager.cxx
-  vtkMRMLVolumeGlyphSliceDisplayableManager.cxx
+  vtkMRMLCrosshairDisplayableManager
+  vtkMRMLCrosshairDisplayableManager3D
+  vtkMRMLModelSliceDisplayableManager
+  vtkMRMLVolumeGlyphSliceDisplayableManager
 
   # DisplayableManager common between ThreeDView and SliceView
-  vtkMRMLOrientationMarkerDisplayableManager.cxx
-  vtkMRMLRulerDisplayableManager.cxx
-  vtkMRMLScalarBarDisplayableManager.cxx
-  )
-
-set(KIT_SRCS
-  ${DisplayableManager_SRCS}
-  vtkMRMLAbstractDisplayableManager.cxx
-  vtkMRMLDisplayableManagerGroup.cxx
-  vtkMRMLDisplayableManagerFactory.cxx
-
-  vtkMRMLInteractionEventData.cxx
+  vtkMRMLOrientationMarkerDisplayableManager
+  vtkMRMLRulerDisplayableManager
+  vtkMRMLScalarBarDisplayableManager
+  vtkMRMLAbstractDisplayableManager
+  vtkMRMLDisplayableManagerGroup
+  vtkMRMLDisplayableManagerFactory
+  vtkMRMLInteractionEventData
 
   # ThreeDView factory and DisplayableManager
-  vtkMRMLAbstractThreeDViewDisplayableManager.cxx
-  vtkMRMLThreeDViewDisplayableManagerFactory.cxx
+  vtkMRMLAbstractThreeDViewDisplayableManager
+  vtkMRMLThreeDViewDisplayableManagerFactory
 
   # SliceView factory and DisplayableManager
-  vtkMRMLAbstractSliceViewDisplayableManager.cxx
-  vtkMRMLSliceViewDisplayableManagerFactory.cxx
+  vtkMRMLAbstractSliceViewDisplayableManager
+  vtkMRMLSliceViewDisplayableManagerFactory
 
-  vtkMRMLViewInteractorStyle.cxx
-  vtkMRMLSliceViewInteractorStyle.cxx
-  vtkMRMLThreeDViewInteractorStyle.cxx
+  vtkMRMLViewInteractorStyle
+  vtkMRMLSliceViewInteractorStyle
+  vtkMRMLThreeDViewInteractorStyle
 
   # Widgets
-  vtkMRMLAbstractWidget.cxx
-  vtkMRMLAbstractWidgetRepresentation.cxx
-  vtkMRMLCameraWidget.cxx
-  vtkMRMLInteractionWidget.cxx
-  vtkMRMLInteractionWidgetRepresentation.cxx
-  vtkMRMLSliceIntersectionWidget.cxx
-  vtkMRMLSliceIntersectionRepresentation2D.cxx
-  vtkMRMLSliceIntersectionInteractionRepresentation.cxx
-  vtkMRMLSliceIntersectionInteractionRepresentationHelper.cxx
-  vtkMRMLRubberBandWidgetRepresentation.cxx
-  vtkMRMLWindowLevelWidget.cxx
+  vtkMRMLAbstractWidget
+  vtkMRMLAbstractWidgetRepresentation
+  vtkMRMLCameraWidget
+  vtkMRMLInteractionWidget
+  vtkMRMLInteractionWidgetRepresentation
+  vtkMRMLSliceIntersectionWidget
+  vtkMRMLSliceIntersectionRepresentation2D
+  vtkMRMLSliceIntersectionInteractionRepresentation
+  vtkMRMLSliceIntersectionInteractionRepresentationHelper
+  vtkMRMLRubberBandWidgetRepresentation
+  vtkMRMLWindowLevelWidget
 
   # Proxy classes
-  vtkMRMLLightBoxRendererManagerProxy.cxx
+  vtkMRMLLightBoxRendererManagerProxy
   )
 
 set_source_files_properties(
   vtkMRMLDisplayableManagerGroup.cxx
+  vtkMRMLScriptedDisplayableManager.cxx
   WRAP_EXCLUDE
   )
 
-if(MRMLDisplayableManager_USE_PYTHON)
-  list(APPEND KIT_SRCS
-    vtkMRMLScriptedDisplayableManager.cxx
-    )
+if(VTK_WRAP_PYTHON)
+  list(APPEND classes vtkMRMLScriptedDisplayableManager)
   set_source_files_properties(
     vtkMRMLScriptedDisplayableManager.cxx
     WRAP_EXCLUDE
@@ -141,130 +82,55 @@ if(MRMLDisplayableManager_USE_PYTHON)
 endif()
 
 # --------------------------------------------------------------------------
-set(lib_name ${PROJECT_NAME})
-
-# --------------------------------------------------------------------------
-# Create the instantiator for DisplayableManager classes.
-# --------------------------------------------------------------------------
-include(SlicerConfigureDisplayableManagerObjectFactory)
-SlicerConfigureDisplayableManagerObjectFactory(
-  TARGET_NAME ${lib_name}
-  SRCS "${DisplayableManager_SRCS}"
-  EXPORT_MACRO "VTK_MRML_DISPLAYABLEMANAGER_EXPORT"
-  EXPORT_HEADER "vtk${PROJECT_NAME}Export.h"
-  OUTPUT_SRCS_VAR DisplayableManagerInstantiator_SRCS
-  )
-set(srcs
-  ${KIT_SRCS}
-  ${DisplayableManagerInstantiator_SRCS}
-  )
-
-# --------------------------------------------------------------------------
 # Build library
 # --------------------------------------------------------------------------
-add_library(${lib_name} ${srcs})
 
-set(libs
-  ${VTK_LIBRARIES}
-  MRMLCore
-  MRMLLogic
+set(factory_classes
+  vtkMRMLCameraDisplayableManager
+  vtkMRMLModelDisplayableManager
+  vtkMRMLViewDisplayableManager
+  vtkMRMLThreeDReformatDisplayableManager
+  # DisplayableManager associated with SliceView
+  vtkMRMLCrosshairDisplayableManager
+  vtkMRMLCrosshairDisplayableManager3D
+  vtkMRMLModelSliceDisplayableManager
+  vtkMRMLVolumeGlyphSliceDisplayableManager
+  # DisplayableManager common between ThreeDView and SliceView
+  vtkMRMLOrientationMarkerDisplayableManager
+  vtkMRMLRulerDisplayableManager
+  vtkMRMLScalarBarDisplayableManager
+  # ThreeDView DisplayableManager
+  vtkMRMLAbstractThreeDViewDisplayableManager
+  # SliceView DisplayableManager
+  vtkMRMLAbstractSliceViewDisplayableManager
   )
+foreach(class IN LISTS factory_classes)
+  vtk_object_factory_declare(BASE ${class} OVERRIDE ${class})
+endforeach()
 
-if(MRMLDisplayableManager_USE_PYTHON)
-  set(VTK_COMMON_PYTHON_LIBRARY
-    VTK::WrappingPythonCore # For vtkPythonUtil
-    )
-  list(APPEND libs
-    ${VTK_COMMON_PYTHON_LIBRARY} # For vtkPythonUtils
-    ${PYTHON_LIBRARY} # At some point, VTK should be updated to expose VTK_PYTHON_LIBRARY
-    )
-endif()
+vtk_object_factory_configure(
+  SOURCE_FILE vtk_object_factory_source
+  HEADER_FILE vtk_object_factory_header
+  EXPORT_MACRO "")
 
-target_link_libraries(${lib_name} ${libs})
+set_property(GLOBAL PROPERTY "_vtk_module_autoinit_include" "\"vtkAutoInit.h\"")
+vtk_module_add_module(VTK::MRMLDisplayableManager
+  EXPORT_MACRO_PREFIX VTK_MRML_DISPLAYABLEMANAGER
+  CLASSES ${classes}
+  SOURCES ${vtk_object_factory_source}
+  HEADERS ${headers}
+  PRIVATE_HEADERS ${vtk_object_factory_header}
+)
 
-if(${lib_name}_AUTOINIT)
-  set_property(TARGET ${lib_name}
-    APPEND PROPERTY COMPILE_DEFINITIONS
-    "${lib_name}_AUTOINIT=1(${lib_name})"
-    )
-endif()
-
-# Apply user-defined properties to the library target.
-if(Slicer_LIBRARY_PROPERTIES)
-  set_target_properties(${lib_name} PROPERTIES ${Slicer_LIBRARY_PROPERTIES})
-endif()
-
-# --------------------------------------------------------------------------
-# Folder
-# --------------------------------------------------------------------------
-if(NOT DEFINED ${PROJECT_NAME}_FOLDER)
-  set(${PROJECT_NAME}_FOLDER ${PROJECT_NAME})
-endif()
-if(NOT "${${PROJECT_NAME}_FOLDER}" STREQUAL "")
-  set_target_properties(${lib_name} PROPERTIES FOLDER ${${PROJECT_NAME}_FOLDER})
-endif()
-
-# --------------------------------------------------------------------------
-# Export target
-# --------------------------------------------------------------------------
-if(NOT DEFINED ${PROJECT_NAME}_EXPORT_FILE)
-  set(${PROJECT_NAME}_EXPORT_FILE ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake)
-endif()
-export(TARGETS ${lib_name} APPEND FILE ${${PROJECT_NAME}_EXPORT_FILE})
-
-# --------------------------------------------------------------------------
-# Install library
-# --------------------------------------------------------------------------
-if(NOT DEFINED ${PROJECT_NAME}_INSTALL_BIN_DIR)
-  set(${PROJECT_NAME}_INSTALL_BIN_DIR bin)
-endif()
-if(NOT DEFINED ${PROJECT_NAME}_INSTALL_LIB_DIR)
-  set(${PROJECT_NAME}_INSTALL_LIB_DIR lib/${PROJECT_NAME})
-endif()
-
-install(TARGETS ${lib_name}
-  RUNTIME DESTINATION ${${PROJECT_NAME}_INSTALL_BIN_DIR} COMPONENT RuntimeLibraries
-  LIBRARY DESTINATION ${${PROJECT_NAME}_INSTALL_LIB_DIR} COMPONENT RuntimeLibraries
-  ARCHIVE DESTINATION ${${PROJECT_NAME}_INSTALL_LIB_DIR} COMPONENT Development
+if(VTK_WRAP_PYTHON)
+  vtk_module_definitions(VTK::MRMLDisplayableManager
+    PRIVATE
+      MRMLDisplayableManager_USE_PYTHON
+      "vtkMRMLDisplayableManager_AUTOINIT=1(vtkMRMLDisplayableManager)"
   )
-
-# --------------------------------------------------------------------------
-# Python Wrapping
-# --------------------------------------------------------------------------
-if(MRMLDisplayableManager_USE_PYTHON)
-  include(vtkMacroKitPythonWrap)
-
-  set(_python_wrapped_libraries)
-
-  vtkMacroKitPythonWrap(
-    KIT_NAME ${lib_name}
-    KIT_SRCS ${KIT_SRCS}
-    KIT_PYTHON_LIBRARIES ${_python_wrapped_libraries}
-    KIT_INSTALL_BIN_DIR ${${PROJECT_NAME}_INSTALL_BIN_DIR}
-    KIT_INSTALL_LIB_DIR ${${PROJECT_NAME}_INSTALL_LIB_DIR}
-    )
-  # Export target
-  export(TARGETS ${lib_name}Python APPEND FILE ${${PROJECT_NAME}_EXPORT_FILE})
-  # Folder
-  if(NOT "${${PROJECT_NAME}_FOLDER}" STREQUAL "")
-    set_target_properties(${lib_name}Python PROPERTIES FOLDER ${${PROJECT_NAME}_FOLDER})
-    if(TARGET ${lib_name}Hierarchy)
-      set_target_properties(${lib_name}Hierarchy PROPERTIES FOLDER ${${PROJECT_NAME}_FOLDER})
-    endif()
-  endif()
-
-  add_subdirectory(Python)
+  vtk_module_include(VTK::MRMLDisplayableManager PRIVATE $<BUILD_INTERFACE:${Python3_INCLUDE_DIRS}>)
+  vtk_module_link(VTK::MRMLDisplayableManager PUBLIC Python3::Python VTK::WrappingPythonCore)
 endif()
 
-# --------------------------------------------------------------------------
-# Testing
-# --------------------------------------------------------------------------
-if(BUILD_TESTING)
-  add_subdirectory(Testing)
-endif()
-
-# --------------------------------------------------------------------------
-# Set INCLUDE_DIRS variable
-# --------------------------------------------------------------------------
-set(${PROJECT_NAME}_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}
-  CACHE INTERNAL "${PROJECT_NAME} include dirs" FORCE)
+vtk_module_link(VTK::MRMLDisplayableManager PUBLIC ${ITK_LIBRARIES})
+vtk_module_include(VTK::MRMLDisplayableManager PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)

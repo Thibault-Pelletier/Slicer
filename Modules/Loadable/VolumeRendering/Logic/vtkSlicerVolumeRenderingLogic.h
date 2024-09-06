@@ -16,7 +16,7 @@
 #define __vtkSlicerVolumeRenderingLogic_h
 
 // VolumeRendering includes
-#include "vtkSlicerVolumeRenderingModuleLogicExport.h"
+#include "vtkSlicerVolumeRenderingModuleLogicModule.h"
 class vtkMRMLVolumeRenderingDisplayNode;
 
 // Slicer includes

@@ -26,7 +26,7 @@
 #define __vtkMRMLMarkupsFiducialStorageNode_h
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 #include "vtkMRMLMarkupsStorageNode.h"
 
 class vtkMRMLMarkupsNode;

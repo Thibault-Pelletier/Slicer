@@ -49,13 +49,12 @@ if(NOT DEFINED ZLIB_ROOT AND NOT Slicer_USE_SYSTEM_${proj})
       -DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
+      -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
       -DZLIB_MANGLE_PREFIX:STRING=slicer_zlib_
       -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
     DEPENDS
       ${${proj}_DEPENDENCIES}
     )
-
-  ExternalProject_GenerateProjectDescription_Step(${proj})
 
   set(zlib_DIR ${EP_INSTALL_DIR})
   set(ZLIB_ROOT ${zlib_DIR})

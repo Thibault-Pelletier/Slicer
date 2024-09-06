@@ -15,7 +15,7 @@
 //  - Slicer_EXTENSIONS_DIRBASENAME
 //  - Slicer_ORGANIZATION_DOMAIN
 //  - Slicer_ORGANIZATION_NAME
-#include "vtkSlicerConfigure.h"
+//#include "vtkSlicerConfigure.h"
 #include "vtkSlicerTask.h"
 
 // MRML includes

@@ -24,7 +24,7 @@
 // MRMLDisplayableManager includes
 #include "vtkMRMLAbstractSliceViewDisplayableManager.h"
 
-#include "vtkSlicerSegmentationsModuleMRMLDisplayableManagerExport.h"
+#include "vtkSlicerSegmentationsModuleMRMLDisplayableManagerModule.h"
 
 class vtkMRMLSegmentationDisplayNode;
 class vtkStringArray;
@@ -34,7 +34,7 @@ class vtkDoubleArray;
 ///
 /// Displays segmentations in slice viewers as labelmaps or contour lines
 ///
-class VTK_SLICER_SEGMENTATIONS_MODULE_MRMLDISPLAYABLEMANAGER_EXPORT vtkMRMLSegmentationsDisplayableManager2D
+class VTK_SLICER_SEGMENTATION_MODULE_MRMLDISPLAYABLEMANAGER_EXPORT vtkMRMLSegmentationsDisplayableManager2D
   : public vtkMRMLAbstractSliceViewDisplayableManager
 {
 

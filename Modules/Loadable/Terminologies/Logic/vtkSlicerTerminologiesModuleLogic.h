@@ -26,7 +26,7 @@
 // Slicer includes
 #include "vtkSlicerModuleLogic.h"
 
-#include "vtkSlicerTerminologiesModuleLogicExport.h"
+#include "vtkSlicerTerminologiesModuleLogicModule.h"
 
 #include <vtkVector.h>
 

@@ -1,0 +1,15 @@
+NAME
+  VTK::ITK
+LIBRARY_NAME
+  vtkITK
+DEPENDS
+  VTK::CommonCore
+  VTK::CommonDataModel
+  VTK::CommonExecutionModel
+  VTK::Addon
+  VTK::ITKFactoryRegistration
+TEST_DEPENDS
+  VTK::TestingCore
+  VTK::TestingRendering
+DESCRIPTION
+  "vtkITK"

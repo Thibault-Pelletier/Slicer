@@ -1,0 +1,8 @@
+NAME
+  VTK::SlicerMarkupsModuleMRML
+LIBRARY_NAME
+  vtkSlicerMarkupsModuleMRML
+DEPENDS
+  VTK::MRMLDisplayableManager
+DESCRIPTION
+  "vtkSlicerMarkupsModuleMRML"

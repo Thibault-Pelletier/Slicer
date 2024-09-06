@@ -36,7 +36,6 @@
 #include <vtkDataSetAttributes.h>
 #include <vtkMatrix4x4.h>
 #include <vtkNew.h>
-#include <vtkObjectFactory.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProp3DCollection.h>

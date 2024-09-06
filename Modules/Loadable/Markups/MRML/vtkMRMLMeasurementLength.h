@@ -22,7 +22,7 @@
 #include "vtkMRMLMeasurement.h"
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 /// \brief Measurement class calculating curve length
 class VTK_SLICER_MARKUPS_MODULE_MRML_EXPORT vtkMRMLMeasurementLength : public vtkMRMLMeasurement

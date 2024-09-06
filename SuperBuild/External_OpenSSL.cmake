@@ -47,12 +47,7 @@ if(NOT DEFINED OPENSSL_LIBRARIES
   if(UNIX)
     # Starting with Qt 5.12.4, official Qt binaries are build against OpenSSL 1.1.1
     # See https://www.qt.io/blog/2019/06/17/qt-5-12-4-released-support-openssl-1-1-1
-    if("${Qt5_VERSION_MAJOR}.${Qt5_VERSION_MINOR}.${Qt5_VERSION_PATCH}" VERSION_GREATER_EQUAL "5.12.4")
-      set(_default_version "1.1.1g")
-    else()
-      set(_default_version "1.0.2n")
-    endif()
-
+    set(_default_version "1.1.1g")
     set(OPENSSL_DOWNLOAD_VERSION "${_default_version}" CACHE STRING "Version of OpenSSL source package to download")
     set_property(CACHE OPENSSL_DOWNLOAD_VERSION PROPERTY STRINGS "1.0.1e" "1.0.1l" "1.0.2n" "1.1.1g")
 
@@ -183,15 +178,12 @@ ExternalProject_Execute(${proj} \"build\" make \${jflag} build_libs)
     set(OPENSSL_CRYPTO_LIBRARY ${OPENSSL_LIBRARY_DIR}/libcrypto${CMAKE_SHARED_LIBRARY_SUFFIX})
     set(OPENSSL_SSL_LIBRARY ${OPENSSL_LIBRARY_DIR}/libssl${CMAKE_SHARED_LIBRARY_SUFFIX})
 
-    ExternalProject_Message(${proj} "OPENSSL_CRYPTO_LIBRARY:${OPENSSL_CRYPTO_LIBRARY}")
-    ExternalProject_Message(${proj} "OPENSSL_SSL_LIBRARY:${OPENSSL_SSL_LIBRARY}")
-
   #------------------------------------------------------------------------------
   elseif(WIN32)
 
     # Starting with Qt 5.12.4, official Qt binaries are build against OpenSSL 1.1.1
     # See https://www.qt.io/blog/2019/06/17/qt-5-12-4-released-support-openssl-1-1-1
-    if("${Qt5_VERSION_MAJOR}.${Qt5_VERSION_MINOR}.${Qt5_VERSION_PATCH}" VERSION_GREATER_EQUAL "5.12.4")
+    if((NOT Slicer_BUILD_GUI) OR ("${Qt5_VERSION_MAJOR}.${Qt5_VERSION_MINOR}.${Qt5_VERSION_PATCH}" VERSION_GREATER_EQUAL "5.12.4"))
       set(_default_version "1.1.1g")
     else()
       set(_default_version "1.0.1h")
@@ -351,17 +343,7 @@ this version of visual studio [${MSVC_VERSION}]. You could either:
       set(SSL_EAY_DEBUG "${EP_SOURCE_DIR}/Debug/lib/ssleay32.lib")
       set(SSL_EAY_RELEASE "${EP_SOURCE_DIR}/Release/lib/ssleay32.lib")
     endif()
-
-    ExternalProject_Message(${proj} "LIB_EAY_DEBUG:${LIB_EAY_DEBUG}")
-    ExternalProject_Message(${proj} "LIB_EAY_RELEASE:${LIB_EAY_RELEASE}")
-    ExternalProject_Message(${proj} "SSL_EAY_DEBUG:${SSL_EAY_DEBUG}")
-    ExternalProject_Message(${proj} "SSL_EAY_RELEASE:${SSL_EAY_RELEASE}")
   endif()
-
-  ExternalProject_GenerateProjectDescription_Step(${proj}
-    VERSION ${OPENSSL_DOWNLOAD_VERSION}
-    LICENSE_FILES "https://www.openssl.org/source/license.txt"
-    )
 
   #-----------------------------------------------------------------------------
   # Launcher setting specific to build tree
@@ -372,9 +354,6 @@ this version of visual studio [${MSVC_VERSION}]. You could either:
     LABELS "LIBRARY_PATHS_LAUNCHER_BUILD"
     )
 
-  ExternalProject_Message(${proj} "OpenSSL ${OPENSSL_DOWNLOAD_VERSION}")
-  ExternalProject_Message(${proj} "OPENSSL_LIBRARY_DIR:${OPENSSL_LIBRARY_DIR}")
-  ExternalProject_Message(${proj} "OPENSSL_EXPORT_LIBRARY_DIR:${OPENSSL_EXPORT_LIBRARY_DIR}")
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS ${${proj}_DEPENDENCIES})
 endif()
@@ -426,6 +405,3 @@ elseif(WIN32)
       OPENSSL_LIBRARIES:STRING
     )
 endif()
-
-ExternalProject_Message(${proj} "OPENSSL_INCLUDE_DIR:${OPENSSL_INCLUDE_DIR}")
-ExternalProject_Message(${proj} "OPENSSL_LIBRARIES:${OPENSSL_LIBRARIES}")

@@ -22,7 +22,7 @@
 #include "vtkMRMLMeasurement.h"
 
 // Markups includes
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 /// \brief Measurement class calculating Volume enclosed in a ROI
 class VTK_SLICER_MARKUPS_MODULE_MRML_EXPORT vtkMRMLMeasurementVolume : public vtkMRMLMeasurement

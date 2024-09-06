@@ -27,7 +27,7 @@
 // Markups includes
 #include "vtkMRMLMarkupsDisplayNode.h"
 #include "vtkMRMLMarkupsNode.h"
-#include "vtkSlicerMarkupsModuleMRMLExport.h"
+#include "vtkSlicerMarkupsModuleMRMLModule.h"
 
 // VTK includes
 #include <vtkMatrix4x4.h>
