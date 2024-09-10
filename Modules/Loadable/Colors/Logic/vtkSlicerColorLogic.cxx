@@ -11,7 +11,7 @@
 #include "vtkSlicerColorLogic.h"
 
 // Slicer
-#include "vtkSlicerConfigure.h" // for Slicer_SHARE_DIR
+// #include "vtkSlicerConfigure.h" // for Slicer_SHARE_DIR
 
 // MRML
 #include "vtkMRMLColorTableStorageNode.h"
@@ -108,7 +108,7 @@ std::vector<std::string> vtkSlicerColorLogic::FindDefaultColorFiles()
   std::vector<std::string> filesVector;
   filesVector.emplace_back(""); // for relative path
   filesVector.push_back(slicerHome);
-  filesVector.push_back(std::string(Slicer_SHARE_DIR) + "/ColorFiles");
+  //filesVector.push_back(std::string(Slicer_SHARE_DIR) + "/ColorFiles");
   std::string resourcesDirString = vtksys::SystemTools::JoinPath(filesVector);
 
   // now make up a vector to iterate through of dirs to look in
