@@ -27,7 +27,7 @@
 #ifndef vtkSlicerLineWidget_h
 #define vtkSlicerLineWidget_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidget.h"
 
 class vtkSlicerMarkupsWidgetRepresentation;

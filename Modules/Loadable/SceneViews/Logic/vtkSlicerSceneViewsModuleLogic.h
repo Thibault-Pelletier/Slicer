@@ -27,7 +27,7 @@
 // MRMLLogic includes
 #include "vtkMRMLAbstractLogic.h"
 
-#include "vtkSlicerSceneViewsModuleLogicExport.h"
+#include "vtkSlicerSceneViewsModuleLogicModule.h"
 //#include "qSlicerSceneViewsModuleExport.h"
 
 #include "vtkSlicerModuleLogic.h"

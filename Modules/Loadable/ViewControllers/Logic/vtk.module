@@ -1,0 +1,9 @@
+NAME
+  VTK::SlicerViewControllersModuleLogic
+LIBRARY_NAME
+  vtkSlicerViewControllersModuleLogic
+DEPENDS
+  VTK::MRMLLogic
+  VTK::SlicerBaseLogic
+DESCRIPTION
+  "vtkSlicerViewControllersModuleLogic"

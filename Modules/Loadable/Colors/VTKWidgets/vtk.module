@@ -1,0 +1,9 @@
+NAME
+  VTK::SlicerColorsModuleVTKWidgets
+LIBRARY_NAME
+  vtkSlicerColorsModuleVTKWidgets
+DEPENDS
+  VTK::MRMLLogic
+  VTK::RenderingAnnotation
+DESCRIPTION
+  "vtkSlicerColorsModuleVTKWidgets"

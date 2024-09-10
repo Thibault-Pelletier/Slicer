@@ -1,0 +1,8 @@
+NAME
+  VTK::SlicerCropVolumeModuleMRML
+LIBRARY_NAME
+  vtkSlicerCropVolumeModuleMRML
+DEPENDS
+  VTK::MRMLLogic
+DESCRIPTION
+  "vtkSlicerCropVolumeModuleMRML"

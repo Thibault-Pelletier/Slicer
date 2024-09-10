@@ -30,7 +30,7 @@
 #ifndef vtkSlicerCurveRepresentation2D_h
 #define vtkSlicerCurveRepresentation2D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidgetRepresentation2D.h"
 
 class vtkCellLocator;

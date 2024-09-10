@@ -30,7 +30,7 @@
 #ifndef vtkSlicerLineRepresentation2D_h
 #define vtkSlicerLineRepresentation2D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidgetRepresentation2D.h"
 
 class vtkTubeFilter;

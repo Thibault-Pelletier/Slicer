@@ -1,5 +1,3 @@
-project(vtkSlicerVolumesModuleLogic)
-
 find_package(RapidJSON REQUIRED)
 
 set(classes vtkSlicerVolumesLogic)

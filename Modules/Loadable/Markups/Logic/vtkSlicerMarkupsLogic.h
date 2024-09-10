@@ -37,7 +37,7 @@
 #include <cstdlib>
 #include <string>
 
-#include "vtkSlicerMarkupsModuleLogicExport.h"
+#include "vtkSlicerMarkupsModuleLogicModule.h"
 
 class vtkIdList;
 class vtkMatrix4x4;

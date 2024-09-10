@@ -27,7 +27,7 @@
 #ifndef vtkSlicerPointsWidget_h
 #define vtkSlicerPointsWidget_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidget.h"
 
 class vtkPolyData;

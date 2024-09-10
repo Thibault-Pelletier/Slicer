@@ -28,7 +28,7 @@
 #ifndef vtkSlicerMarkupsWidget_h
 #define vtkSlicerMarkupsWidget_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkMRMLAbstractWidget.h"
 #include "vtkWidgetCallbackMapper.h"
 

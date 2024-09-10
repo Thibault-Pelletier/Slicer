@@ -29,7 +29,7 @@
 // MRML includes
 
 // Plots includes
-#include "vtkSlicerPlotsModuleLogicExport.h"
+#include "vtkSlicerPlotsModuleLogicModule.h"
 
 class vtkAbstractArray;
 class vtkMRMLTableNode;

@@ -11,23 +11,13 @@ verbose = true
 args = ["-GNinja"]
 
 [tool.scikit-build.cmake.define]
-VTK_MODULE_NAME = "SlicerBaseLogic"
-VTK_ADDITIONAL_MODULES_NAME = """
-SlicerVolumeRenderingModuleMRMLDisplayableManager;\
-SlicerVolumesModuleLogic;\
-SlicerSegmentationsModuleLogic;\
-SlicerSegmentationsModuleMRMLDisplayableManager\
-"""
+VTK_MODULE_NAME = "SlicerLibrary"
 VTK_MODULE_SOURCE_DIR = "../.."
-EXTERNAL_PROJECT_ADDITIONAL_DIR = "C:/dev/slicerlib/SlicerLib/SuperBuild"
 Slicer_BUILD_DICOM_SUPPORT = "ON"
 CMAKE_INSTALL_LIBDIR = "."
 VTK_WHEEL_BUILD = "ON"
 VTK_MODULE_SUPERBUILD = "ON"
 VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;LibArchive;RapidJSON;JsonCpp;OpenSSL;curl;ITK;DCMTK"
-# ITK_DIR = "C:/itk-build"
-# DCMTK_DIR = "C:/dcmtk-build"
-# VTK_MODULE_EXTERNAL_PROJECT_CMAKE_CACHE_ARGS = "ITK_DIR;DCMTK_DIR"
 
 [project]
 name = "vtk-mrml"

@@ -1,0 +1,11 @@
+NAME
+  VTK::SlicerColorsModuleMRMLDisplayableManager
+LIBRARY_NAME
+  vtkSlicerColorsModuleMRMLDisplayableManager
+IMPLEMENTABLE
+DEPENDS
+  VTK::SlicerColorsModuleLogic
+  VTK::SlicerColorsModuleMRML
+  VTK::SlicerColorsModuleVTKWidgets
+DESCRIPTION
+  "vtkSlicerColorsModuleMRMLDisplayableManager"

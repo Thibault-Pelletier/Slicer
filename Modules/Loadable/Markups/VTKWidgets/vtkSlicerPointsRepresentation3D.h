@@ -30,7 +30,7 @@
 #ifndef vtkSlicerPointsRepresentation3D_h
 #define vtkSlicerPointsRepresentation3D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidgetRepresentation3D.h"
 
 class VTK_SLICER_MARKUPS_MODULE_VTKWIDGETS_EXPORT vtkSlicerPointsRepresentation3D : public vtkSlicerMarkupsWidgetRepresentation3D

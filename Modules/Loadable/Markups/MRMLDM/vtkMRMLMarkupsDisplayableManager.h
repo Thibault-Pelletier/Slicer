@@ -19,7 +19,7 @@
 #define __vtkMRMLMarkupsDisplayableManager_h
 
 // MarkupsModule includes
-#include "vtkSlicerMarkupsModuleMRMLDisplayableManagerExport.h"
+#include "vtkSlicerMarkupsModuleMRMLDisplayableManagerModule.h"
 
 // MarkupsModule/MRMLDisplayableManager includes
 #include "vtkMRMLMarkupsDisplayableManagerHelper.h"

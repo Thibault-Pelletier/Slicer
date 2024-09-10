@@ -18,7 +18,7 @@
 
 // MRML includes
 #include <vtkMRMLDisplayNode.h>
-#include "vtkSlicerColorsModuleMRMLExport.h"
+#include "vtkSlicerColorsModuleMRMLModule.h"
 
 class vtkMRMLColorNode;
 class vtkTextProperty;

@@ -1,0 +1,11 @@
+NAME
+  VTK::SlicerCropVolumeModuleLogic
+LIBRARY_NAME
+  vtkSlicerCropVolumeModuleLogic
+DEPENDS
+  VTK::SlicerCropVolumeModuleMRML
+  VTK::SlicerMarkupsModuleMRML
+  VTK::SlicerVolumesModuleLogic
+  VTK::SlicerBaseLogic
+DESCRIPTION
+  "vtkSlicerCropVolumeModuleLogic"

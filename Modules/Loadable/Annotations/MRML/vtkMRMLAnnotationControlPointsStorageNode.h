@@ -6,7 +6,7 @@
 #ifndef __vtkMRMLAnnotationControlPointsStorageNode_h
 #define __vtkMRMLAnnotationControlPointsStorageNode_h
 
-#include "vtkSlicerAnnotationsModuleMRMLExport.h"
+#include "vtkSlicerAnnotationsModuleMRMLModule.h"
 #include "vtkMRMLAnnotationStorageNode.h"
 
 class vtkMRMLAnnotationPointDisplayNode;

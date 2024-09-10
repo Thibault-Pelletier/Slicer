@@ -36,7 +36,7 @@
 #ifndef __vtkMarkupsGlyphSource2D_h
 #define __vtkMarkupsGlyphSource2D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 
 #include "vtkSlicerBaseLogic.h"
 

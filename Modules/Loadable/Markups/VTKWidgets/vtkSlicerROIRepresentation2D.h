@@ -32,7 +32,7 @@
 #ifndef vtkSlicerROIRepresentation2D_h
 #define vtkSlicerROIRepresentation2D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidgetRepresentation2D.h"
 #include "vtkSlicerROIRepresentation3D.h"
 

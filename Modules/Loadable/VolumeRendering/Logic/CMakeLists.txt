@@ -1,5 +1,3 @@
-project(vtkSlicerVolumeRenderingModuleLogic)
-
 set(classes vtkSlicerVolumeRenderingLogic)
 
 vtk_module_add_module(VTK::SlicerVolumeRenderingModuleLogic

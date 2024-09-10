@@ -26,7 +26,7 @@
 // MRMLDisplayableManager includes
 #include "vtkMRMLAbstractThreeDViewDisplayableManager.h"
 
-#include "vtkSlicerTransformsModuleMRMLDisplayableManagerExport.h"
+#include "vtkSlicerTransformsModuleMRMLDisplayableManagerModule.h"
 
 /// \brief Display transforms in 3D views
 ///

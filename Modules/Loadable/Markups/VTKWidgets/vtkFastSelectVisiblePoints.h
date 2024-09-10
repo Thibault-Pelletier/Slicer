@@ -51,7 +51,7 @@
 #define vtkFastSelectVisiblePoints_h
 
 #include "vtkSelectVisiblePoints.h"
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 
 #include <vtkFloatArray.h>
 

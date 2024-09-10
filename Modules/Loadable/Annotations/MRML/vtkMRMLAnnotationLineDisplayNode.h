@@ -11,7 +11,7 @@
 
 #include "vtkMRML.h"
 #include "vtkMRMLAnnotationDisplayNode.h"
-#include "vtkSlicerAnnotationsModuleMRMLExport.h"
+#include "vtkSlicerAnnotationsModuleMRMLModule.h"
 
 class  VTK_SLICER_ANNOTATIONS_MODULE_MRML_EXPORT vtkMRMLAnnotationLineDisplayNode : public vtkMRMLAnnotationDisplayNode
 {

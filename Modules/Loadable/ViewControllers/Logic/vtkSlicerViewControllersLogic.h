@@ -30,7 +30,7 @@
 // STD includes
 #include <cstdlib>
 
-#include "vtkSlicerViewControllersModuleLogicExport.h"
+#include "vtkSlicerViewControllersModuleLogicModule.h"
 
 class vtkMRMLPlotViewNode;
 class vtkMRMLSliceNode;

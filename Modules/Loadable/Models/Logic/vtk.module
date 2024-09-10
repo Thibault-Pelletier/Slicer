@@ -1,0 +1,9 @@
+NAME
+  VTK::SlicerModelsModuleLogic
+LIBRARY_NAME
+  vtkSlicerModelsModuleLogic
+DEPENDS
+  VTK::MRMLLogic
+  VTK::SlicerBaseLogic
+DESCRIPTION
+  "vtkSlicerModelsModuleLogic"

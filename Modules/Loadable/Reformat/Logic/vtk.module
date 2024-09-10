@@ -1,0 +1,9 @@
+NAME
+  VTK::SlicerReformatModuleLogic
+LIBRARY_NAME
+  vtkSlicerReformatModuleLogic
+DEPENDS
+  VTK::MRMLLogic
+  VTK::SlicerBaseLogic
+DESCRIPTION
+  "vtkSlicerReformatModuleLogic"

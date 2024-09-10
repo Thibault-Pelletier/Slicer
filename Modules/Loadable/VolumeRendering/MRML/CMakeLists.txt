@@ -1,5 +1,3 @@
-project(vtkSlicerVolumeRenderingModuleMRML)
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(JsonCpp REQUIRED)
 
@@ -12,7 +10,7 @@ set(classes
   vtkMRMLVolumePropertyNode
   vtkMRMLVolumePropertyStorageNode
   vtkMRMLVolumeRenderingDisplayNode
-  )
+)
 
 vtk_module_add_module(VTK::SlicerVolumeRenderingModuleMRML
   EXPORT_MACRO_PREFIX VTK_SLICER_VOLUMERENDERING_MODULE_MRML

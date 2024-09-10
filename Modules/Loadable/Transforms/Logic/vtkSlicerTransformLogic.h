@@ -22,7 +22,7 @@
 
 // SlicerLogic includes
 #include "vtkSlicerBaseLogic.h"
-#include "vtkSlicerTransformsModuleLogicExport.h"
+#include "vtkSlicerTransformsModuleLogicModule.h"
 
 // MRMLLogic includes
 #include <vtkMRMLAbstractLogic.h>

@@ -3,7 +3,7 @@ NAME
 LIBRARY_NAME
   vtkSlicerVolumesModuleLogic
 DEPENDS
-  VTK::SlicerBaseLogic
   VTK::MRMLLogic
+  VTK::SlicerBaseLogic
 DESCRIPTION
   "vtkSlicerVolumesModuleLogic"

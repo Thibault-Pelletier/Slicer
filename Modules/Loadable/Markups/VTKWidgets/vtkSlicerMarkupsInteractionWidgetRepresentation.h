@@ -29,7 +29,7 @@
 #ifndef vtkSlicerMarkupsInteractionWidgetRepresentation_h
 #define vtkSlicerMarkupsInteractionWidgetRepresentation_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 
 // MRMLDM includes
 #include "vtkMRMLInteractionWidgetRepresentation.h"

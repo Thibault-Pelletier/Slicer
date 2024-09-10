@@ -20,7 +20,7 @@
 
 // MRMLDisplayableManager includes
 #include "vtkMRMLAbstractDisplayableManager.h"
-#include "vtkSlicerColorsModuleMRMLDisplayableManagerExport.h"
+#include "vtkSlicerColorsModuleMRMLDisplayableManagerModule.h"
 
 class vtkMRMLColorLegendDisplayNode;
 class vtkScalarBarWidget;

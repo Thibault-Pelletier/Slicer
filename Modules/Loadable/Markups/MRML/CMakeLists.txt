@@ -1,5 +1,3 @@
-project(SlicerMarkupsModuleMRML)
-
 find_package(RapidJSON REQUIRED)
 
 set(classes

@@ -28,7 +28,7 @@
 #ifndef vtkSlicerMarkupsInteractionWidget_h
 #define vtkSlicerMarkupsInteractionWidget_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 
 #include "vtkMRMLInteractionWidget.h"
 

@@ -1,32 +1,11 @@
-project(vtkSlicer${MODULE_NAME}ModuleLogic)
+find_package(ITK 5.0 REQUIRED COMPONENTS ITKTransform)
 
-set(KIT ${PROJECT_NAME})
+set(classes vtkSlicerTransformLogic)
 
-set(${KIT}_EXPORT_DIRECTIVE "VTK_SLICER_${MODULE_NAME_UPPER}_MODULE_LOGIC_EXPORT")
+vtk_module_add_module(VTK::SlicerTransformsModuleLogic
+  EXPORT_MACRO_PREFIX VTK_SLICER_TRANSFORMS_MODULE_LOGIC
+  CLASSES ${classes}
+)
 
-set(${KIT}_INCLUDE_DIRECTORIES
-  ${vtkSlicerMarkupsModuleMRML_INCLUDE_DIRS}
-  )
-
-set(${KIT}_SRCS
-  vtkSlicerTransformLogic.cxx
-  vtkSlicerTransformLogic.h
-  )
-
-set(${KIT}_TARGET_LIBRARIES
-  MRMLCore
-  vtkSlicerMarkupsModuleMRML
-  )
-
-#-----------------------------------------------------------------------------
-SlicerMacroBuildModuleLogic(
-  NAME ${KIT}
-  EXPORT_DIRECTIVE ${${KIT}_EXPORT_DIRECTIVE}
-  INCLUDE_DIRECTORIES ${${KIT}_INCLUDE_DIRECTORIES}
-  SRCS ${${KIT}_SRCS}
-  TARGET_LIBRARIES ${${KIT}_TARGET_LIBRARIES}
-  )
-
-if(BUILD_TESTING)
-  add_subdirectory(Testing)
-endif()
+vtk_module_link(VTK::SlicerTransformsModuleLogic PUBLIC ${ITK_LIBRARIES})
+vtk_module_include(VTK::SlicerTransformsModuleLogic PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)

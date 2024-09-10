@@ -18,7 +18,7 @@
 #ifndef __vtkMRMLAnnotationSnapshotStorageNode_h
 #define __vtkMRMLAnnotationSnapshotStorageNode_h
 
-#include "vtkSlicerAnnotationsModuleMRMLExport.h"
+#include "vtkSlicerAnnotationsModuleMRMLModule.h"
 #include "vtkMRMLStorageNode.h"
 
 class vtkImageData;

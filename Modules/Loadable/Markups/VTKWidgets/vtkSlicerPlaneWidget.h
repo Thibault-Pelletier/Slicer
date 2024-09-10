@@ -29,7 +29,7 @@
 #ifndef vtkSlicerPlaneWidget_h
 #define vtkSlicerPlaneWidget_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidget.h"
 
 class vtkSlicerMarkupsWidgetRepresentation;

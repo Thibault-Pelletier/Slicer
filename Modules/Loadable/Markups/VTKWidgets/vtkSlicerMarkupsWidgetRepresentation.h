@@ -41,7 +41,7 @@
 #ifndef vtkSlicerMarkupsWidgetRepresentation_h
 #define vtkSlicerMarkupsWidgetRepresentation_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 
 #include "vtkMRMLAbstractWidgetRepresentation.h"
 #include "vtkMRMLMarkupsDisplayNode.h"

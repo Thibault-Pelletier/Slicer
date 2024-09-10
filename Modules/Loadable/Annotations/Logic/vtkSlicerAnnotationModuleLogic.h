@@ -2,7 +2,7 @@
 #define __vtkSlicerAnnotationModuleLogic_h
 
 // Slicer Logic includes
-#include "vtkSlicerAnnotationsModuleLogicExport.h"
+#include "vtkSlicerAnnotationsModuleLogicModule.h"
 #include "vtkSlicerModuleLogic.h"
 
 // MRML includes

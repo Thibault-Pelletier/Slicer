@@ -27,7 +27,7 @@
 #ifndef vtkSlicerMarkupsWidgetRepresentation3D_h
 #define vtkSlicerMarkupsWidgetRepresentation3D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidgetRepresentation.h"
 
 #include <map>

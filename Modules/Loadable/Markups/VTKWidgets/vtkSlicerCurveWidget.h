@@ -27,7 +27,7 @@
 #ifndef vtkSlicerCurveWidget_h
 #define vtkSlicerCurveWidget_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidget.h"
 
 class vtkPolyData;

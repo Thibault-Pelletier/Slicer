@@ -1,0 +1,9 @@
+NAME
+  VTK::SlicerCamerasModuleLogic
+LIBRARY_NAME
+  vtkSlicerCamerasModuleLogic
+DEPENDS
+  VTK::MRMLLogic
+  VTK::SlicerBaseLogic
+DESCRIPTION
+  "vtkSlicerCamerasModuleLogic"

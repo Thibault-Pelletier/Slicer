@@ -1,0 +1,12 @@
+NAME
+  VTK::SlicerMarkupsModuleLogic
+LIBRARY_NAME
+  vtkSlicerMarkupsModuleLogic
+DEPENDS
+  VTK::SlicerMarkupsModuleMRML
+  VTK::SlicerMarkupsModuleVTKWidgets
+  VTK::SlicerAnnotationsModuleMRML
+  VTK::Addon
+  VTK::SlicerBaseLogic
+DESCRIPTION
+  "vtkSlicerMarkupsModuleLogic"

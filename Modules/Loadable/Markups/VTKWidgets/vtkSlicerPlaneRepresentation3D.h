@@ -32,7 +32,7 @@
 #ifndef vtkSlicerPlaneRepresentation3D_h
 #define vtkSlicerPlaneRepresentation3D_h
 
-#include "vtkSlicerMarkupsModuleVTKWidgetsExport.h"
+#include "vtkSlicerMarkupsModuleVTKWidgetsModule.h"
 #include "vtkSlicerMarkupsWidgetRepresentation3D.h"
 
 class vtkActor;

@@ -1,0 +1,10 @@
+NAME
+  VTK::SlicerColorsModuleLogic
+LIBRARY_NAME
+  vtkSlicerColorsModuleLogic
+DEPENDS
+  VTK::SlicerColorsModuleMRML
+  VTK::SlicerBaseLogic
+  VTK::MRMLLogic
+DESCRIPTION
+  "vtkSlicerColorsModuleLogic"

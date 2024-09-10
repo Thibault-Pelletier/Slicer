@@ -1,7 +1,7 @@
 #ifndef __vtkMRMLAnnotationFiducialNode_h
 #define __vtkMRMLAnnotationFiducialNode_h
 
-#include "vtkSlicerAnnotationsModuleMRMLExport.h"
+#include "vtkSlicerAnnotationsModuleMRMLModule.h"
 #include "vtkMRMLAnnotationControlPointsNode.h"
 
 #include <vtkStdString.h>

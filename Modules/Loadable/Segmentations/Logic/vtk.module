@@ -6,5 +6,6 @@ DEPENDS
   VTK::SlicerSegmentationsModuleMRML
   VTK::SlicerTerminologiesModuleLogic
   VTK::SlicerMarkupsModuleMRML
+  VTK::SlicerBaseLogic
 DESCRIPTION
   "vtkSlicerSegmentationsModuleLogic"
