@@ -13,7 +13,7 @@
 /// MRML includes
 #include <vtkMRMLNode.h>
 
-#include "vtkMRMLCLIExport.h"
+#include "vtkMRMLCLIModule.h"
 
 class ModuleDescription;
 

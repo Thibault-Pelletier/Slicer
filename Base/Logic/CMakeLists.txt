@@ -3,12 +3,19 @@
 # --------------------------------------------------------------------------
 
 #
+# ModuleDescriptionParser
+#
+find_package(SlicerExecutionModel REQUIRED ModuleDescriptionParser)
+
+#
 # ITK
 #
 find_package(ITK 4.6 COMPONENTS
   ITKCommon
   ITKIOTransformBase
-  ITKTransform REQUIRED
+  ITKTransform
+  ${ModuleDescriptionParser_ITK_COMPONENTS}
+  REQUIRED
 )
 include(${ITK_USE_FILE})
 
@@ -46,6 +53,7 @@ set(classes
   vtkImageRectangularSource
   vtkSystemInformation
   vtkImageFillROI
+  vtkSlicerCLIModuleLogic
 )
 
 set(headers ${CMAKE_CURRENT_BINARY_DIR}/${configure_header_file})
@@ -57,9 +65,9 @@ vtk_module_add_module(VTK::SlicerBaseLogic
 )
 
 vtk_module_link(VTK::SlicerBaseLogic PUBLIC
-  ${ITK_LIBRARIES} ${LibArchive_LIBRARY}
+  ${ITK_LIBRARIES} ${LibArchive_LIBRARY} ModuleDescriptionParser
 )
 
 vtk_module_include(VTK::SlicerBaseLogic PUBLIC
-  $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS}>
+  $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${ModuleDescriptionParser_INCLUDE_DIRS}>
 )

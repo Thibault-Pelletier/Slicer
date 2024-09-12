@@ -8,6 +8,7 @@ DEPENDS
   VTK::MRMLLogic
   VTK::RemoteIO
   VTK::ITKFactoryRegistration
+  VTK::MRMLCLI
 TEST_DEPENDS
   VTK::TestingCore
   VTK::TestingRendering

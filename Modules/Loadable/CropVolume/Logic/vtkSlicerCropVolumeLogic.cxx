@@ -16,11 +16,8 @@
 #include <vtkSlicerCLIModuleLogic.h>
 
 // CropLogic includes
-#include "vtkSlicerCLIModuleLogic.h"
 #include "vtkSlicerCropVolumeLogic.h"
 #include "vtkSlicerVolumesLogic.h"
-
-// CropMRML includes
 
 // MRML includes
 #include <vtkMRMLCropVolumeParametersNode.h>
