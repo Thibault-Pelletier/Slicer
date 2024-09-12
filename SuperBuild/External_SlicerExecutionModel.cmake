@@ -2,7 +2,7 @@
 set(proj SlicerExecutionModel)
 
 # Set dependency list
-set(${proj}_DEPENDENCIES ${ITK_EXTERNAL_NAME})
+set(${proj}_DEPENDENCIES ITK)
 
 if(Slicer_USE_TBB)
   list(APPEND ${proj}_DEPENDENCIES tbb)
@@ -107,6 +107,7 @@ if(NOT DEFINED SlicerExecutionModel_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       -DCMAKE_CXX_STANDARD:STRING=${CMAKE_CXX_STANDARD}
       -DCMAKE_CXX_STANDARD_REQUIRED:BOOL=${CMAKE_CXX_STANDARD_REQUIRED}
       -DCMAKE_CXX_EXTENSIONS:BOOL=${CMAKE_CXX_EXTENSIONS}
+      -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
       # Options
       -DBUILD_TESTING:BOOL=OFF
       -DSlicerExecutionModel_USE_UTF8:BOOL=ON
@@ -137,7 +138,7 @@ if(NOT DEFINED SlicerExecutionModel_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       ${${proj}_DEPENDENCIES}
     )
 
-  ExternalProject_GenerateProjectDescription_Step(${proj})
+  #ExternalProject_GenerateProjectDescription_Step(${proj})
 
   set(SlicerExecutionModel_DIR ${EP_BINARY_DIR})
 

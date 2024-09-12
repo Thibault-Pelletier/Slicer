@@ -140,10 +140,10 @@ mark_as_superbuild(
 
 #-----------------------------------------------------------------------------
 
-ExternalProject_GenerateProjectDescription_Step(${proj}
-  VERSION ${tbb_ver}
-  LICENSE_FILES "https://raw.githubusercontent.com/oneapi-src/oneTBB/v${tbb_ver}/LICENSE.txt"
-  )
+#ExternalProject_GenerateProjectDescription_Step(${proj}
+#  VERSION ${tbb_ver}
+#  LICENSE_FILES "https://raw.githubusercontent.com/oneapi-src/oneTBB/v${tbb_ver}/LICENSE.txt"
+#  )
 
 #-----------------------------------------------------------------------------
 # Launcher setting specific to build tree
@@ -155,7 +155,7 @@ mark_as_superbuild(
   )
 
 set(TBB_DIR ${TBB_INSTALL_DIR}/lib/cmake/tbb)
-ExternalProject_Message(${proj} "TBB_DIR:${TBB_DIR}")
+#ExternalProject_Message(${proj} "TBB_DIR:${TBB_DIR}")
 mark_as_superbuild(
   VARS TBB_DIR:PATH
   LABELS "FIND_PACKAGE"

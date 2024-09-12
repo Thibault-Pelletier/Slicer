@@ -17,7 +17,7 @@ Slicer_BUILD_DICOM_SUPPORT = "ON"
 CMAKE_INSTALL_LIBDIR = "."
 VTK_WHEEL_BUILD = "ON"
 VTK_MODULE_SUPERBUILD = "ON"
-VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;LibArchive;RapidJSON;JsonCpp;OpenSSL;curl;ITK;DCMTK"
+VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;tbb;ParameterSerializer;SlicerExecutionModel;LibArchive;RapidJSON;JsonCpp;OpenSSL;curl;ITK;DCMTK"
 
 [project]
 name = "vtk-mrml"
