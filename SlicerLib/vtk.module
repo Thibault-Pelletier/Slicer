@@ -1,0 +1,57 @@
+NAME
+  VTK::SlicerLibrary
+LIBRARY_NAME
+  vtkSlicerLibrary
+DEPENDS
+  # Base modules
+  VTK::SlicerBaseLogic
+  # Libs modules
+  VTK::ITKFactoryRegistration
+  VTK::RemoteIO
+  VTK::Addon
+  VTK::ITK
+  VTK::SegmentationCore
+  VTK::Teem
+  # MRML modules
+  VTK::MRMLCore
+  VTK::MRMLCLI
+  VTK::MRMLLogic
+  VTK::MRMLDisplayableManager
+  # Loadable modules
+  VTK::SlicerAnnotationsModuleMRML
+  VTK::SlicerAnnotationsModuleLogic
+  VTK::SlicerCamerasModuleLogic
+  VTK::SlicerColorsModuleMRML
+  VTK::SlicerColorsModuleLogic
+  VTK::SlicerColorsModuleVTKWidgets
+  VTK::SlicerColorsModuleMRMLDisplayableManager
+  VTK::SlicerCropVolumeModuleMRML
+  VTK::SlicerCropVolumeModuleLogic
+  VTK::SlicerDataModuleLogic
+  VTK::SlicerMarkupsModuleMRML
+  VTK::SlicerMarkupsModuleLogic
+  VTK::SlicerMarkupsModuleVTKWidgets
+  VTK::SlicerMarkupsModuleMRMLDisplayableManager
+  VTK::SlicerModelsModuleLogic
+  VTK::SlicerPlotsModuleLogic
+  VTK::SlicerReformatModuleLogic
+  VTK::SlicerSceneViewsModuleLogic
+  VTK::SlicerSegmentationsModuleMRML
+  VTK::SlicerSegmentationsModuleLogic
+  VTK::SlicerSegmentationsModuleMRMLDisplayableManager
+  VTK::SlicerSequencesModuleMRML
+  VTK::SlicerSequencesModuleLogic
+  VTK::SlicerSubjectHierarchyModuleLogic
+  VTK::SlicerTablesModuleLogic
+  VTK::SlicerTerminologiesModuleLogic
+  VTK::SlicerTextsModuleLogic
+  VTK::SlicerTransformsModuleLogic
+  VTK::SlicerTransformsModuleMRMLDisplayableManager
+  VTK::SlicerUnitsModuleLogic
+  VTK::SlicerViewControllersModuleLogic
+  VTK::SlicerVolumeRenderingModuleMRML
+  VTK::SlicerVolumeRenderingModuleLogic
+  VTK::SlicerVolumeRenderingModuleMRMLDisplayableManager
+  VTK::SlicerVolumesModuleLogic
+DESCRIPTION
+  "vtkSlicerLibrary is module that represents SlicerLib as a whole. It is a way to query Slicer version and more!"
