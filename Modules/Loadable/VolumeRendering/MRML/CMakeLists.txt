@@ -19,7 +19,3 @@ vtk_module_add_module(VTK::SlicerVolumeRenderingModuleMRML
 
 vtk_module_include(VTK::SlicerVolumeRenderingModuleMRML PUBLIC $<BUILD_INTERFACE:${JsonCpp_INCLUDE_DIRS}>)
 vtk_module_link(VTK::SlicerVolumeRenderingModuleMRML PUBLIC ${JsonCpp_LIBRARY})
-
-string(REPLACE ".lib" ".dll" JsonCpp_DLL ${JsonCpp_LIBRARY})
-string(REPLACE "/lib/" "/bin/" JsonCpp_DLL ${JsonCpp_DLL})
-install(FILES ${JsonCpp_DLL} DESTINATION vtkmodules)
