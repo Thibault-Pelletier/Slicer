@@ -6,7 +6,6 @@ DEPENDS
   VTK::CommonCore
   VTK::CommonDataModel
   VTK::CommonExecutionModel
-  VTK::Addon
   VTK::ITKFactoryRegistration
 TEST_DEPENDS
   VTK::TestingCore

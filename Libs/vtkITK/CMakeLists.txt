@@ -47,6 +47,11 @@ set(itk_components
 find_package(ITK 5.0 COMPONENTS ${itk_components} REQUIRED)
 include(${ITK_USE_FILE})
 
+#
+# vtkAddon
+#
+find_package(vtkAddon REQUIRED)
+
 # --------------------------------------------------------------------------
 # Configure headers
 # --------------------------------------------------------------------------
@@ -105,5 +110,5 @@ set_source_files_properties(
   WRAP_EXCLUDE
 )
 
-vtk_module_link(VTK::ITK PUBLIC ${ITK_LIBRARIES})
-vtk_module_include(VTK::ITK PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)
+vtk_module_link(VTK::ITK PUBLIC ${ITK_LIBRARIES} vtkAddon)
+vtk_module_include(VTK::ITK PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS}>)

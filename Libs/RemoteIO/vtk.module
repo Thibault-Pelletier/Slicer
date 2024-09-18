@@ -6,7 +6,6 @@ DEPENDS
   VTK::CommonCore
   VTK::CommonDataModel
   VTK::CommonExecutionModel
-  VTK::Addon
 TEST_DEPENDS
   VTK::TestingCore
   VTK::TestingRendering

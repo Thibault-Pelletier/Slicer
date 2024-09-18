@@ -8,6 +8,11 @@ if(Slicer_USE_PYTHONQT_WITH_OPENSSL)
   find_package(OpenSSL REQUIRED)
 endif()
 
+#
+# vtkAddon
+#
+find_package(vtkAddon REQUIRED)
+
 # --------------------------------------------------------------------------
 # Configure headers
 # --------------------------------------------------------------------------
@@ -31,8 +36,8 @@ vtk_module_add_module(VTK::RemoteIO
   HEADERS ${headers}
 )
 
-set(libs MRMLCore ${CURL_LIBRARIES})
-set(includes ${CURL_INCLUDE_DIRS})
+set(libs MRMLCore vtkAddon ${CURL_LIBRARIES})
+set(includes ${vtkAddon_INCLUDE_DIRS} ${CURL_INCLUDE_DIRS})
 
 if(Slicer_USE_PYTHONQT_WITH_OPENSSL)
   list(APPEND libs ${OPENSSL_LIBRARIES})

@@ -6,7 +6,6 @@ DEPENDS
   VTK::SlicerMarkupsModuleMRML
   VTK::SlicerMarkupsModuleVTKWidgets
   VTK::SlicerAnnotationsModuleMRML
-  VTK::Addon
   VTK::SlicerBaseLogic
 DESCRIPTION
   "vtkSlicerMarkupsModuleLogic"

@@ -21,10 +21,16 @@ if(WIN32)
   find_package(SlicerExecutionModel REQUIRED ModuleDescriptionParser)
   get_target_property(ModuleDescriptionParser_dll ModuleDescriptionParser IMPORTED_LOCATION_RELEASE)
 
+  find_package(vtkAddon REQUIRED)
+  get_target_property(vtkAddon_dll vtkAddon IMPORTED_LOCATION_RELEASE)
+  get_target_property(vtkAddonPython_dll vtkAddonPython IMPORTED_LOCATION_RELEASE)
+
   install(FILES
     ${LibArchive_DLL}
     ${JsonCpp_DLL}
     ${ModuleDescriptionParser_dll}
+    ${vtkAddon_dll}
+    ${vtkAddonPython_dll}
     DESTINATION vtkmodules
   )
 endif()

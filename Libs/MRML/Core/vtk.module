@@ -15,7 +15,6 @@ DEPENDS
   VTK::RenderingOpenGL2
   VTK::RenderingVolumeOpenGL2
   VTK::ITKFactoryRegistration
-  VTK::Addon
   VTK::Teem
   VTK::ITK
   VTK::SegmentationCore

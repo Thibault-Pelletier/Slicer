@@ -8,7 +8,6 @@ DEPENDS
   # Libs modules
   VTK::ITKFactoryRegistration
   VTK::RemoteIO
-  VTK::Addon
   VTK::ITK
   VTK::SegmentationCore
   VTK::Teem

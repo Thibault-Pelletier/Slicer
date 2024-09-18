@@ -15,7 +15,6 @@ DEPENDS
   VTK::ImagingStatistics
   VTK::ImagingStencil
   VTK::IOCore
-  VTK::Addon
 PRIVATE_DEPENDS
   VTK::CommonMath
 DESCRIPTION

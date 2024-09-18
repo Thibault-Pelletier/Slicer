@@ -50,6 +50,11 @@ include(${ITK_USE_FILE})
 #
 find_package(LibArchive REQUIRED MODULE)
 
+#
+# vtkAddon
+#
+find_package(vtkAddon REQUIRED)
+
 # --------------------------------------------------------------------------
 # Configure headers
 # --------------------------------------------------------------------------
@@ -214,5 +219,5 @@ vtk_module_add_module(VTK::MRMLCore
   HEADERS ${headers}
 )
 
-vtk_module_link(VTK::MRMLCore PUBLIC ${ITK_LIBRARIES} ${LibArchive_LIBRARY})
-vtk_module_include(VTK::MRMLCore PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS}>)
+vtk_module_link(VTK::MRMLCore PUBLIC ${ITK_LIBRARIES} ${LibArchive_LIBRARY} vtkAddon)
+vtk_module_include(VTK::MRMLCore PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS}>)

@@ -13,11 +13,12 @@ args = ["-GNinja"]
 [tool.scikit-build.cmake.define]
 VTK_MODULE_NAME = "SlicerLibrary"
 VTK_MODULE_SOURCE_DIR = "../.."
+SLICERLIB_PYTHON_BUILD = "TRUE" # used at some places to make changes in cmake logic
 Slicer_BUILD_DICOM_SUPPORT = "ON"
 CMAKE_INSTALL_LIBDIR = "."
 VTK_WHEEL_BUILD = "ON"
 VTK_MODULE_SUPERBUILD = "ON"
-VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;tbb;ParameterSerializer;SlicerExecutionModel;LibArchive;RapidJSON;JsonCpp;OpenSSL;curl;ITK;DCMTK"
+VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;tbb;ParameterSerializer;SlicerExecutionModel;LibArchive;RapidJSON;JsonCpp;OpenSSL;curl;ITK;DCMTK;vtkAddon"
 
 [project]
 name = "vtk-mrml"
