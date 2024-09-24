@@ -3,6 +3,9 @@ set(proj ITK)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES "zlib")
+if(NOT SLICERLIB_PYTHON_BUILD)
+  list(APPEND ${proj}_DEPENDENCIES VTK)
+endif()
 if(Slicer_BUILD_DICOM_SUPPORT)
   list(APPEND ${proj}_DEPENDENCIES DCMTK)
 endif()
@@ -38,6 +41,12 @@ if(NOT DEFINED ITK_DIR AND NOT Slicer_USE_SYSTEM_${proj})
     )
 
   set(EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS)
+
+  if(SLICERLIB_PYTHON_BUILD)
+    # forward cmake prefix path to ensure ITK can find VTK when building using vtk-sdk
+    list(APPEND EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS
+      "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}")
+  endif()
 
   if(Slicer_USE_TBB)
     list(APPEND EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS

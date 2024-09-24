@@ -132,13 +132,13 @@ if((NOT DEFINED VTK_DIR OR NOT DEFINED VTK_SOURCE_DIR) AND NOT Slicer_USE_SYSTEM
 
   ExternalProject_SetIfNotDefined(
     Slicer_${proj}_GIT_REPOSITORY
-    "${EP_GIT_PROTOCOL}://github.com/slicer/VTK.git"
+    "${EP_GIT_PROTOCOL}://gitlab.kitware.com/vtk/vtk.git"
     QUIET
     )
 
   set(_git_tag)
   if("${Slicer_VTK_VERSION_MAJOR}" STREQUAL "9")
-    set(_git_tag "57bacae7e9d8613c1a5fc955028211c455f3787a") # slicer-v9.2.20230607-1ff325c54-2
+    set(_git_tag "80d5d9f8cdf975097bf06f0d51048a574e15866d")
     set(vtk_egg_info_version "9.2.20230607")
   else()
     message(FATAL_ERROR "error: Unsupported Slicer_VTK_VERSION_MAJOR: ${Slicer_VTK_VERSION_MAJOR}")

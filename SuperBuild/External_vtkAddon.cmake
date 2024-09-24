@@ -3,18 +3,9 @@ set(proj vtkAddon)
 
 # Set dependency list
 set(${proj}_DEPENDENCIES)
-if(SLICERLIB_PYTHON_BUILD)
-  # when building slicerlib with scikit-build-core, VTK is provided by vtk-sdk wheel!
-  # vtk is found using CMAKE_PREFIX_PATH
-  list(APPEND vtkAddon_CMAKE_CACHE_ARGS "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}")
-  cmake_path(CONVERT Python_EXECUTABLE TO_CMAKE_PATH_LIST Python_EXECUTABLE NORMALIZE)
-  list(APPEND vtkAddon_CMAKE_CACHE_ARGS "-DvtkAddon_WRAP_PYTHON:BOOL=ON")
-else()
+if(NOT SLICERLIB_PYTHON_BUILD)
   list(APPEND ${proj}_DEPENDENCIES "VTK")
-  list(APPEND vtkAddon_CMAKE_CACHE_ARGS "-DvtkAddon_WRAP_PYTHON:BOOL=${Slicer_USE_PYTHONQT}")
 endif()
-
-list(APPEND vtkAddon_CMAKE_CACHE_ARGS "-DPYTHON_EXECUTABLE:FILEPATH=${Python_EXECUTABLE}")
 
 # Include dependent projects if any
 ExternalProject_Include_Dependencies(${proj} PROJECT_VAR proj DEPENDS_VAR ${proj}_DEPENDENCIES)
@@ -32,6 +23,37 @@ if(NOT DEFINED vtkAddon_DIR AND NOT Slicer_USE_SYSTEM_${proj})
     "win32-export"
     QUIET
     )
+
+  cmake_path(CONVERT Python_EXECUTABLE TO_CMAKE_PATH_LIST Python_EXECUTABLE NORMALIZE)
+  set(EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS)
+
+  if(SLICERLIB_PYTHON_BUILD)
+    # when building slicerlib with scikit-build-core, VTK is provided by vtk-sdk wheel!
+    # vtk is found using CMAKE_PREFIX_PATH
+    # We need to normalize paths because both CMake on Windows gives us paths
+    # with backslashes and external project generated cache contains set("some\path") which
+    # is badly interpreted...
+    cmake_path(CONVERT ${Python3_EXECUTABLE} TO_CMAKE_PATH_LIST Python3_EXECUTABLE NORMALIZE)
+    cmake_path(CONVERT ${Python3_LIBRARIES} TO_CMAKE_PATH_LIST Python3_LIBRARIES NORMALIZE)
+    cmake_path(CONVERT ${Python3_INCLUDE_DIR} TO_CMAKE_PATH_LIST Python3_INCLUDE_DIR NORMALIZE)
+    list(APPEND EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS
+      "-DCMAKE_PREFIX_PATH:PATH=${CMAKE_PREFIX_PATH}"
+      "-DvtkAddon_WRAP_PYTHON:BOOL=ON"
+      "-DPYTHON_EXECUTABLE:FILEPATH=${Python3_EXECUTABLE}"
+      "-DPYTHON_LIBRARY:FILEPATH=${Python3_LIBRARIES}"
+      "-DPYTHON_INCLUDE_DIRS:PATH=${Python3_INCLUDE_DIR}"
+    )
+  else()
+    # when building slicer we need to specify the Python instance
+    list(APPEND EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS
+      "-DvtkAddon_WRAP_PYTHON:BOOL=${Slicer_USE_PYTHONQT}"
+      "-DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}"
+      "-DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARY}"
+      "-DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR}"
+    )
+  endif()
+
+  list(APPEND vtkAddon_CMAKE_CACHE_ARGS)
 
   set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj})
   set(EP_BINARY_DIR ${CMAKE_BINARY_DIR}/${proj}-build)
@@ -53,7 +75,7 @@ if(NOT DEFINED vtkAddon_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       -DvtkAddon_USE_UTF8:BOOL=ON
       -DvtkAddon_CMAKE_DIR:PATH=${EP_SOURCE_DIR}/CMake
       -DvtkAddon_LAUNCH_COMMAND:STRING=${Slicer_LAUNCH_COMMAND}
-      -DVTK_DIR=${VTK_DIR}
+      -DVTK_DIR:PATH=${VTK_DIR}
       ${vtkAddon_CMAKE_CACHE_ARGS}
       ${EXTERNAL_PROJECT_OPTIONAL_CMAKE_CACHE_ARGS}
     INSTALL_COMMAND ""
