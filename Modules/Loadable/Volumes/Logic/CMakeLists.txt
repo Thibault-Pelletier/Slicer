@@ -7,4 +7,4 @@ vtk_module_add_module(VTK::SlicerVolumesModuleLogic
   CLASSES ${classes}
 )
 
-vtk_module_include(VTK::SlicerVolumesModuleLogic PUBLIC $<BUILD_INTERFACE:${RapidJSON_INCLUDE_DIR}>)
+vtk_module_include(VTK::SlicerVolumesModuleLogic PUBLIC ${RapidJSON_INCLUDE_DIR})

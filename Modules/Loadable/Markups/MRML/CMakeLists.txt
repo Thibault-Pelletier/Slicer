@@ -31,4 +31,4 @@ vtk_module_add_module(VTK::SlicerMarkupsModuleMRML
   CLASSES ${classes}
 )
 
-vtk_module_include(VTK::SlicerMarkupsModuleMRML PUBLIC $<BUILD_INTERFACE:${RapidJSON_INCLUDE_DIR}>)
+vtk_module_include(VTK::SlicerMarkupsModuleMRML PUBLIC ${RapidJSON_INCLUDE_DIR})

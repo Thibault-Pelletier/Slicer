@@ -60,5 +60,5 @@ vtk_module_add_module(VTK::Teem
   HEADERS ${headers}
 )
 
-vtk_module_include(VTK::Teem PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR} ${Teem_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS}>)
 vtk_module_link(VTK::Teem PUBLIC ${ITK_LIBRARIES} ${Teem_LIBRARIES} vtkAddon)
+vtk_module_include(VTK::Teem PUBLIC ${Teem_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS})

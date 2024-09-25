@@ -8,4 +8,4 @@ vtk_module_add_module(VTK::SlicerTransformsModuleLogic
 )
 
 vtk_module_link(VTK::SlicerTransformsModuleLogic PUBLIC ${ITK_LIBRARIES})
-vtk_module_include(VTK::SlicerTransformsModuleLogic PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)
+vtk_module_include(VTK::SlicerTransformsModuleLogic PUBLIC ${ITK_INCLUDE_DIRS})

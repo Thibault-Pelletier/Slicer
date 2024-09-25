@@ -12,4 +12,4 @@ vtk_module_add_module(VTK::MRMLCLI
 )
 
 vtk_module_link(VTK::MRMLCLI PUBLIC ${ITK_LIBRARIES} ModuleDescriptionParser)
-vtk_module_include(VTK::MRMLCLI PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${ModuleDescriptionParser_INCLUDE_DIRS}>)
+vtk_module_include(VTK::MRMLCLI PUBLIC ${ITK_INCLUDE_DIRS} ${ModuleDescriptionParser_INCLUDE_DIRS})

@@ -792,14 +792,6 @@ foreach(dep QT ${Slicer_DEPENDENCIES})
 endforeach()
 
 #-----------------------------------------------------------------------------
-# Update CMake module path
-#------------------------------------------------------------------------------
-set(CMAKE_MODULE_PATH
-  ${vtkAddon_CMAKE_DIR}
-  ${CMAKE_MODULE_PATH}
-  )
-
-#-----------------------------------------------------------------------------
 # Folders
 #-----------------------------------------------------------------------------
 set_property(GLOBAL PROPERTY USE_FOLDERS ${Slicer_USE_FOLDERS})
@@ -1037,6 +1029,21 @@ include_directories(
   )
 
 #-----------------------------------------------------------------------------
+# Slicer Library
+#-----------------------------------------------------------------------------
+
+find_package(vtkAddon CONFIG REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${vtkAddon_CMAKE_DIR})
+include(vtkMacroKitPythonWrap)
+
+#-----------------------------------------------------------------------------
+# Slicer Library
+#-----------------------------------------------------------------------------
+
+find_package(vtkSlicerLibrary CONFIG REQUIRED)
+include(SlicerLibraryAliases) # to facilitate transition
+
+#-----------------------------------------------------------------------------
 # Subdirectories
 #-----------------------------------------------------------------------------
 
@@ -1057,6 +1064,7 @@ include(SlicerMacroPythonWrapModuleVTKLibrary)
 include(SlicerMacroBuildModuleLogic)
 include(SlicerMacroBuildModuleMRML)
 include(SlicerMacroBuildModuleWidgets)
+include(SlicerMacroBuildLoadableModule)
 
 #-----------------------------------------------------------------------------
 # Slicer Core and GUI library
@@ -1197,9 +1205,6 @@ endforeach()
 
 # Add target configuring 'vtkSlicerVersionConfigure.h' at build time.
 include(SlicerConfigureVersionHeaderTarget)
-add_dependencies(SlicerBaseLogic SlicerConfigureVersionHeader)
-add_dependencies(MRMLCore SlicerConfigureVersionHeader)
-
 list(APPEND files vtkSlicerVersionConfigure.h)
 
 if(NOT Slicer_INSTALL_NO_DEVELOPMENT)

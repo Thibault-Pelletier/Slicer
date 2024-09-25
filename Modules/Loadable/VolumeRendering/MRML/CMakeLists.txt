@@ -17,5 +17,5 @@ vtk_module_add_module(VTK::SlicerVolumeRenderingModuleMRML
   CLASSES ${classes}
 )
 
-vtk_module_include(VTK::SlicerVolumeRenderingModuleMRML PUBLIC $<BUILD_INTERFACE:${JsonCpp_INCLUDE_DIRS}>)
+vtk_module_include(VTK::SlicerVolumeRenderingModuleMRML PUBLIC ${JsonCpp_INCLUDE_DIRS})
 vtk_module_link(VTK::SlicerVolumeRenderingModuleMRML PUBLIC ${JsonCpp_LIBRARY})

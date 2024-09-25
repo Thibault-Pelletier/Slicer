@@ -45,4 +45,4 @@ if(Slicer_USE_PYTHONQT_WITH_OPENSSL)
 endif()
 
 vtk_module_link(VTK::RemoteIO PUBLIC ${libs})
-vtk_module_include(VTK::RemoteIO PUBLIC $<BUILD_INTERFACE:${includes}>)
+vtk_module_include(VTK::RemoteIO PUBLIC ${includes})

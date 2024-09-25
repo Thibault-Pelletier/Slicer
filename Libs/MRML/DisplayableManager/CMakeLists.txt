@@ -128,9 +128,9 @@ if(VTK_WRAP_PYTHON)
       MRMLDisplayableManager_USE_PYTHON
       "vtkMRMLDisplayableManager_AUTOINIT=1(vtkMRMLDisplayableManager)"
   )
-  vtk_module_include(VTK::MRMLDisplayableManager PRIVATE $<BUILD_INTERFACE:${Python3_INCLUDE_DIRS}>)
+  vtk_module_include(VTK::MRMLDisplayableManager PUBLIC ${Python3_INCLUDE_DIRS})
   vtk_module_link(VTK::MRMLDisplayableManager PUBLIC Python3::Python VTK::WrappingPythonCore)
 endif()
 
 vtk_module_link(VTK::MRMLDisplayableManager PUBLIC ${ITK_LIBRARIES})
-vtk_module_include(VTK::MRMLDisplayableManager PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)
+vtk_module_include(VTK::MRMLDisplayableManager PUBLIC ${ITK_INCLUDE_DIRS})

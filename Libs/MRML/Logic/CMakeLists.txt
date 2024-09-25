@@ -48,4 +48,4 @@ vtk_module_add_module(VTK::MRMLLogic
 )
 
 vtk_module_link(VTK::MRMLLogic PUBLIC ${ITK_LIBRARIES})
-vtk_module_include(VTK::MRMLLogic PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS}>)
+vtk_module_include(VTK::MRMLLogic PUBLIC ${ITK_INCLUDE_DIRS})

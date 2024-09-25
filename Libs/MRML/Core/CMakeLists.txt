@@ -220,4 +220,4 @@ vtk_module_add_module(VTK::MRMLCore
 )
 
 vtk_module_link(VTK::MRMLCore PUBLIC ${ITK_LIBRARIES} ${LibArchive_LIBRARY} vtkAddon)
-vtk_module_include(VTK::MRMLCore PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS}>)
+vtk_module_include(VTK::MRMLCore PUBLIC ${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS})

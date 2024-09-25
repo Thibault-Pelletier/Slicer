@@ -42,7 +42,7 @@ vtk_module_add_module(VTK::SegmentationCore
 )
 
 vtk_module_link(VTK::SegmentationCore PUBLIC vtkAddon)
-vtk_module_include(VTK::SegmentationCore PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR} ${vtkAddon_INCLUDE_DIRS}>)
+vtk_module_include(VTK::SegmentationCore PUBLIC ${vtkAddon_INCLUDE_DIRS})
 
 if (vtkSegmentationCore_USE_UUID)
   # In order to use UUIDs for segment IDs, we need to link against the gdcmMSFF library

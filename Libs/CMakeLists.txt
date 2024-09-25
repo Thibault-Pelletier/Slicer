@@ -9,38 +9,18 @@ set(GENERATECLP_USE_MD5 ON)
 # Order of project directory matters. Project should be topologically ordered
 # --------------------------------------------------------------------------
 
-set(dirs )
-
-list(APPEND dirs
-  ITKFactoryRegistration
-  )
 set(SlicerExecutionModel_EXTRA_EXECUTABLE_TARGET_LIBRARIES
   ${SlicerExecutionModel_EXTRA_EXECUTABLE_TARGET_LIBRARIES} ITKFactoryRegistration
   CACHE INTERNAL "SlicerExecutionModel extra executable target libraries" FORCE
   )
 
-if(Slicer_BUILD_vtkAddon)
-  list(APPEND dirs
-    vtkAddon
-    )
-endif()
+find_package(vtkAddon REQUIRED)
 
-list(APPEND dirs
-  vtkTeem
-  vtkITK
-  vtkSegmentationCore
-  MRML/Core
-  )
+set(dirs)
 if(Slicer_BUILD_CLI_SUPPORT)
-  list(APPEND dirs MRML/CLI)
-endif()
-list(APPEND dirs
-  RemoteIO
-  MRML/Logic
-  MRML/DisplayableManager
+  list(APPEND dirs
+    MRML/IDImageIO
   )
-if(Slicer_BUILD_CLI_SUPPORT)
-  list(APPEND dirs MRML/IDImageIO)
 endif()
 list(APPEND dirs
   MRML/Widgets
@@ -167,22 +147,7 @@ set(MRML_LIBRARIES ${_mrml_libraries} CACHE INTERNAL "MRML libraries" FORCE)
 #-----------------------------------------------------------------------------
 # Set variable Slicer_Libs_VTK_WRAPPED_LIBRARIES
 #-----------------------------------------------------------------------------
-set(_vtk_wrapped_libraries
-  vtkSegmentationCore
-  vtkTeem
-  vtkITK
-  MRMLCore
-  MRMLLogic
-  )
 
-if(Slicer_BUILD_vtkAddon)
-  list(APPEND _vtk_wrapped_libraries
-    vtkAddon
-    )
-endif()
-if(Slicer_USE_PYTHONQT AND VTK_WRAP_PYTHON)
-  list(APPEND _vtk_wrapped_libraries MRMLDisplayableManager)
-endif()
 if(Slicer_BUILD_CLI_SUPPORT)
   list(APPEND _vtk_wrapped_libraries MRMLCLI)
 endif()

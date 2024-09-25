@@ -111,4 +111,4 @@ set_source_files_properties(
 )
 
 vtk_module_link(VTK::ITK PUBLIC ${ITK_LIBRARIES} vtkAddon)
-vtk_module_include(VTK::ITK PUBLIC $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS}>)
+vtk_module_include(VTK::ITK PUBLIC ${ITK_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS})

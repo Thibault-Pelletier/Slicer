@@ -24,6 +24,11 @@ include(${ITK_USE_FILE})
 #
 find_package(LibArchive REQUIRED MODULE)
 
+#
+# vtkAddon
+#
+find_package(vtkAddon REQUIRED)
+
 # --------------------------------------------------------------------------
 # Subdirectories
 # --------------------------------------------------------------------------
@@ -65,9 +70,9 @@ vtk_module_add_module(VTK::SlicerBaseLogic
 )
 
 vtk_module_link(VTK::SlicerBaseLogic PUBLIC
-  ${ITK_LIBRARIES} ${LibArchive_LIBRARY} ModuleDescriptionParser
+  ${ITK_LIBRARIES} ${LibArchive_LIBRARY} ModuleDescriptionParser vtkAddon
 )
 
 vtk_module_include(VTK::SlicerBaseLogic PUBLIC
-  $<BUILD_INTERFACE:${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${ModuleDescriptionParser_INCLUDE_DIRS}>
+  ${ITK_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${ModuleDescriptionParser_INCLUDE_DIRS} ${vtkAddon_INCLUDE_DIRS}
 )

@@ -14,4 +14,4 @@ vtk_module_add_module(VTK::SlicerTerminologiesModuleLogic
   CLASSES ${classes}
 )
 
-vtk_module_include(VTK::SlicerTerminologiesModuleLogic PUBLIC $<BUILD_INTERFACE:${RapidJSON_INCLUDE_DIR}>)
+vtk_module_include(VTK::SlicerTerminologiesModuleLogic PUBLIC ${RapidJSON_INCLUDE_DIR})
