@@ -107,8 +107,17 @@ std::vector<std::string> vtkSlicerColorLogic::FindDefaultColorFiles()
   // build up the vector
   std::vector<std::string> filesVector;
   filesVector.emplace_back(""); // for relative path
-  filesVector.push_back(slicerHome);
-  //filesVector.push_back(std::string(Slicer_SHARE_DIR) + "/ColorFiles");
+
+  if(!slicerHome.empty())
+  {
+    filesVector.push_back(slicerHome);
+  }
+
+  if(!this->shareDirectory.empty())
+  {
+    filesVector.push_back(this->shareDirectory + "/ColorFiles");
+  }
+
   std::string resourcesDirString = vtksys::SystemTools::JoinPath(filesVector);
 
   // now make up a vector to iterate through of dirs to look in

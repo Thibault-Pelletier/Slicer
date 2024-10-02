@@ -159,7 +159,14 @@ qSlicerAbstractModuleRepresentation * qSlicerColorsModule::createWidgetRepresent
 //-----------------------------------------------------------------------------
 vtkMRMLAbstractLogic* qSlicerColorsModule::createLogic()
 {
-  return vtkSlicerColorLogic::New();
+  auto* logic = vtkSlicerColorLogic::New();
+  qSlicerApplication * app = qSlicerApplication::application();
+  if(!app){
+    exit(32);
+  }
+  logic->SetSlicerShareDirectory(app->slicerSharePath().toUtf8().toStdString());
+
+  return logic;
 }
 
 //-----------------------------------------------------------------------------
