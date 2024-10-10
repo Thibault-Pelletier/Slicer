@@ -16,6 +16,9 @@ include_directories( ${CMAKE_CURRENT_BINARY_DIR})
 ctk_add_executable_utf8(${KIT}CxxTests ${Tests})
 target_link_libraries(${KIT}CxxTests ${KIT} )
 set_target_properties(${KIT}CxxTests PROPERTIES FOLDER "Module-${MODULE_NAME}")
+vtk_module_autoinit(TARGETS ${KIT}CxxTests
+  MODULES ${vtkSlicerLibrary_LIBRARIES} ${VTK_LIBRARIES}
+)
 
 simple_test( qMRMLTransformInfoWidgetTest1 )
 simple_test( qMRMLTransformDisplayNodeWidgetTest1 )

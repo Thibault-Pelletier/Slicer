@@ -42,14 +42,6 @@ public:
   /// Return a default color node id for the charts
   const char * GetDefaultChartColorNodeID() override;
 
-  /// look for color files in the Base/Logic/Resources/ColorFiles directory and
-  /// put their names in the ColorFiles list. Look in any user defined color
-  /// files paths and put them in the UserColorFiles list.
-  void SetSlicerShareDirectory(std::string path)
-  {
-    this->shareDirectory = std::move(path);
-  }
-
   std::vector<std::string> FindDefaultColorFiles() override;
   std::vector<std::string> FindUserColorFiles() override;
 
@@ -101,9 +93,6 @@ protected:
   void RegisterNodes() override;
 
   std::vector<std::string> FindColorFiles(const std::vector<std::string>& directories);
-
-private:
-  std::string shareDirectory{};
 };
 
 #endif

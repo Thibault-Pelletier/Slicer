@@ -34,4 +34,4 @@ slicerMacroConfigureModuleCxxTestDriver(
   )
 
 #-----------------------------------------------------------------------------
-simple_test(vtkSlicerUnitsLogicTest1 ${MRMLCore_SOURCE_DIR}/Testing/modelHierarchy.mrml)
+simple_test(vtkSlicerUnitsLogicTest1 ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/modelHierarchy.mrml)

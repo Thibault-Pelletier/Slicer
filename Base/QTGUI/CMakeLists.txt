@@ -8,8 +8,6 @@ set(KIT_export_directive "Q_SLICER_BASE_QTGUI_EXPORT")
 
 # Additional directories to include
 set(KIT_include_directories
-  ${MRMLLogic_INCLUDE_DIRS}
-  ${MRMLDisplayableManager_INCLUDE_DIRS}
   ${qSlicerBaseQTCore_SOURCE_DIR}
   ${qSlicerBaseQTCore_BINARY_DIR}
   )
@@ -366,6 +364,8 @@ SlicerMacroBuildBaseQtLibrary(
   RESOURCES ${KIT_resources}
   WRAP_PYTHONQT
   )
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${Slicer_Base_INCLUDE_DIRS})
 
 #-----------------------------------------------------------------------------
 # Slicer icon engine

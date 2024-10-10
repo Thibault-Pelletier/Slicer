@@ -1,7 +1,7 @@
 set(KIT ${PROJECT_NAME})
 
 #-----------------------------------------------------------------------------
-set(INPUT ${MRMLCore_SOURCE_DIR}/Testing)
+set(INPUT ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing)
 
 #-----------------------------------------------------------------------------
 set(KIT_TEST_SRCS

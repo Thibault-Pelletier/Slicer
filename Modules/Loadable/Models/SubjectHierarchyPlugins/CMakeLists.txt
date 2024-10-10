@@ -11,8 +11,7 @@ set(${KIT}_INCLUDE_DIRECTORIES
   ${vtkSlicerTerminologiesModuleLogic_INCLUDE_DIRS}
   ${vtkSegmentationCore_INCLUDE_DIRS}
   ${qMRMLWidgets_INCLUDE_DIRS}
-  ${MRMLLogic_INCLUDE_DIRS}
-  ${MRMLCore_INCLUDE_DIRS}
+  ${Slicer_Base_INCLUDE_DIRS}
   )
 
 set(${KIT}_SRCS

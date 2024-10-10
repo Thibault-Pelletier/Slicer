@@ -7,6 +7,7 @@ include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}/QTCore
   )
 
+add_subdirectory(Logic/Resources)
 add_subdirectory(QTCore)
 add_subdirectory(QTGUI)
 if(Slicer_BUILD_CLI_SUPPORT)

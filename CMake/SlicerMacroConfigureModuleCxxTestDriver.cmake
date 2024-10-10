@@ -103,9 +103,13 @@ macro(SlicerMacroConfigureModuleCxxTestDriver)
       PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${Slicer_BIN_DIR}
       )
+    vtk_module_autoinit(TARGETS ${SLICER_TEST_DRIVER_NAME}CxxTests
+      MODULES ${vtkSlicerLibrary_LIBRARIES}
+      )
     target_link_libraries(${SLICER_TEST_DRIVER_NAME}CxxTests
       ${SLICER_TEST_DRIVER_NAME}
       ${SLICER_TEST_DRIVER_TARGET_LIBRARIES}
+      ${vtkSlicerLibrary_LIBRARIES}
       )
     if(NOT DEFINED SLICER_TEST_DRIVER_FOLDER AND DEFINED MODULE_NAME)
       set(SLICER_TEST_DRIVER_FOLDER "Module-${MODULE_NAME}")

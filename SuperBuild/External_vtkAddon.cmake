@@ -87,6 +87,19 @@ if(NOT DEFINED vtkAddon_DIR AND NOT Slicer_USE_SYSTEM_${proj})
 
   set(vtkAddon_DIR ${EP_BINARY_DIR})
 
+  # Add path to SlicerLauncherSettings.ini
+  set(${proj}_LIBRARY_PATHS_LAUNCHER_BUILD ${vtkAddon_DIR}/<CMAKE_CFG_INTDIR>)
+  mark_as_superbuild(
+    VARS ${proj}_LIBRARY_PATHS_LAUNCHER_BUILD
+    LABELS "LIBRARY_PATHS_LAUNCHER_BUILD"
+  )
+  # Add pythonpath to SlicerLauncherSettings.ini
+  set(${proj}_PYTHONPATH_LAUNCHER_BUILD ${vtkAddon_DIR}/<CMAKE_CFG_INTDIR>)
+  mark_as_superbuild(
+    VARS ${proj}_PYTHONPATH_LAUNCHER_BUILD
+    LABELS "PYTHONPATH_LAUNCHER_BUILD"
+  )
+
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS ${${proj}_DEPENDENCIES})
 endif()

@@ -48,10 +48,6 @@
 #include "qSlicerSubjectHierarchyPluginHandler.h"
 #include "qSlicerSubjectHierarchyColorLegendPlugin.h"
 
-// DisplayableManager initialization
-#include <vtkAutoInit.h>
-VTK_MODULE_INIT(vtkSlicerColorsModuleMRMLDisplayableManager)
-
 //-----------------------------------------------------------------------------
 class qSlicerColorsModulePrivate
 {
@@ -159,14 +155,7 @@ qSlicerAbstractModuleRepresentation * qSlicerColorsModule::createWidgetRepresent
 //-----------------------------------------------------------------------------
 vtkMRMLAbstractLogic* qSlicerColorsModule::createLogic()
 {
-  auto* logic = vtkSlicerColorLogic::New();
-  qSlicerApplication * app = qSlicerApplication::application();
-  if(!app){
-    exit(32);
-  }
-  logic->SetSlicerShareDirectory(app->slicerSharePath().toUtf8().toStdString());
-
-  return logic;
+  return vtkSlicerColorLogic::New();
 }
 
 //-----------------------------------------------------------------------------

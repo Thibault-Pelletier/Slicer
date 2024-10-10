@@ -39,18 +39,10 @@ set(KIT_include_directories
   ${qSlicerBaseQTGUI_BINARY_DIR}
   ${ModuleDescriptionParser_INCLUDE_DIRS}
   ${MRMLCLI_INCLUDE_DIRS}
-  ${MRMLLogic_INCLUDE_DIRS}
-  )
-
-# Source files
-set(KIT_VTK_SRCS
-  vtkSlicerCLIModuleLogic.cxx
-  vtkSlicerCLIModuleLogic.h
-  )
+)
 
 # Source files
 set(KIT_SRCS
-  ${KIT_VTK_SRCS}
   qSlicerCLIExecutableModuleFactory.cxx
   qSlicerCLIExecutableModuleFactory.h
   qSlicerCLILoadableModuleFactory.cxx
@@ -140,7 +132,7 @@ if(VTK_WRAP_PYTHON)
 
   vtkMacroKitPythonWrap(
     KIT_NAME ${PROJECT_NAME}
-    KIT_SRCS ${KIT_VTK_SRCS}
+    KIT_SRCS ${KIT_SRCS}
     KIT_INSTALL_BIN_DIR ${Slicer_INSTALL_BIN_DIR}
     KIT_INSTALL_LIB_DIR ${Slicer_INSTALL_LIB_DIR}
     KIT_PYTHON_LIBRARIES ${_python_wrapped_libraries}

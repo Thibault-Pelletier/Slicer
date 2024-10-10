@@ -46,7 +46,7 @@ set_target_properties(${KIT}CxxTests PROPERTIES FOLDER ${${PROJECT_NAME}_FOLDER}
 
 #-----------------------------------------------------------------------------
 macro(simple_file_test TESTNAME FILE)
-  simple_test(${TESTNAME}_${FILE} DRIVER_TESTNAME ${TESTNAME} DATA{${MRMLCore_SOURCE_DIR}/Testing/TestData/${FILE}})
+  simple_test(${TESTNAME}_${FILE} DRIVER_TESTNAME ${TESTNAME} DATA{${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/TestData/${FILE}})
 endmacro()
 
 #-----------------------------------------------------------------------------

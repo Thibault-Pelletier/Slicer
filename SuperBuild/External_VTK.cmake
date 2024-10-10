@@ -232,7 +232,7 @@ if((NOT DEFINED VTK_DIR OR NOT DEFINED VTK_SOURCE_DIR) AND NOT Slicer_USE_SYSTEM
         )
     else()
       set(${proj}_PYTHONPATH_LAUNCHER_BUILD
-        ${VTK_DIR}/${_library_output_subdir}/Lib/site-packages
+        ${VTK_DIR}/lib/site-packages
         )
     endif()
 

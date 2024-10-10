@@ -2,15 +2,44 @@
 namespace.
 """
 
-# Importing VTK is required for loading its Python modules and ensuring seamless instantiation
-# of VTK-based MRML or Slicer Python modules from code executed in both "PythonSlicer executable"
-# and the "Slicer Python Console" environments. For more details, see Base/Python/slicer/__init__.py
-import vtk  # noqa: F401
+from vtkmodules.vtkMRMLCLI import *
+from vtkmodules.vtkMRMLCore import *
+from vtkmodules.vtkMRMLDisplayableManager import *
+from vtkmodules.vtkMRMLLogic import *
 
-from MRMLCLIPython import *
-from MRMLCorePython import *
-from MRMLDisplayableManagerPython import *
-from MRMLLogicPython import *
-
-# Cleanup: Removing things the user shouldn't have to see.
-del vtk
+from vtkmodules.vtkSlicerAnnotationsModuleLogic import *
+from vtkmodules.vtkSlicerAnnotationsModuleMRML import *
+from vtkmodules.vtkSlicerBaseLogic import *
+from vtkmodules.vtkSlicerCamerasModuleLogic import *
+from vtkmodules.vtkSlicerColorsModuleLogic import *
+from vtkmodules.vtkSlicerColorsModuleMRML import *
+from vtkmodules.vtkSlicerColorsModuleMRMLDisplayableManager import *
+from vtkmodules.vtkSlicerColorsModuleVTKWidgets import *
+from vtkmodules.vtkSlicerCropVolumeModuleLogic import *
+from vtkmodules.vtkSlicerCropVolumeModuleMRML import *
+from vtkmodules.vtkSlicerDataModuleLogic import *
+from vtkmodules.vtkSlicerMarkupsModuleLogic import *
+from vtkmodules.vtkSlicerMarkupsModuleMRML import *
+from vtkmodules.vtkSlicerMarkupsModuleMRMLDisplayableManager import *
+from vtkmodules.vtkSlicerMarkupsModuleVTKWidgets import *
+from vtkmodules.vtkSlicerModelsModuleLogic import *
+from vtkmodules.vtkSlicerPlotsModuleLogic import *
+from vtkmodules.vtkSlicerReformatModuleLogic import *
+from vtkmodules.vtkSlicerSceneViewsModuleLogic import *
+from vtkmodules.vtkSlicerSegmentationsModuleLogic import *
+from vtkmodules.vtkSlicerSegmentationsModuleMRML import *
+from vtkmodules.vtkSlicerSegmentationsModuleMRMLDisplayableManager import *
+from vtkmodules.vtkSlicerSequencesModuleLogic import *
+from vtkmodules.vtkSlicerSequencesModuleMRML import *
+from vtkmodules.vtkSlicerSubjectHierarchyModuleLogic import *
+from vtkmodules.vtkSlicerTablesModuleLogic import *
+from vtkmodules.vtkSlicerTerminologiesModuleLogic import *
+from vtkmodules.vtkSlicerTextsModuleLogic import *
+from vtkmodules.vtkSlicerTransformsModuleLogic import *
+from vtkmodules.vtkSlicerTransformsModuleMRMLDisplayableManager import *
+from vtkmodules.vtkSlicerUnitsModuleLogic import *
+from vtkmodules.vtkSlicerViewControllersModuleLogic import *
+from vtkmodules.vtkSlicerVolumeRenderingModuleLogic import *
+from vtkmodules.vtkSlicerVolumeRenderingModuleMRML import *
+from vtkmodules.vtkSlicerVolumeRenderingModuleMRMLDisplayableManager import *
+from vtkmodules.vtkSlicerVolumesModuleLogic import *

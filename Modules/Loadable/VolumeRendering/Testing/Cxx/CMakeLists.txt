@@ -23,7 +23,7 @@ list(APPEND ITK_INCLUDE_DIRS
 include(${ITK_USE_FILE})
 
 #-----------------------------------------------------------------------------
-set(MRML_CORE_INPUT "${MRMLCore_SOURCE_DIR}/Testing/TestData/")
+set(MRML_CORE_INPUT "${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/TestData/")
 set(INPUT ${CMAKE_CURRENT_SOURCE_DIR}/../Data/Input)
 set(TEMP "${CMAKE_BINARY_DIR}/Testing/Temporary")
 

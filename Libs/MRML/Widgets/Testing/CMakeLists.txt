@@ -168,7 +168,7 @@ target_link_libraries(${KIT}CxxTests ${KIT})
 set_target_properties(${KIT}CxxTests PROPERTIES FOLDER ${${PROJECT_NAME}_FOLDER})
 
 #-----------------------------------------------------------------------------
-set(INPUT ${MRMLCore_SOURCE_DIR}/Testing/TestData)
+set(INPUT ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/TestData)
 
 #-----------------------------------------------------------------------------
 function(SCENE_TEST TESTNAME SCENEFILENAME)
@@ -179,15 +179,15 @@ function(SCENE_TEST TESTNAME SCENEFILENAME)
   list(GET scenefilename_and_externalfiles 0 SCENEFILENAME)
   list(LENGTH scenefilename_and_externalfiles _length)
   if(_length EQUAL 2)
+    set(_scenefile ${CMAKE_BINARY_DIR}/Libs/MRML/Core/Testing/${SCENEFILENAME})
     configure_file(
-      ${MRMLCore_SOURCE_DIR}/Testing/${SCENEFILENAME}
-      ${MRMLCore_BINARY_DIR}/Testing/${SCENEFILENAME}
+      ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/${SCENEFILENAME}
+      ${_scenefile}
       COPYONLY
       )
-    set(_scenefile ${MRMLCore_BINARY_DIR}/Testing/${SCENEFILENAME})
     list(GET scenefilename_and_externalfiles 1 _externalfiles)
   else()
-    set(_scenefile ${MRMLCore_SOURCE_DIR}/Testing/${SCENEFILENAME})
+    set(_scenefile ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/${SCENEFILENAME})
     set(_externalfiles "")
   endif()
   simple_test(${TESTNAME}_${SCENEFILENAME} DRIVER_TESTNAME ${TESTNAME} ${_scenefile} ${_externalfiles})
@@ -274,15 +274,15 @@ if(Slicer_USE_QtTesting)
       list(GET scenefilename_and_externalfiles 0 SCENEFILENAME)
       list(LENGTH scenefilename_and_externalfiles _length)
       if(_length EQUAL 2)
+        set(_scenefile ${CMAKE_BINARY_DIR}/Libs/MRML/Core/Testing/${SCENEFILENAME})
         configure_file(
-          ${MRMLCore_SOURCE_DIR}/Testing/${SCENEFILENAME}
-          ${MRMLCore_BINARY_DIR}/Testing/${SCENEFILENAME}
+          ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/${SCENEFILENAME}
+          ${_scenefile}
           COPYONLY
           )
-        set(_scenefile ${MRMLCore_BINARY_DIR}/Testing/${SCENEFILENAME})
         list(GET scenefilename_and_externalfiles 1 _externalfiles)
       else()
-        set(_scenefile ${MRMLCore_SOURCE_DIR}/Testing/${SCENEFILENAME})
+        set(_scenefile ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/${SCENEFILENAME})
         set(_externalfiles "")
       endif()
 

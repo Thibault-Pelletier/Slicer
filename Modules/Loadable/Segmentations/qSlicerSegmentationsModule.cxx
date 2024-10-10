@@ -63,10 +63,6 @@
 // Qt includes
 #include <QDebug>
 
-// DisplayableManager initialization
-#include <vtkAutoInit.h>
-VTK_MODULE_INIT(vtkSlicerSegmentationsModuleMRMLDisplayableManager)
-
 //-----------------------------------------------------------------------------
 class qSlicerSegmentationsModulePrivate
 {

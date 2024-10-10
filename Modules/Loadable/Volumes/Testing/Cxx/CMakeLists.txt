@@ -24,7 +24,7 @@ include(${ITK_USE_FILE})
 
 #-----------------------------------------------------------------------------
 set(TEMP ${Slicer_BINARY_DIR}/Testing/Temporary)
-set(MRML_CORE_INPUT ${MRMLCore_SOURCE_DIR}/Testing/TestData/)
+set(MRML_CORE_INPUT ${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/TestData/)
 set(SLICERAPP_INPUT ${Slicer_SOURCE_DIR}/Applications/SlicerApp/Data/Input/)
 
 #-----------------------------------------------------------------------------

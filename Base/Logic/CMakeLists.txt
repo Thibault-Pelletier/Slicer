@@ -59,6 +59,7 @@ set(classes
   vtkSystemInformation
   vtkImageFillROI
   vtkSlicerCLIModuleLogic
+  vtkSlicerScriptedLoadableModuleLogic
 )
 
 set(headers ${CMAKE_CURRENT_BINARY_DIR}/${configure_header_file})

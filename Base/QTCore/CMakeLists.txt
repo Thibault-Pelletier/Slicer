@@ -58,8 +58,6 @@ set(KIT_export_directive "Q_SLICER_BASE_QTCORE_EXPORT")
 
 # Additional directories to include
 set(KIT_include_directories
-  ${MRMLLogic_INCLUDE_DIRS}
-  ${MRMLDisplayableManager_INCLUDE_DIRS}
   )
 
 if(Slicer_BUILD_CLI_SUPPORT)
@@ -276,6 +274,8 @@ SlicerMacroBuildBaseQtLibrary(
   RESOURCES ${KIT_resources}
   WRAP_PYTHONQT
   )
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${Slicer_Base_INCLUDE_DIRS})
 
 if(Slicer_USE_PYTHONQT_WITH_OPENSSL)
   configure_file(

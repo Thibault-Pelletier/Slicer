@@ -67,6 +67,9 @@ if(NOT DEFINED SlicerLibrary_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       -DVTK_MODULE_NAME:STRING=SlicerLibrary
       -DVTK_MODULE_SOURCE_DIR:PATH=${CMAKE_SOURCE_DIR}
       -DVTK_WRAP_PYTHON:BOOL=${Slicer_USE_PYTHONQT}
+      -DVTK_INSTALL_RUNTIME_DIR:PATH=${Slicer_INSTALL_BIN_DIR}
+      -DVTK_INSTALL_LIBRARY_DIR:PATH=${Slicer_INSTALL_LIB_DIR}
+      -DVTK_INSTALL_ARCHIVE_DIR:PATH=${Slicer_INSTALL_LIB_DIR}
       -DSlicer_USE_PYTHONQT_WITH_OPENSSL:BOOL=ON
       # dependencies
       -DCURL_INCLUDE_DIR:PATH=${CURL_INCLUDE_DIR}
@@ -94,6 +97,17 @@ if(NOT DEFINED SlicerLibrary_DIR AND NOT Slicer_USE_SYSTEM_${proj})
   #ExternalProject_GenerateProjectDescription_Step(${proj})
 
   set(vtkSlicerLibrary_DIR ${EP_BINARY_DIR})
+
+  # Add path to SlicerLauncherSettings.ini
+  set(_library_output_subdir bin)
+  if(UNIX)
+    set(_library_output_subdir lib)
+  endif()
+  set(${proj}_LIBRARY_PATHS_LAUNCHER_BUILD ${vtkSlicerLibrary_DIR}/${_library_output_subdir}/<CMAKE_CFG_INTDIR>)
+  mark_as_superbuild(
+    VARS ${proj}_LIBRARY_PATHS_LAUNCHER_BUILD
+    LABELS "LIBRARY_PATHS_LAUNCHER_BUILD"
+    )
 
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS ${${proj}_DEPENDENCIES})

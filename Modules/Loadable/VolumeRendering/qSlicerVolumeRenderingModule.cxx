@@ -38,10 +38,6 @@
 #include "qSlicerSubjectHierarchyPluginHandler.h"
 #include "qSlicerSubjectHierarchyVolumeRenderingPlugin.h"
 
-// DisplayableManager initialization
-#include <vtkAutoInit.h>
-VTK_MODULE_INIT(vtkSlicerVolumeRenderingModuleMRMLDisplayableManager)
-
 //-----------------------------------------------------------------------------
 class qSlicerVolumeRenderingModulePrivate
 {

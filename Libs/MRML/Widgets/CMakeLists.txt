@@ -482,6 +482,7 @@ set(MRMLWidgets_LIBRARIES
   ${CTK_LIBRARIES}
   MRMLLogic
   MRMLDisplayableManager
+  qSlicerBaseQTCore
   VTK::RenderingQt
   )
 

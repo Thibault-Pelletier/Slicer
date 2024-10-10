@@ -1,0 +1,56 @@
+#
+# SlicerLibraryAliases.cmake
+#
+# This file is meant to provides aliases from the old Slicer Modules names
+# to the new targets from SlicerLibs.
+#
+
+# Base modules
+add_library(SlicerBaseLogic ALIAS VTK::SlicerBaseLogic)
+# Libs modules
+add_library(ITKFactoryRegistration ALIAS VTK::ITKFactoryRegistration)
+add_library(RemoteIO ALIAS VTK::RemoteIO)
+add_library(vtkITK ALIAS VTK::ITK)
+add_library(vtkSegmentationCore ALIAS VTK::SegmentationCore)
+add_library(vtkTeem ALIAS VTK::Teem)
+# MRML modules
+add_library(MRMLCore ALIAS VTK::MRMLCore)
+add_library(MRMLCLI ALIAS VTK::MRMLCLI)
+add_library(MRMLLogic ALIAS VTK::MRMLLogic)
+add_library(MRMLDisplayableManager ALIAS VTK::MRMLDisplayableManager)
+# Loadable modules
+add_library(vtkSlicerAnnotationsModuleMRML ALIAS VTK::SlicerAnnotationsModuleMRML)
+add_library(vtkSlicerAnnotationsModuleLogic ALIAS VTK::SlicerAnnotationsModuleLogic)
+add_library(vtkSlicerCamerasModuleLogic ALIAS VTK::SlicerCamerasModuleLogic)
+add_library(vtkSlicerColorsModuleMRML ALIAS VTK::SlicerColorsModuleMRML)
+add_library(vtkSlicerColorsModuleLogic ALIAS VTK::SlicerColorsModuleLogic)
+add_library(vtkSlicerColorsModuleVTKWidgets ALIAS VTK::SlicerColorsModuleVTKWidgets)
+add_library(vtkSlicerColorsModuleMRMLDisplayableManager ALIAS VTK::SlicerColorsModuleMRMLDisplayableManager)
+add_library(vtkSlicerCropVolumeModuleMRML ALIAS VTK::SlicerCropVolumeModuleMRML)
+add_library(vtkSlicerCropVolumeModuleLogic ALIAS VTK::SlicerCropVolumeModuleLogic)
+add_library(vtkSlicerDataModuleLogic ALIAS VTK::SlicerDataModuleLogic)
+add_library(vtkSlicerMarkupsModuleMRML ALIAS VTK::SlicerMarkupsModuleMRML)
+add_library(vtkSlicerMarkupsModuleLogic ALIAS VTK::SlicerMarkupsModuleLogic)
+add_library(vtkSlicerMarkupsModuleVTKWidgets ALIAS VTK::SlicerMarkupsModuleVTKWidgets)
+add_library(vtkSlicerMarkupsModuleMRMLDisplayableManager ALIAS VTK::SlicerMarkupsModuleMRMLDisplayableManager)
+add_library(vtkSlicerModelsModuleLogic ALIAS VTK::SlicerModelsModuleLogic)
+add_library(vtkSlicerPlotsModuleLogic ALIAS VTK::SlicerPlotsModuleLogic)
+add_library(vtkSlicerReformatModuleLogic ALIAS VTK::SlicerReformatModuleLogic)
+add_library(vtkSlicerSceneViewsModuleLogic ALIAS VTK::SlicerSceneViewsModuleLogic)
+add_library(vtkSlicerSegmentationsModuleMRML ALIAS VTK::SlicerSegmentationsModuleMRML)
+add_library(vtkSlicerSegmentationsModuleLogic ALIAS VTK::SlicerSegmentationsModuleLogic)
+add_library(vtkSlicerSegmentationsModuleMRMLDisplayableManager ALIAS VTK::SlicerSegmentationsModuleMRMLDisplayableManager)
+add_library(vtkSlicerSequencesModuleMRML ALIAS VTK::SlicerSequencesModuleMRML)
+add_library(vtkSlicerSequencesModuleLogic ALIAS VTK::SlicerSequencesModuleLogic)
+add_library(vtkSlicerSubjectHierarchyModuleLogic ALIAS VTK::SlicerSubjectHierarchyModuleLogic)
+add_library(vtkSlicerTablesModuleLogic ALIAS VTK::SlicerTablesModuleLogic)
+add_library(vtkSlicerTerminologiesModuleLogic ALIAS VTK::SlicerTerminologiesModuleLogic)
+add_library(vtkSlicerTextsModuleLogic ALIAS VTK::SlicerTextsModuleLogic)
+add_library(vtkSlicerTransformsModuleLogic ALIAS VTK::SlicerTransformsModuleLogic)
+add_library(vtkSlicerTransformsModuleMRMLDisplayableManager ALIAS VTK::SlicerTransformsModuleMRMLDisplayableManager)
+add_library(vtkSlicerUnitsModuleLogic ALIAS VTK::SlicerUnitsModuleLogic)
+add_library(vtkSlicerViewControllersModuleLogic ALIAS VTK::SlicerViewControllersModuleLogic)
+add_library(vtkSlicerVolumeRenderingModuleMRML ALIAS VTK::SlicerVolumeRenderingModuleMRML)
+add_library(vtkSlicerVolumeRenderingModuleLogic ALIAS VTK::SlicerVolumeRenderingModuleLogic)
+add_library(vtkSlicerVolumeRenderingModuleMRMLDisplayableManager ALIAS VTK::SlicerVolumeRenderingModuleMRMLDisplayableManager)
+add_library(vtkSlicerVolumesModuleLogic ALIAS VTK::SlicerVolumesModuleLogic)

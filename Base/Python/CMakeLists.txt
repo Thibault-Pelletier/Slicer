@@ -23,6 +23,49 @@ set(Slicer_PYTHON_SCRIPTS
   vtkITK
   vtkSegmentationCore
   vtkTeem
+  compat/MRMLCLIPython.py
+  compat/MRMLCorePython.py
+  compat/MRMLDisplayableManagerPython.py
+  compat/MRMLLogicPython.py
+  compat/vtkITKPython.py
+  compat/vtkSegmentationCorePython.py
+  compat/vtkSlicerAnnotationsModuleLogicPython.py
+  compat/vtkSlicerAnnotationsModuleMRMLPython.py
+  compat/vtkSlicerBaseLogicPython.py
+  compat/vtkSlicerCamerasModuleLogicPython.py
+  compat/vtkSlicerColorsModuleLogicPython.py
+  compat/vtkSlicerColorsModuleMRMLDisplayableManagerPython.py
+  compat/vtkSlicerColorsModuleMRMLPython.py
+  compat/vtkSlicerColorsModuleVTKWidgetsPython.py
+  compat/vtkSlicerCropVolumeModuleLogicPython.py
+  compat/vtkSlicerCropVolumeModuleMRMLPython.py
+  compat/vtkSlicerDataModuleLogicPython.py
+  compat/vtkSlicerMarkupsModuleLogicPython.py
+  compat/vtkSlicerMarkupsModuleMRMLDisplayableManagerPython.py
+  compat/vtkSlicerMarkupsModuleMRMLPython.py
+  compat/vtkSlicerMarkupsModuleVTKWidgetsPython.py
+  compat/vtkSlicerModelsModuleLogicPython.py
+  compat/vtkSlicerPlotsModuleLogicPython.py
+  compat/vtkSlicerReformatModuleLogicPython.py
+  compat/vtkSlicerSceneViewsModuleLogicPython.py
+  compat/vtkSlicerSegmentationsModuleLogicPython.py
+  compat/vtkSlicerSegmentationsModuleMRMLDisplayableManagerPython.py
+  compat/vtkSlicerSegmentationsModuleMRMLPython.py
+  compat/vtkSlicerSequencesModuleLogicPython.py
+  compat/vtkSlicerSequencesModuleMRMLPython.py
+  compat/vtkSlicerSubjectHierarchyModuleLogicPython.py
+  compat/vtkSlicerTablesModuleLogicPython.py
+  compat/vtkSlicerTerminologiesModuleLogicPython.py
+  compat/vtkSlicerTextsModuleLogicPython.py
+  compat/vtkSlicerTransformsModuleLogicPython.py
+  compat/vtkSlicerTransformsModuleMRMLDisplayableManagerPython.py
+  compat/vtkSlicerUnitsModuleLogicPython.py
+  compat/vtkSlicerViewControllersModuleLogicPython.py
+  compat/vtkSlicerVolumeRenderingModuleLogicPython.py
+  compat/vtkSlicerVolumeRenderingModuleMRMLDisplayableManagerPython.py
+  compat/vtkSlicerVolumeRenderingModuleMRMLPython.py
+  compat/vtkSlicerVolumesModuleLogicPython.py
+  compat/vtkTeemPython.py
   )
 
 set(Slicer_PYTHON_MODULES_CONFIG "

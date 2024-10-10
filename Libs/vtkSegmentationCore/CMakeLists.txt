@@ -1,6 +1,11 @@
 option(vtkSegmentationCore_USE_UUID "Use UUIDs for generating segment IDs. Requires gdcm library." ON)
 mark_as_advanced(vtkSegmentationCore_USE_UUID)
 
+if(vtkSegmentationCore_USE_UUID)
+  find_package(ITK REQUIRED COMPONENTS ITKGDCM)
+  include(${ITK_USE_FILE})
+endif()
+
 #
 # vtkAddon
 #

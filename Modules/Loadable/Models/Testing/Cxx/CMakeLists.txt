@@ -1,8 +1,8 @@
 set(KIT qSlicer${MODULE_NAME}Module)
 
 #-----------------------------------------------------------------------------
-set(MODEL_FILE "${MRMLCore_SOURCE_DIR}/Testing/TestData/cube.vtk")
-set(MODEL_SCENE "${MRMLCore_SOURCE_DIR}/Testing/modelHierarchy.mrml")
+set(MODEL_FILE "${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/TestData/cube.vtk")
+set(MODEL_SCENE "${CMAKE_SOURCE_DIR}/Libs/MRML/Core/Testing/modelHierarchy.mrml")
 
 #-----------------------------------------------------------------------------
 set(KIT_TEST_SRCS

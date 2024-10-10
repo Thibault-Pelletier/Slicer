@@ -7,8 +7,7 @@ set(${KIT}_EXPORT_DIRECTIVE "Q_SLICER_${MODULE_NAME_UPPER}_SUBJECT_HIERARCHY_PLU
 set(${KIT}_INCLUDE_DIRECTORIES
   ${vtkSlicerSubjectHierarchyModuleLogic_INCLUDE_DIRS}
   ${qSlicerSubjectHierarchyModuleWidgets_INCLUDE_DIRS}
-  ${MRMLCore_INCLUDE_DIRS}
-  ${MRMLLogic_INCLUDE_DIRS}
+  ${Slicer_Base_INCLUDE_DIRS}
   ${qMRMLWidgets_INCLUDE_DIRS}
   ${vtkSlicer${MODULE_NAME}ModuleLogic_INCLUDE_DIRS}
   )
