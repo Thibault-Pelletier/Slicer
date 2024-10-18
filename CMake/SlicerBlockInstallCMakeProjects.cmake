@@ -78,12 +78,15 @@ endif()
 # Install vtkAddon
 # -------------------------------------------------------------------------
 if(NOT "${vtkAddon_DIR}" STREQUAL "" AND EXISTS "${vtkAddon_DIR}/CMakeCache.txt")
-  list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${vtkAddon_DIR};vtkAddon;RuntimeLibraries")
+  list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${vtkAddon_DIR};vtkAddon;RuntimeLibraries;/")
 endif()
 
 # -------------------------------------------------------------------------
 # Install Slicer Library
 # -------------------------------------------------------------------------
 if(NOT "${vtkSlicerLibrary_DIR}" STREQUAL "" AND EXISTS "${vtkSlicerLibrary_DIR}/CMakeCache.txt")
-  list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${vtkSlicerLibrary_DIR};vtkSlicerLibrary;RuntimeLibraries")
+  list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${vtkSlicerLibrary_DIR};vtkSlicerLibrary;runtime;/")
+  if(Slicer_USE_PYTHONQT)
+    list(APPEND CPACK_INSTALL_CMAKE_PROJECTS "${vtkSlicerLibrary_DIR};vtkSlicerLibrary;python;/")
+  endif()
 endif()

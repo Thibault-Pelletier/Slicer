@@ -100,6 +100,24 @@ if(NOT DEFINED vtkAddon_DIR AND NOT Slicer_USE_SYSTEM_${proj})
     LABELS "PYTHONPATH_LAUNCHER_BUILD"
   )
 
+  #-----------------------------------------------------------------------------
+  # Launcher setting specific to install tree
+
+  # pythonpath
+  if(UNIX)
+    set(${proj}_PYTHONPATH_LAUNCHER_INSTALLED
+      <APPLAUNCHER_SETTINGS_DIR>/../lib/python${Slicer_REQUIRED_PYTHON_VERSION_DOT}/vtkAddon
+      )
+  else()
+    set(${proj}_PYTHONPATH_LAUNCHER_INSTALLED
+      <APPLAUNCHER_SETTINGS_DIR>/../lib/vtkAddon
+      )
+  endif()
+  mark_as_superbuild(
+    VARS ${proj}_PYTHONPATH_LAUNCHER_INSTALLED
+    LABELS "PYTHONPATH_LAUNCHER_INSTALLED"
+    )
+
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS ${${proj}_DEPENDENCIES})
 endif()

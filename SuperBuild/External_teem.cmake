@@ -36,6 +36,11 @@ if(NOT DEFINED Teem_DIR AND NOT Slicer_USE_SYSTEM_${proj})
   set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj})
   set(EP_BINARY_DIR ${CMAKE_BINARY_DIR}/${proj}-build)
 
+  set(build_shared_teem TRUE)
+  if(SLICERLIB_PYTHON_BUILD) # when building slicerlib wheel use a static Teem
+    set(build_shared_teem FALSE)
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${Slicer_${proj}_GIT_REPOSITORY}"
@@ -48,7 +53,7 @@ if(NOT DEFINED Teem_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
       -DBUILD_TESTING:BOOL=OFF
-      -DBUILD_SHARED_LIBS:BOOL=OFF
+      -DBUILD_SHARED_LIBS:BOOL=${build_shared_teem}
       -DTeem_USE_LIB_INSTALL_SUBDIR:BOOL=ON
       -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF
       -DTeem_PTHREAD:BOOL=OFF
@@ -68,6 +73,28 @@ if(NOT DEFINED Teem_DIR AND NOT Slicer_USE_SYSTEM_${proj})
     )
 
   set(Teem_DIR ${EP_BINARY_DIR})
+
+  #-----------------------------------------------------------------------------
+  # Launcher setting specific to build tree
+
+  # library paths
+  set(${proj}_LIBRARY_PATHS_LAUNCHER_BUILD ${Teem_DIR}/bin/<CMAKE_CFG_INTDIR>)
+  mark_as_superbuild(
+    VARS ${proj}_LIBRARY_PATHS_LAUNCHER_BUILD
+    LABELS "LIBRARY_PATHS_LAUNCHER_BUILD" "PATHS_LAUNCHER_BUILD"
+    )
+
+  #-----------------------------------------------------------------------------
+  # Launcher setting specific to install tree
+
+  # library paths
+  if(UNIX AND NOT APPLE)
+    set(${proj}_LIBRARY_PATHS_LAUNCHER_INSTALLED <APPLAUNCHER_SETTINGS_DIR>/../lib/Teem-1.12.0)
+    mark_as_superbuild(
+      VARS ${proj}_LIBRARY_PATHS_LAUNCHER_INSTALLED
+      LABELS "LIBRARY_PATHS_LAUNCHER_INSTALLED"
+      )
+  endif()
 else()
   ExternalProject_Add_Empty(${proj} DEPENDS ${${proj}_DEPENDENCIES})
 endif()

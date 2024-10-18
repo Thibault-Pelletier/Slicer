@@ -59,6 +59,11 @@ if(NOT DEFINED DCMTK_DIR AND NOT Slicer_USE_SYSTEM_${proj})
   set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj})
   set(EP_BINARY_DIR ${CMAKE_BINARY_DIR}/${proj}-build)
 
+  set(build_shared_dcmtk TRUE)
+  if(SLICERLIB_PYTHON_BUILD) # when building slicerlib wheel use a static DCMTK
+    set(build_shared_dcmtk FALSE)
+  endif()
+
   ExternalProject_Add(${proj}
     ${${proj}_EP_ARGS}
     GIT_REPOSITORY "${Slicer_${proj}_GIT_REPOSITORY}"
@@ -71,7 +76,7 @@ if(NOT DEFINED DCMTK_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
       -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-      -DBUILD_SHARED_LIBS:BOOL=OFF
+      -DBUILD_SHARED_LIBS:BOOL=${build_shared_dcmtk}
       -DDCMTK_WITH_DOXYGEN:BOOL=OFF
       -DDCMTK_WITH_ZLIB:BOOL=OFF # see CTK github issue #25
       -DDCMTK_WITH_OPENSSL:BOOL=OFF # see CTK github issue #25

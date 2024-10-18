@@ -198,6 +198,20 @@ if(Slicer_USE_PYTHONQT)
       )
   endif()
 
+  # SlicerLibrary PYTHONPATH entry must be put before VTK's one (specified in EPLABEL PYTHONPATH...)
+  # It is easier to set it now rather that using an external project label
+  # For more information, see SlicerLib/CMakeLists.txt
+  if(UNIX)
+    set(SlicerLibrary_PYTHONPATH_LAUNCHER_BUILD
+      ${vtkSlicerLibrary_DIR}/lib/python${Slicer_REQUIRED_PYTHON_VERSION_DOT}/site-packages
+    )
+  else()
+    set(SlicerLibrary_PYTHONPATH_LAUNCHER_BUILD
+      ${vtkSlicerLibrary_DIR}/lib/site-packages
+    )
+  endif()
+  list(APPEND SLICER_PYTHONPATH_BUILD ${SlicerLibrary_PYTHONPATH_LAUNCHER_BUILD})
+
   # External projects - pythonpath
   foreach(varname IN LISTS Slicer_EP_LABEL_PYTHONPATH_LAUNCHER_BUILD)
     list(APPEND SLICER_PYTHONPATH_BUILD ${${varname}})

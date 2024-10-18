@@ -9,12 +9,12 @@ vtkSlicerLibrary::~vtkSlicerLibrary() = default;
 
 int vtkSlicerLibrary::GetVersionMajor()
 {
-    return 1;
+    return 5;
 }
 
 int vtkSlicerLibrary::GetVersionMinor()
 {
-    return 0;
+    return 7;
 }
 
 int vtkSlicerLibrary::GetVersionPatch()
@@ -24,5 +24,5 @@ int vtkSlicerLibrary::GetVersionPatch()
 
 const char* vtkSlicerLibrary::GetVersionString()
 {
-    return "1.0.0";
+    return "5.7.0";
 }

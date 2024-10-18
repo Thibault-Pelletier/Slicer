@@ -264,17 +264,13 @@ if((NOT DEFINED VTK_DIR OR NOT DEFINED VTK_SOURCE_DIR) AND NOT Slicer_USE_SYSTEM
       )
 
     # pythonpath
-    set(_library_install_subdir "bin")
-    if(UNIX)
-      set(_library_install_subdir "lib")
-    endif()
     if(UNIX)
       set(${proj}_PYTHONPATH_LAUNCHER_INSTALLED
-        <APPLAUNCHER_SETTINGS_DIR>/../${_library_install_subdir}/python${Slicer_REQUIRED_PYTHON_VERSION_DOT}/site-packages
+        <APPLAUNCHER_SETTINGS_DIR>/../lib/python${Slicer_REQUIRED_PYTHON_VERSION_DOT}/site-packages
         )
     else()
       set(${proj}_PYTHONPATH_LAUNCHER_INSTALLED
-        <APPLAUNCHER_SETTINGS_DIR>/../${_library_install_subdir}/Lib/site-packages
+        <APPLAUNCHER_SETTINGS_DIR>/../lib/site-packages
         )
     endif()
     mark_as_superbuild(
