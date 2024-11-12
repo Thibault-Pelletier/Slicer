@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit-build-core", "vtk-sdk==9.3.20241005.dev0"]
+requires = ["scikit-build-core", "vtk-sdk==9.4.0"]
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
@@ -22,5 +22,5 @@ VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;tbb;ParameterSerializer;SlicerE
 
 [project]
 name = "vtk-mrml"
-version = "9.3.20241005.dev0"
-dependencies = ["vtk==9.3.20241005.dev0"]
+version = "9.4.0"
+dependencies = ["vtk==9.4.0.rc3"]
