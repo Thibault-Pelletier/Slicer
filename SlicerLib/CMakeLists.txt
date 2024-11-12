@@ -10,11 +10,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../CMake)
 set(Slicer_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(Slicer_PYTHON_SOURCE_DIR ${Slicer_SOURCE_DIR}/Base/Python)
 
-set(Slicer_PYTHON_MODULES_CONFIG
-  'mrml',
-  'vtkAddon',
-  'vtkSegmentationCore',
-)
+set(Slicer_PYTHON_MODULES_CONFIG [['mrml','vtkAddon','vtkSegmentationCore']])
 configure_file(${Slicer_SOURCE_DIR}/Base/Python/slicer/kits.py.in
   ${CMAKE_CURRENT_BINARY_DIR}/slicer/kits.py
 )
@@ -27,11 +23,11 @@ configure_file(${Slicer_SOURCE_DIR}/Base/Python/slicer/kits.py.in
 install(FILES
   ${Slicer_PYTHON_SOURCE_DIR}/slicer/__init__.py
   ${Slicer_PYTHON_SOURCE_DIR}/slicer/util.py
-  ${Slicer_PYTHON_SOURCE_DIR}/slicer/mrml.py
   ${Slicer_PYTHON_SOURCE_DIR}/slicer/logic.py
+  ${CMAKE_CURRENT_BINARY_DIR}/slicer/kits.py
+  ${Slicer_PYTHON_SOURCE_DIR}/mrml.py
   ${Slicer_PYTHON_SOURCE_DIR}/vtkAddon.py
   ${Slicer_PYTHON_SOURCE_DIR}/vtkSegmentationCore.py
-  ${CMAKE_CURRENT_BINARY_DIR}/slicer/kits.py
   DESTINATION slicer
 )
 
