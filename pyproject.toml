@@ -23,4 +23,4 @@ VTK_MODULE_EXTERNAL_PROJECT_DEPENDENCIES = "teem;tbb;ParameterSerializer;SlicerE
 [project]
 name = "vtk-mrml"
 version = "9.4.0"
-dependencies = ["vtk==9.4.0.rc3"]
+dependencies = ["vtk==9.4.0"]
