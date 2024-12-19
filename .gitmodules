@@ -1,0 +1,4 @@
+[submodule "vtk-external-module"]
+	path = _deps/VTKExternalModule
+	url = https://github.com/AlexyPellegrini/VTKExternalModule.git
+    branch = multiple-modules
