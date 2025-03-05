@@ -11,6 +11,8 @@ verbose = true
 args = ["-GNinja"]
 
 [tool.scikit-build.cmake.define]
+ep_common_cxx_flags = "-D_GLIBCXX_USE_CXX11_ABI=0"
+CMAKE_CXX_FLAGS = "-D_GLIBCXX_USE_CXX11_ABI=0"
 VTK_MODULE_NAME = "SlicerLibrary"
 VTK_MODULE_SOURCE_DIR = "../.."
 SLICERLIB_PYTHON_BUILD = "TRUE" # used at some places to make changes in cmake logic

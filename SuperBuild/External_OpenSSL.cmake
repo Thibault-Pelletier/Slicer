@@ -78,6 +78,9 @@ You could either:
     #------------------------------------------------------------------------------
     set(EP_SOURCE_DIR ${CMAKE_BINARY_DIR}/${proj})
 
+    set(Slicer_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
+    set(Slicer_CMAKE_DIR ${CMAKE_CURRENT_LIST_DIR}/../CMake)
+    set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMake)
     include(ExternalProjectForNonCMakeProject)
 
     # environment

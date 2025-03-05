@@ -15,7 +15,7 @@ foreach(colorfile ${COLORFILES})
 endforeach()
 install(
   FILES ${COLORFILES}
-  DESTINATION ${Slicer_INSTALL_SHARE_DIR}/ColorFiles
+  DESTINATION ${CMAKE_BINARY_DIR}/${Slicer_SHARE_DIR}/ColorFiles
   COMPONENT Runtime
   )
 
@@ -32,7 +32,7 @@ foreach(filename ${orientation_marker_filenames})
     )
   install(
     FILES ${orientation_marker_filepath}
-    DESTINATION ${Slicer_INSTALL_SHARE_DIR}/${orientation_markers_dir}
+    DESTINATION ${CMAKE_BINARY_DIR}/${Slicer_SHARE_DIR}/${orientation_markers_dir}
     COMPONENT Runtime
     )
 endforeach()

@@ -52,6 +52,7 @@ if(NOT DEFINED Teem_DIR AND NOT Slicer_USE_SYSTEM_${proj})
       # Not needed -DCMAKE_CXX_FLAGS:STRING=${ep_common_cxx_flags}
       -DCMAKE_C_COMPILER:FILEPATH=${CMAKE_C_COMPILER}
       -DCMAKE_C_FLAGS:STRING=${ep_common_c_flags}
+      -DCMAKE_POSITION_INDEPENDENT_CODE:BOOL=TRUE
       -DBUILD_TESTING:BOOL=OFF
       -DBUILD_SHARED_LIBS:BOOL=${build_shared_teem}
       -DTeem_USE_LIB_INSTALL_SUBDIR:BOOL=ON
