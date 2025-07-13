@@ -18,6 +18,12 @@ set(${KIT}_SRCS
   vtkImageGrowCutSegment.cxx
   vtkImageGrowCutSegment.h
   FibHeap.cxx
+  vtkSegmentEditorAbstractEffect.cxx
+  vtkSegmentEditorAbstractEffect.h
+  vtkSegmentEditorLogic.cxx
+  vtkSegmentEditorLogic.h
+  vtkMouseCursor.cxx
+  vtkMouseCursor.h
   )
 
 set(${KIT}_TARGET_LIBRARIES

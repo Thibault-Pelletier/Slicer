@@ -33,6 +33,7 @@
 
 // VTK includes
 #include "vtkWeakPointer.h"
+#include "vtkSmartPointer.h"
 
 class qSlicerSegmentEditorAbstractEffectPrivate;
 
@@ -50,6 +51,7 @@ class vtkRenderWindow;
 class vtkRenderWindowInteractor;
 class vtkOrientedImageData;
 class vtkProp3D;
+class vtkSegmentEditorAbstractEffect;
 class qMRMLWidget;
 class qMRMLSliceWidget;
 class QColor;
@@ -96,7 +98,7 @@ public:
 
 public:
   typedef QObject Superclass;
-  qSlicerSegmentEditorAbstractEffect(QObject* parent = nullptr);
+  explicit qSlicerSegmentEditorAbstractEffect(const vtkSmartPointer<vtkSegmentEditorAbstractEffect>& effectLogic, QObject* parent = nullptr);
   ~qSlicerSegmentEditorAbstractEffect() override;
 
   // API: Methods that are to be reimplemented in the effect subclasses
@@ -219,6 +221,10 @@ public:
   /// For more details, see: https://github.com/Slicer/Slicer/issues/7392
   Q_INVOKABLE virtual void cleanup() {};
 
+  /// \brief Get the underlying segment editor effect logic
+  /// Setting the logic should be done by implementing classes at initialization
+  Q_INVOKABLE vtkSmartPointer<vtkSegmentEditorAbstractEffect> effectLogic() const;
+
 public slots:
   /// Update user interface from parameter set node
   /// NOTE: Base class implementation needs to be called with the effect-specific implementation
@@ -301,12 +307,6 @@ public:
   /// Emit signal that causes active effect to be changed to the specified one.
   /// If the effect name is empty, then the active effect is de-selected.
   Q_INVOKABLE void selectEffect(QString effectName);
-
-  /// Connect callback signals. Callbacks are called by the editor effect to request operations from the editor widget.
-  /// \param selectEffectSlot called from the active effect to initiate switching to another effect (or de-select).
-  /// \param updateVolumeSlot called to request update of a volume (modifierLabelmap, alignedSourceVolume, maskLabelmap).
-  /// \param saveStateForUndoSlot called to request saving of segmentation state for undo operation
-  void setCallbackSlots(QObject* receiver, const char* selectEffectSlot, const char* updateVolumeSlot, const char* saveStateForUndoSlot);
 
   /// Called by the editor widget.
   void setVolumes(vtkOrientedImageData* alignedSourceVolume,
@@ -488,6 +488,8 @@ protected:
   /// No confirmation will be displayed for editing this segment.
   /// This is needed to ensure that editing of a hidden segment is only asked once.
   vtkWeakPointer<vtkSegment> m_AlreadyConfirmedSegmentVisible;
+
+  vtkSmartPointer<vtkSegmentEditorAbstractEffect> m_EffectLogic = nullptr;
 
 protected:
   QScopedPointer<qSlicerSegmentEditorAbstractEffectPrivate> d_ptr;

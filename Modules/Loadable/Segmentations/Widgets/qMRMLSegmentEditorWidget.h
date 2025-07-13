@@ -276,6 +276,8 @@ public:
   /// Returns true if automatic jump to current segment is enabled.
   bool jumpToSelectedSegmentEnabled() const;
 
+  Q_INVOKABLE vtkSmartPointer<vtkSegmentEditorLogic> logic() const { return m_logic; }
+
 public slots:
   /// Set the MRML \a scene associated with the widget
   void setMRMLScene(vtkMRMLScene* newScene) override;
@@ -563,6 +565,7 @@ protected:
 private:
   Q_DECLARE_PRIVATE(qMRMLSegmentEditorWidget);
   Q_DISABLE_COPY(qMRMLSegmentEditorWidget);
+  vtkSmartPointer<vtkSegmentEditorLogic> m_logic = nullptr;
 };
 
 #endif

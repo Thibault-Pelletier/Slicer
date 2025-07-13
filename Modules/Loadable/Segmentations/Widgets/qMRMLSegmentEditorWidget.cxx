@@ -118,6 +118,8 @@
 // CTK includes
 #include <ctkCollapsibleButton.h>
 
+#include "vtkSegmentEditorLogic.h"
+
 static const int BINARY_LABELMAP_SCALAR_TYPE = VTK_UNSIGNED_CHAR;
 // static const unsigned char BINARY_LABELMAP_VOXEL_FULL = 1; // unused
 static const unsigned char BINARY_LABELMAP_VOXEL_EMPTY = 0;
@@ -1028,6 +1030,7 @@ bool qMRMLSegmentEditorWidgetPrivate::segmentationIJKToRAS(vtkMatrix4x4* ijkToRa
 //-----------------------------------------------------------------------------
 qMRMLSegmentEditorWidget::qMRMLSegmentEditorWidget(QWidget* _parent)
   : qMRMLWidget(_parent)
+  , m_logic(vtkSmartPointer<vtkSegmentEditorLogic>::New())
   , d_ptr(new qMRMLSegmentEditorWidgetPrivate(*this))
 {
   Q_D(qMRMLSegmentEditorWidget);
@@ -1057,7 +1060,6 @@ void qMRMLSegmentEditorWidget::updateEffectList()
     effectButton->setProperty("Effect", QVariant::fromValue<QObject*>(nullptr));
     effectButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Preferred); // make all effect buttons the same width
     d->EffectButtonGroup.addButton(effectButton);
-    ;
   }
 
   // Create local copy of factory effects, so that
@@ -1068,10 +1070,6 @@ void qMRMLSegmentEditorWidget::updateEffectList()
   // Set up effect connections and options frame for all newly added effects
   for (qSlicerSegmentEditorAbstractEffect* const effect : addedEffects)
   {
-    // Connect callbacks that allow effects to send requests to the editor widget without
-    // introducing a direct dependency of the effect on the widget.
-    effect->setCallbackSlots(this, SLOT(setActiveEffectByName(QString)), SLOT(updateVolume(void*, bool&)), SLOT(saveStateForUndo()));
-
     // Set parameter set node (if it has been already set in the widget)
     if (d->ParameterSetNode)
     {
