@@ -185,6 +185,16 @@ void vtkMRMLViewLogic::SetViewNode(vtkMRMLViewNode* newViewNode)
     return;
   }
 
+  if (this->ViewNode)
+  {
+    this->ViewNode->SetLogic(nullptr);
+  }
+
+  if (newViewNode)
+  {
+    newViewNode->SetLogic(this);
+  }
+
   // Observe the view node for general properties.
   vtkSetAndObserveMRMLNodeMacro(this->ViewNode, newViewNode);
 }

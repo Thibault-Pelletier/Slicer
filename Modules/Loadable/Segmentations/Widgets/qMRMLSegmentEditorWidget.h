@@ -36,7 +36,7 @@
 #include <ctkVTKObject.h>
 
 // STD includes
-#include <cstdlib>
+#include <vtkSmartPointer.h>
 
 class vtkMRMLNode;
 class vtkMRMLInteractionNode;
@@ -49,6 +49,7 @@ class QAbstractButton;
 class qMRMLSegmentEditorWidgetPrivate;
 class qSlicerSegmentEditorAbstractEffect;
 class qSlicerAbstractModuleWidget;
+class vtkSegmentEditorLogic;
 
 /// \brief Qt widget for editing a segment from a segmentation using Editor effects.
 ///
@@ -276,6 +277,8 @@ public:
   /// Returns true if automatic jump to current segment is enabled.
   bool jumpToSelectedSegmentEnabled() const;
 
+  Q_INVOKABLE vtkSegmentEditorLogic* logic() const;
+
 public slots:
   /// Set the MRML \a scene associated with the widget
   void setMRMLScene(vtkMRMLScene* newScene) override;
@@ -469,9 +472,6 @@ protected slots:
   /// Handles segment selection changes
   void onSegmentSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
-  /// Handles mouse mode changes (view / place markups)
-  void onInteractionNodeModified();
-
   /// Activate effect on clicking its button
   void onEffectButtonClicked(QAbstractButton* button);
 
@@ -543,9 +543,6 @@ protected slots:
   void showSegmentationGeometryDialog();
 
 protected:
-  /// Callback function invoked when interaction happens
-  static void processEvents(vtkObject* caller, unsigned long eid, void* clientData, void* callData);
-
   void updateWidgetFromSegmentationNode();
   void updateWidgetFromSourceVolumeNode();
   void updateEffectsSectionFromMRML();
@@ -557,7 +554,6 @@ protected:
   /// Switches to Segmentations module and returns the module widget
   qSlicerAbstractModuleWidget* switchToSegmentationsModule();
 
-protected:
   QScopedPointer<qMRMLSegmentEditorWidgetPrivate> d_ptr;
 
 private:

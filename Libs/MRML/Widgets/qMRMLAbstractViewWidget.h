@@ -92,6 +92,10 @@ public slots:
   /// De-increments the pause render count and calls scheduleRender() if one is currently pending
   /// \sa setPauseRender()
   virtual void resumeRender();
+  /// Schedules a render window render
+  virtual void scheduleRender();
+  /// Forces a render window render
+  virtual void forceRender();
 
 private:
   Q_DISABLE_COPY(qMRMLAbstractViewWidget);

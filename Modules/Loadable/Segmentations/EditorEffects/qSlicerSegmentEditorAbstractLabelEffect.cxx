@@ -73,7 +73,7 @@ qSlicerSegmentEditorAbstractLabelEffectPrivate::~qSlicerSegmentEditorAbstractLab
 
 //----------------------------------------------------------------------------
 qSlicerSegmentEditorAbstractLabelEffect::qSlicerSegmentEditorAbstractLabelEffect(QObject* parent)
-  : Superclass(parent)
+  : Superclass(nullptr, parent)
   , d_ptr(new qSlicerSegmentEditorAbstractLabelEffectPrivate(*this))
 {
 }

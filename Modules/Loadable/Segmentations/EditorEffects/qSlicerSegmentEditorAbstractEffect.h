@@ -33,6 +33,9 @@
 
 // VTK includes
 #include "vtkWeakPointer.h"
+#include "vtkSmartPointer.h"
+
+#include "vtkSegmentEditorAbstractEffect.h"
 
 class qSlicerSegmentEditorAbstractEffectPrivate;
 
@@ -50,6 +53,7 @@ class vtkRenderWindow;
 class vtkRenderWindowInteractor;
 class vtkOrientedImageData;
 class vtkProp3D;
+class vtkSegmentEditorAbstractEffect;
 class qMRMLWidget;
 class qMRMLSliceWidget;
 class QColor;
@@ -96,18 +100,12 @@ public:
 
 public:
   typedef QObject Superclass;
-  qSlicerSegmentEditorAbstractEffect(QObject* parent = nullptr);
+  explicit qSlicerSegmentEditorAbstractEffect(const vtkSmartPointer<vtkSegmentEditorAbstractEffect>& effectLogic, QObject* parent = nullptr);
   ~qSlicerSegmentEditorAbstractEffect() override;
 
   // API: Methods that are to be reimplemented in the effect subclasses
 public:
-  enum ModificationMode
-  {
-    ModificationModeSet,
-    ModificationModeAdd,
-    ModificationModeRemove,
-    ModificationModeRemoveAll
-  };
+  using ModificationMode = vtkSegmentEditorAbstractEffect::ModificationMode;
 
   enum ConfirmationResult
   {
@@ -176,9 +174,9 @@ public:
   /// \return return true to abort the event (prevent other views to receive the event)
   virtual bool processInteractionEvents(vtkRenderWindowInteractor* callerInteractor, unsigned long eid, qMRMLWidget* viewWidget)
   {
-    Q_UNUSED(callerInteractor);
-    Q_UNUSED(eid);
-    Q_UNUSED(viewWidget);
+    Q_UNUSED(callerInteractor)
+    Q_UNUSED(eid)
+    Q_UNUSED(viewWidget)
     return false;
   };
 
@@ -188,9 +186,9 @@ public:
   /// \param viewWidget Widget of the Slicer layout view. Can be \sa qMRMLSliceWidget or \sa qMRMLThreeDWidget
   virtual void processViewNodeEvents(vtkMRMLAbstractViewNode* callerViewNode, unsigned long eid, qMRMLWidget* viewWidget)
   {
-    Q_UNUSED(callerViewNode);
-    Q_UNUSED(eid);
-    Q_UNUSED(viewWidget);
+    Q_UNUSED(callerViewNode)
+    Q_UNUSED(eid)
+    Q_UNUSED(viewWidget)
   };
 
   /// Set default parameters in the parameter MRML node
@@ -219,6 +217,10 @@ public:
   /// For more details, see: https://github.com/Slicer/Slicer/issues/7392
   Q_INVOKABLE virtual void cleanup() {};
 
+  /// \brief Get the underlying segment editor effect logic
+  /// Setting the logic should be done by implementing classes at initialization
+  Q_INVOKABLE vtkSmartPointer<vtkSegmentEditorAbstractEffect> effectLogic() const;
+
 public slots:
   /// Update user interface from parameter set node
   /// NOTE: Base class implementation needs to be called with the effect-specific implementation
@@ -230,10 +232,17 @@ public slots:
 
   // Get/set methods
 public:
+  //@{
   /// Get segment editor parameter set node
   Q_INVOKABLE vtkMRMLSegmentEditorNode* parameterSetNode();
+  Q_INVOKABLE vtkMRMLSegmentEditorNode* segmentEditorNode();
+  //@}
+
+  //@{
   /// Set segment editor parameter set node
   Q_INVOKABLE void setParameterSetNode(vtkMRMLSegmentEditorNode* node);
+  Q_INVOKABLE void setSegmentEditorNode(vtkMRMLSegmentEditorNode* node);
+  //@}
 
   /// Get MRML scene (from parameter set node)
   Q_INVOKABLE vtkMRMLScene* scene();
@@ -243,6 +252,12 @@ public:
 
   /// Get layout of options frame
   Q_INVOKABLE QFormLayout* optionsLayout();
+
+  //@{
+  /// Add / Remove view prop in the widget
+  Q_INVOKABLE void addViewProp(qMRMLWidget* viewWidget, vtkProp* actor);
+  Q_INVOKABLE void removeViewProp(qMRMLWidget* viewWidget, vtkProp* actor);
+  //@}
 
   /// Add actor to the renderer of the view widget. The effect is responsible for
   /// removing the actor when the effect is deactivated.
@@ -301,12 +316,6 @@ public:
   /// Emit signal that causes active effect to be changed to the specified one.
   /// If the effect name is empty, then the active effect is de-selected.
   Q_INVOKABLE void selectEffect(QString effectName);
-
-  /// Connect callback signals. Callbacks are called by the editor effect to request operations from the editor widget.
-  /// \param selectEffectSlot called from the active effect to initiate switching to another effect (or de-select).
-  /// \param updateVolumeSlot called to request update of a volume (modifierLabelmap, alignedSourceVolume, maskLabelmap).
-  /// \param saveStateForUndoSlot called to request saving of segmentation state for undo operation
-  void setCallbackSlots(QObject* receiver, const char* selectEffectSlot, const char* updateVolumeSlot, const char* saveStateForUndoSlot);
 
   /// Called by the editor widget.
   void setVolumes(vtkOrientedImageData* alignedSourceVolume,
@@ -430,6 +439,7 @@ public:
   Q_INVOKABLE static vtkRenderer* renderer(qMRMLWidget* viewWidget);
   /// Get node for view widget
   Q_INVOKABLE static vtkMRMLAbstractViewNode* viewNode(qMRMLWidget* viewWidget);
+  Q_INVOKABLE static vtkMRMLSliceNode* sliceNode(qMRMLSliceWidget* viewWidget);
 
   /// Convert RAS position to XY in-slice position
   static QPoint rasToXy(double ras[3], qMRMLSliceWidget* sliceWidget);
@@ -488,6 +498,8 @@ protected:
   /// No confirmation will be displayed for editing this segment.
   /// This is needed to ensure that editing of a hidden segment is only asked once.
   vtkWeakPointer<vtkSegment> m_AlreadyConfirmedSegmentVisible;
+
+  vtkSmartPointer<vtkSegmentEditorAbstractEffect> m_EffectLogic = nullptr;
 
 protected:
   QScopedPointer<qSlicerSegmentEditorAbstractEffectPrivate> d_ptr;

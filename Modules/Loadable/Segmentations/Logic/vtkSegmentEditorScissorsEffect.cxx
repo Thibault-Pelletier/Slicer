@@ -19,7 +19,7 @@
 ==============================================================================*/
 
 // Segmentations includes
-#include "qSlicerSegmentEditorScissorsEffect.h"
+#include "vtkSegmentEditorScissorsEffect.h"
 
 #include "vtkOrientedImageData.h"
 #include "vtkOrientedImageDataResample.h"
@@ -81,16 +81,16 @@
 // TODO: temporary code, only for debugging
 // This will be removed once investigation of https://github.com/Slicer/Slicer/issues/6705 is completed.
 #include "vtkXMLPolyDataWriter.h"
-QString qSlicerSegmentEditorScissorsEffect::DebugOutputFolder;
+QString vtkSegmentEditorScissorsEffect::DebugOutputFolder;
 void DebugWritePolyData(vtkPolyData* poly)
 {
-  if (qSlicerSegmentEditorScissorsEffect::DebugOutputFolder.isEmpty())
+  if (vtkSegmentEditorScissorsEffect::DebugOutputFolder.isEmpty())
   {
     return;
   }
   vtkNew<vtkXMLPolyDataWriter> writer;
   writer->SetInputData(poly);
-  QString filepath = qSlicerSegmentEditorScissorsEffect::DebugOutputFolder + "/DebugScissorBrush.vtp";
+  QString filepath = vtkSegmentEditorScissorsEffect::DebugOutputFolder + "/DebugScissorBrush.vtp";
   writer->SetFileName(filepath.toStdString().c_str());
   writer->SetCompressorTypeToNone();
   writer->SetDataModeToAscii();
@@ -140,16 +140,16 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-class qSlicerSegmentEditorScissorsEffectPrivate : public QObject
+class vtkSegmentEditorScissorsEffectPrivate : public QObject
 {
-  Q_DECLARE_PUBLIC(qSlicerSegmentEditorScissorsEffect);
+  Q_DECLARE_PUBLIC(vtkSegmentEditorScissorsEffect);
 
 protected:
-  qSlicerSegmentEditorScissorsEffect* const q_ptr;
+  vtkSegmentEditorScissorsEffect* const q_ptr;
 
 public:
-  qSlicerSegmentEditorScissorsEffectPrivate(qSlicerSegmentEditorScissorsEffect& object);
-  ~qSlicerSegmentEditorScissorsEffectPrivate() override;
+  vtkSegmentEditorScissorsEffectPrivate(vtkSegmentEditorScissorsEffect& object);
+  ~vtkSegmentEditorScissorsEffectPrivate() override;
 
 public:
   enum
@@ -249,7 +249,7 @@ public:
 };
 
 //-----------------------------------------------------------------------------
-qSlicerSegmentEditorScissorsEffectPrivate::qSlicerSegmentEditorScissorsEffectPrivate(qSlicerSegmentEditorScissorsEffect& object)
+vtkSegmentEditorScissorsEffectPrivate::vtkSegmentEditorScissorsEffectPrivate(vtkSegmentEditorScissorsEffect& object)
   : q_ptr(&object)
 {
   this->ScissorsIcon = QIcon(":Icons/Medium/SlicerEditCut.png");
@@ -269,15 +269,15 @@ qSlicerSegmentEditorScissorsEffectPrivate::qSlicerSegmentEditorScissorsEffectPri
 }
 
 //-----------------------------------------------------------------------------
-qSlicerSegmentEditorScissorsEffectPrivate::~qSlicerSegmentEditorScissorsEffectPrivate()
+vtkSegmentEditorScissorsEffectPrivate::~vtkSegmentEditorScissorsEffectPrivate()
 {
   this->clearScissorsPipelines();
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffectPrivate::clearScissorsPipelines()
+void vtkSegmentEditorScissorsEffectPrivate::clearScissorsPipelines()
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   QMapIterator<qMRMLWidget*, ScissorsPipeline*> it(this->ScissorsPipelines);
   while (it.hasNext())
   {
@@ -292,9 +292,9 @@ void qSlicerSegmentEditorScissorsEffectPrivate::clearScissorsPipelines()
 }
 
 //-----------------------------------------------------------------------------
-ScissorsPipeline* qSlicerSegmentEditorScissorsEffectPrivate::scissorsPipelineForWidget(qMRMLWidget* viewWidget)
+ScissorsPipeline* vtkSegmentEditorScissorsEffectPrivate::scissorsPipelineForWidget(qMRMLWidget* viewWidget)
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
 
   if (this->ScissorsPipelines.contains(viewWidget))
   {
@@ -306,7 +306,7 @@ ScissorsPipeline* qSlicerSegmentEditorScissorsEffectPrivate::scissorsPipelineFor
   vtkVector2i eventPosition;
   this->createGlyph(pipeline, eventPosition);
 
-  vtkRenderer* renderer = qSlicerSegmentEditorAbstractEffect::renderer(viewWidget);
+  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::renderer(viewWidget);
   if (!renderer)
   {
     qCritical() << Q_FUNC_INFO << ": Failed to get renderer!";
@@ -322,7 +322,7 @@ ScissorsPipeline* qSlicerSegmentEditorScissorsEffectPrivate::scissorsPipelineFor
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffectPrivate::createGlyph(ScissorsPipeline* pipeline, const vtkVector2i& eventPosition)
+void vtkSegmentEditorScissorsEffectPrivate::createGlyph(ScissorsPipeline* pipeline, const vtkVector2i& eventPosition)
 {
   if (pipeline->IsDragging)
   {
@@ -402,7 +402,7 @@ void qSlicerSegmentEditorScissorsEffectPrivate::createGlyph(ScissorsPipeline* pi
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffectPrivate::updateGlyphWithNewPosition(ScissorsPipeline* pipeline, const vtkVector2i& eventPosition, bool finalize)
+void vtkSegmentEditorScissorsEffectPrivate::updateGlyphWithNewPosition(ScissorsPipeline* pipeline, const vtkVector2i& eventPosition, bool finalize)
 {
   if (pipeline->IsDragging)
   {
@@ -420,8 +420,8 @@ void qSlicerSegmentEditorScissorsEffectPrivate::updateGlyphWithNewPosition(Sciss
 
         if (this->shapeDrawCentered())
         {
-          int halfWidth = std::abs(eventPosition[0] - this->DragStartPosition[0]);
-          int halfHeight = std::abs(eventPosition[1] - this->DragStartPosition[1]);
+          double halfWidth = fabs(eventPosition[0] - this->DragStartPosition[0]);
+          double halfHeight = fabs(eventPosition[1] - this->DragStartPosition[1]);
           points->SetPoint(0, this->DragStartPosition[0] - halfWidth, this->DragStartPosition[1] - halfHeight, 0.0);
           points->SetPoint(1, this->DragStartPosition[0] + halfWidth, this->DragStartPosition[1] - halfHeight, 0.0);
           points->SetPoint(2, this->DragStartPosition[0] + halfWidth, this->DragStartPosition[1] + halfHeight, 0.0);
@@ -499,9 +499,9 @@ void qSlicerSegmentEditorScissorsEffectPrivate::updateGlyphWithNewPosition(Sciss
 }
 
 //-----------------------------------------------------------------------------
-bool qSlicerSegmentEditorScissorsEffectPrivate::updateBrushModel(qMRMLWidget* viewWidget)
+bool vtkSegmentEditorScissorsEffectPrivate::updateBrushModel(qMRMLWidget* viewWidget)
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   ScissorsPipeline* pipeline = this->scissorsPipelineForWidget(viewWidget);
   if (!pipeline)
   {
@@ -550,7 +550,7 @@ bool qSlicerSegmentEditorScissorsEffectPrivate::updateBrushModel(qMRMLWidget* vi
   qMRMLThreeDWidget* threeDWidget = qobject_cast<qMRMLThreeDWidget*>(viewWidget);
   if (sliceWidget)
   {
-    vtkMRMLSliceNode* sliceNode = vtkMRMLSliceNode::SafeDownCast(qSlicerSegmentEditorAbstractEffect::viewNode(sliceWidget));
+    vtkMRMLSliceNode* sliceNode = vtkMRMLSliceNode::SafeDownCast(vtkSegmentEditorAbstractEffect::viewNode(sliceWidget));
     if (!sliceNode)
     {
       qCritical() << Q_FUNC_INFO << ": Failed to get slice node";
@@ -664,7 +664,7 @@ bool qSlicerSegmentEditorScissorsEffectPrivate::updateBrushModel(qMRMLWidget* vi
   }
   else if (threeDWidget)
   {
-    vtkRenderer* renderer = qSlicerSegmentEditorAbstractEffect::renderer(threeDWidget);
+    vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::renderer(threeDWidget);
     if (!renderer)
     {
       qCritical() << Q_FUNC_INFO << ": Failed to get renderer";
@@ -862,9 +862,9 @@ bool qSlicerSegmentEditorScissorsEffectPrivate::updateBrushModel(qMRMLWidget* vi
 }
 
 //-----------------------------------------------------------------------------
-bool qSlicerSegmentEditorScissorsEffectPrivate::updateBrushStencil(qMRMLWidget* viewWidget)
+bool vtkSegmentEditorScissorsEffectPrivate::updateBrushStencil(qMRMLWidget* viewWidget)
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   Q_UNUSED(viewWidget);
 
   if (!q->parameterSetNode())
@@ -916,9 +916,9 @@ bool qSlicerSegmentEditorScissorsEffectPrivate::updateBrushStencil(qMRMLWidget* 
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffectPrivate::paintApply(qMRMLWidget* viewWidget)
+void vtkSegmentEditorScissorsEffectPrivate::paintApply(qMRMLWidget* viewWidget)
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
 
   vtkOrientedImageData* modifierLabelmap = q->defaultModifierLabelmap();
 
@@ -1043,7 +1043,7 @@ void qSlicerSegmentEditorScissorsEffectPrivate::paintApply(qMRMLWidget* viewWidg
 }
 
 //-----------------------------------------------------------------------------
-int qSlicerSegmentEditorScissorsEffectPrivate::ConvertShapeFromString(const QString& shapeStr)
+int vtkSegmentEditorScissorsEffectPrivate::ConvertShapeFromString(const QString& shapeStr)
 {
   for (int i = 0; i < Shape_Last; i++)
   {
@@ -1056,7 +1056,7 @@ int qSlicerSegmentEditorScissorsEffectPrivate::ConvertShapeFromString(const QStr
 }
 
 //-----------------------------------------------------------------------------
-QString qSlicerSegmentEditorScissorsEffectPrivate::ConvertShapeToString(int shape)
+QString vtkSegmentEditorScissorsEffectPrivate::ConvertShapeToString(int shape)
 {
   switch (shape)
   {
@@ -1068,7 +1068,7 @@ QString qSlicerSegmentEditorScissorsEffectPrivate::ConvertShapeToString(int shap
 }
 
 //-----------------------------------------------------------------------------
-int qSlicerSegmentEditorScissorsEffectPrivate::ConvertOperationFromString(const QString& operationStr)
+int vtkSegmentEditorScissorsEffectPrivate::ConvertOperationFromString(const QString& operationStr)
 {
   for (int i = 0; i < Operation_Last; i++)
   {
@@ -1081,7 +1081,7 @@ int qSlicerSegmentEditorScissorsEffectPrivate::ConvertOperationFromString(const 
 }
 
 //-----------------------------------------------------------------------------
-QString qSlicerSegmentEditorScissorsEffectPrivate::ConvertOperationToString(int operation)
+QString vtkSegmentEditorScissorsEffectPrivate::ConvertOperationToString(int operation)
 {
   switch (operation)
   {
@@ -1094,7 +1094,7 @@ QString qSlicerSegmentEditorScissorsEffectPrivate::ConvertOperationToString(int 
 }
 
 //-----------------------------------------------------------------------------
-int qSlicerSegmentEditorScissorsEffectPrivate::ConvertSliceCutModeFromString(const QString& sliceCutModeStr)
+int vtkSegmentEditorScissorsEffectPrivate::ConvertSliceCutModeFromString(const QString& sliceCutModeStr)
 {
   for (int i = 0; i < SliceCutMode_Last; i++)
   {
@@ -1107,7 +1107,7 @@ int qSlicerSegmentEditorScissorsEffectPrivate::ConvertSliceCutModeFromString(con
 }
 
 //-----------------------------------------------------------------------------
-QString qSlicerSegmentEditorScissorsEffectPrivate::ConvertSliceCutModeToString(int operation)
+QString vtkSegmentEditorScissorsEffectPrivate::ConvertSliceCutModeToString(int operation)
 {
   switch (operation)
   {
@@ -1120,39 +1120,39 @@ QString qSlicerSegmentEditorScissorsEffectPrivate::ConvertSliceCutModeToString(i
 }
 
 //-----------------------------------------------------------------------------
-bool qSlicerSegmentEditorScissorsEffectPrivate::operationInside()
+bool vtkSegmentEditorScissorsEffectPrivate::operationInside()
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   int operation = this->ConvertOperationFromString(q->parameter("Operation"));
   return (operation == OperationEraseInside || operation == OperationFillInside);
 }
 
 //-----------------------------------------------------------------------------
-bool qSlicerSegmentEditorScissorsEffectPrivate::operationErase()
+bool vtkSegmentEditorScissorsEffectPrivate::operationErase()
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   int operation = this->ConvertOperationFromString(q->parameter("Operation"));
   return (operation == OperationEraseInside || operation == OperationEraseOutside);
 }
 
 //-----------------------------------------------------------------------------
-int qSlicerSegmentEditorScissorsEffectPrivate::shapeDrawCentered()
+int vtkSegmentEditorScissorsEffectPrivate::shapeDrawCentered()
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   return q->integerParameter("ShapeDrawCentered");
 }
 
 //-----------------------------------------------------------------------------
-int qSlicerSegmentEditorScissorsEffectPrivate::shape()
+int vtkSegmentEditorScissorsEffectPrivate::shape()
 {
-  Q_Q(qSlicerSegmentEditorScissorsEffect);
+  Q_Q(vtkSegmentEditorScissorsEffect);
   return this->ConvertShapeFromString(q->parameter("Shape"));
 }
 
 //----------------------------------------------------------------------------
-qSlicerSegmentEditorScissorsEffect::qSlicerSegmentEditorScissorsEffect(QObject* parent)
+vtkSegmentEditorScissorsEffect::vtkSegmentEditorScissorsEffect(QObject* parent)
   : Superclass(parent)
-  , d_ptr(new qSlicerSegmentEditorScissorsEffectPrivate(*this))
+  , d_ptr(new vtkSegmentEditorScissorsEffectPrivate(*this))
 {
   this->m_Name = QString(/*no tr*/ "Scissors");
   this->m_Title = tr("Scissors");
@@ -1160,18 +1160,18 @@ qSlicerSegmentEditorScissorsEffect::qSlicerSegmentEditorScissorsEffect(QObject* 
 }
 
 //----------------------------------------------------------------------------
-qSlicerSegmentEditorScissorsEffect::~qSlicerSegmentEditorScissorsEffect() = default;
+vtkSegmentEditorScissorsEffect::~vtkSegmentEditorScissorsEffect() = default;
 
 //---------------------------------------------------------------------------
-QIcon qSlicerSegmentEditorScissorsEffect::icon()
+QIcon vtkSegmentEditorScissorsEffect::icon()
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
 
   return d->ScissorsIcon;
 }
 
 //---------------------------------------------------------------------------
-const QString qSlicerSegmentEditorScissorsEffect::helpText() const
+const QString vtkSegmentEditorScissorsEffect::helpText() const
 {
   return QString("<html>")
          + tr("Cut through the entire segment from the current viewpoint<br>."
@@ -1184,9 +1184,9 @@ const QString qSlicerSegmentEditorScissorsEffect::helpText() const
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::setupOptionsFrame()
+void vtkSegmentEditorScissorsEffect::setupOptionsFrame()
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
 
   // Setup widgets corresponding to the parent class of this effect
   Superclass::setupOptionsFrame();
@@ -1209,10 +1209,10 @@ void qSlicerSegmentEditorScissorsEffect::setupOptionsFrame()
 
   d->operationGroup = new QButtonGroup(this);
   d->operationGroup->setExclusive(true);
-  d->operationGroup->addButton(d->eraseInsideRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::OperationEraseInside);
-  d->operationGroup->addButton(d->eraseOutsideRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::OperationEraseOutside);
-  d->operationGroup->addButton(d->fillInsideRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::OperationFillInside);
-  d->operationGroup->addButton(d->fillOutsideRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::OperationFillOutside);
+  d->operationGroup->addButton(d->eraseInsideRadioButton, vtkSegmentEditorScissorsEffectPrivate::OperationEraseInside);
+  d->operationGroup->addButton(d->eraseOutsideRadioButton, vtkSegmentEditorScissorsEffectPrivate::OperationEraseOutside);
+  d->operationGroup->addButton(d->fillInsideRadioButton, vtkSegmentEditorScissorsEffectPrivate::OperationFillInside);
+  d->operationGroup->addButton(d->fillOutsideRadioButton, vtkSegmentEditorScissorsEffectPrivate::OperationFillOutside);
 
   QObject::connect(d->operationGroup, SIGNAL(buttonClicked(int)), this, SLOT(setOperation(int)));
 
@@ -1232,9 +1232,9 @@ void qSlicerSegmentEditorScissorsEffect::setupOptionsFrame()
 
   d->shapeGroup = new QButtonGroup(this);
   d->shapeGroup->setExclusive(true);
-  d->shapeGroup->addButton(d->freeFormRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::ShapeFreeForm);
-  d->shapeGroup->addButton(d->circleRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::ShapeCircle);
-  d->shapeGroup->addButton(d->rectangleRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::ShapeRectangle);
+  d->shapeGroup->addButton(d->freeFormRadioButton, vtkSegmentEditorScissorsEffectPrivate::ShapeFreeForm);
+  d->shapeGroup->addButton(d->circleRadioButton, vtkSegmentEditorScissorsEffectPrivate::ShapeCircle);
+  d->shapeGroup->addButton(d->rectangleRadioButton, vtkSegmentEditorScissorsEffectPrivate::ShapeRectangle);
 
   QObject::connect(d->shapeGroup, SIGNAL(buttonClicked(int)), this, SLOT(setShape(int)));
   QObject::connect(d->shapeDrawCenteredCheckBox, SIGNAL(stateChanged(int)), this, SLOT(setShapeDrawCentered(int)));
@@ -1280,10 +1280,10 @@ void qSlicerSegmentEditorScissorsEffect::setupOptionsFrame()
 
   d->sliceCutModeGroup = new QButtonGroup(this);
   d->sliceCutModeGroup->setExclusive(true);
-  d->sliceCutModeGroup->addButton(d->unlimitedRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::SliceCutModeUnlimited);
-  d->sliceCutModeGroup->addButton(d->positiveRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::SliceCutModePositive);
-  d->sliceCutModeGroup->addButton(d->negativeRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::SliceCutModeNegative);
-  d->sliceCutModeGroup->addButton(d->symmetricRadioButton, qSlicerSegmentEditorScissorsEffectPrivate::SliceCutModeSymmetric);
+  d->sliceCutModeGroup->addButton(d->unlimitedRadioButton, vtkSegmentEditorScissorsEffectPrivate::SliceCutModeUnlimited);
+  d->sliceCutModeGroup->addButton(d->positiveRadioButton, vtkSegmentEditorScissorsEffectPrivate::SliceCutModePositive);
+  d->sliceCutModeGroup->addButton(d->negativeRadioButton, vtkSegmentEditorScissorsEffectPrivate::SliceCutModeNegative);
+  d->sliceCutModeGroup->addButton(d->symmetricRadioButton, vtkSegmentEditorScissorsEffectPrivate::SliceCutModeSymmetric);
 
   QObject::connect(d->sliceCutModeGroup, SIGNAL(buttonClicked(int)), this, SLOT(setSliceCutMode(int)));
   QObject::connect(d->sliceCutDepthSpinBox, SIGNAL(valueChanged(double)), this, SLOT(onSliceCutDepthChanged(double)));
@@ -1291,22 +1291,22 @@ void qSlicerSegmentEditorScissorsEffect::setupOptionsFrame()
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::setMRMLDefaults()
+void vtkSegmentEditorScissorsEffect::setMRMLDefaults()
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
   Superclass::setMRMLDefaults();
   this->setParameterDefault("ApplyToAllVisibleSegments", 0);
-  this->setParameterDefault("Operation", d->ConvertOperationToString(qSlicerSegmentEditorScissorsEffectPrivate::OperationEraseInside));
-  this->setParameterDefault("Shape", d->ConvertShapeToString(qSlicerSegmentEditorScissorsEffectPrivate::ShapeFreeForm));
-  this->setParameterDefault("SliceCutMode", d->ConvertSliceCutModeToString(qSlicerSegmentEditorScissorsEffectPrivate::SliceCutModeUnlimited));
+  this->setParameterDefault("Operation", d->ConvertOperationToString(vtkSegmentEditorScissorsEffectPrivate::OperationEraseInside));
+  this->setParameterDefault("Shape", d->ConvertShapeToString(vtkSegmentEditorScissorsEffectPrivate::ShapeFreeForm));
+  this->setParameterDefault("SliceCutMode", d->ConvertSliceCutModeToString(vtkSegmentEditorScissorsEffectPrivate::SliceCutModeUnlimited));
   this->setParameterDefault("SliceCutDepthMm", 0);
   this->setParameterDefault("ShapeDrawCentered", 0);
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::updateGUIFromMRML()
+void vtkSegmentEditorScissorsEffect::updateGUIFromMRML()
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
 
   Superclass::updateGUIFromMRML();
 
@@ -1339,8 +1339,7 @@ void qSlicerSegmentEditorScissorsEffect::updateGUIFromMRML()
 
   bool wasBlocked = d->shapeDrawCenteredCheckBox->blockSignals(true);
   d->shapeDrawCenteredCheckBox->setCheckState(this->integerParameter("ShapeDrawCentered") ? Qt::Checked : Qt::Unchecked);
-  d->shapeDrawCenteredCheckBox->setEnabled(shapeIndex == qSlicerSegmentEditorScissorsEffectPrivate::ShapeCircle || //
-                                           shapeIndex == qSlicerSegmentEditorScissorsEffectPrivate::ShapeRectangle);
+  d->shapeDrawCenteredCheckBox->setEnabled(shapeIndex == vtkSegmentEditorScissorsEffectPrivate::ShapeCircle || shapeIndex == vtkSegmentEditorScissorsEffectPrivate::ShapeRectangle);
   d->shapeDrawCenteredCheckBox->blockSignals(wasBlocked);
 
   int sliceCutModeIndex = d->ConvertSliceCutModeFromString(QString(this->parameter("SliceCutMode")));
@@ -1354,7 +1353,7 @@ void qSlicerSegmentEditorScissorsEffect::updateGUIFromMRML()
   wasBlocked = d->sliceCutDepthSpinBox->blockSignals(true);
   d->sliceCutDepthSpinBox->setMRMLScene(this->scene());
   d->sliceCutDepthSpinBox->setValue(this->doubleParameter("SliceCutDepthMm"));
-  d->sliceCutDepthSpinBox->setEnabled(sliceCutModeIndex == qSlicerSegmentEditorScissorsEffectPrivate::SliceCutModeSymmetric);
+  d->sliceCutDepthSpinBox->setEnabled(sliceCutModeIndex == vtkSegmentEditorScissorsEffectPrivate::SliceCutModeSymmetric);
   d->sliceCutDepthSpinBox->blockSignals(wasBlocked);
 
   d->applyToAllVisibleSegmentsCheckBox->blockSignals(true);
@@ -1363,47 +1362,45 @@ void qSlicerSegmentEditorScissorsEffect::updateGUIFromMRML()
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::setOperation(int operationIndex)
+void vtkSegmentEditorScissorsEffect::setOperation(int operationIndex)
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
   this->setParameter("Operation", d->ConvertOperationToString(operationIndex));
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::setShape(int shapeIndex)
+void vtkSegmentEditorScissorsEffect::setShape(int shapeIndex)
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
   QString shape = d->ConvertShapeToString(shapeIndex);
   this->setParameter("Shape", shape);
-  d->shapeDrawCenteredCheckBox->setEnabled(                              //
-    shapeIndex == qSlicerSegmentEditorScissorsEffectPrivate::ShapeCircle //
-    || shapeIndex == qSlicerSegmentEditorScissorsEffectPrivate::ShapeRectangle);
+  d->shapeDrawCenteredCheckBox->setEnabled(shapeIndex == vtkSegmentEditorScissorsEffectPrivate::ShapeCircle || shapeIndex == vtkSegmentEditorScissorsEffectPrivate::ShapeRectangle);
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::setShapeDrawCentered(int checkState)
+void vtkSegmentEditorScissorsEffect::setShapeDrawCentered(int checkState)
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
   this->setParameter("ShapeDrawCentered", checkState == Qt::Checked);
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::setSliceCutMode(int sliceCutModeIndex)
+void vtkSegmentEditorScissorsEffect::setSliceCutMode(int sliceCutModeIndex)
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
   this->setParameter("SliceCutMode", d->ConvertSliceCutModeToString(sliceCutModeIndex));
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::onSliceCutDepthChanged(double value)
+void vtkSegmentEditorScissorsEffect::onSliceCutDepthChanged(double value)
 {
   this->setParameter("SliceCutDepthMm", value);
 }
 
 //-----------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::updateMRMLFromGUI()
+void vtkSegmentEditorScissorsEffect::updateMRMLFromGUI()
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
 
   Superclass::updateMRMLFromGUI();
 
@@ -1420,23 +1417,23 @@ void qSlicerSegmentEditorScissorsEffect::updateMRMLFromGUI()
 }
 
 //-----------------------------------------------------------------------------
-qSlicerSegmentEditorAbstractEffect* qSlicerSegmentEditorScissorsEffect::clone()
+vtkSegmentEditorAbstractEffect* vtkSegmentEditorScissorsEffect::clone()
 {
-  return new qSlicerSegmentEditorScissorsEffect();
+  return new vtkSegmentEditorScissorsEffect();
 }
 
 //---------------------------------------------------------------------------
-void qSlicerSegmentEditorScissorsEffect::deactivate()
+void vtkSegmentEditorScissorsEffect::deactivate()
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
   Superclass::deactivate();
   d->clearScissorsPipelines();
 }
 
 //---------------------------------------------------------------------------
-bool qSlicerSegmentEditorScissorsEffect::processInteractionEvents(vtkRenderWindowInteractor* callerInteractor, unsigned long eid, qMRMLWidget* viewWidget)
+bool vtkSegmentEditorScissorsEffect::processInteractionEvents(vtkRenderWindowInteractor* callerInteractor, unsigned long eid, qMRMLWidget* viewWidget)
 {
-  Q_D(qSlicerSegmentEditorScissorsEffect);
+  Q_D(vtkSegmentEditorScissorsEffect);
 
   bool abortEvent = false;
 
@@ -1508,7 +1505,7 @@ bool qSlicerSegmentEditorScissorsEffect::processInteractionEvents(vtkRenderWindo
       if (lines->GetNumberOfCells() > 0 && modifierLabelmap)
       {
         d->paintApply(viewWidget);
-        qSlicerSegmentEditorAbstractEffect::scheduleRender(viewWidget);
+        vtkSegmentEditorAbstractEffect::scheduleRender(viewWidget);
       }
       abortEvent = true;
     }

@@ -730,6 +730,11 @@ void vtkMRMLSliceLogic::SetSliceNode(vtkMRMLSliceNode* newSliceNode)
     return;
   }
 
+  if (this->SliceNode)
+  {
+    this->SliceNode->SetLogic(nullptr);
+  }
+
   // Observe the slice node for general properties like slice visibility.
   // But the slice layers will also notify us when things like transforms have
   // changed.
@@ -746,6 +751,11 @@ void vtkMRMLSliceLogic::SetSliceNode(vtkMRMLSliceNode* newSliceNode)
     {
       layer->SetSliceNode(newSliceNode);
     }
+  }
+
+  if (newSliceNode)
+  {
+    newSliceNode->SetLogic(this);
   }
 
   this->Modified();

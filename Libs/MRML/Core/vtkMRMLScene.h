@@ -315,6 +315,25 @@ public:
   /// \warning You are responsible for deleting the returned collection.
   vtkCollection* GetNodesByClass(const char* className);
 
+  /// Get vector of nodes of specified class in the scene
+  template <class T>
+  std::vector<T*> GetNodesByClass(const char* className)
+  {
+    std::vector<vtkMRMLNode*> nodes;
+    GetNodesByClass(className, nodes);
+
+    std::vector<T*> typedNodes;
+    for (const auto& node : nodes)
+    {
+      auto castNode = T::SafeDownCast(node);
+      if (castNode)
+      {
+        typedNodes.emplace_back(castNode);
+      }
+    }
+    return typedNodes;
+  }
+
   /// \brief Search and return the singleton of type className with a
   /// \a singletonTag tag.
   ///

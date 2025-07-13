@@ -390,7 +390,21 @@ void qMRMLThreeDView::setMRMLViewNode(vtkMRMLViewNode* newViewNode)
     return;
   }
 
+  if (d->MRMLViewNode)
+  {
+    d->MRMLViewNode->SetDisplayableManagerGroup(nullptr);
+    d->MRMLViewNode->SetRenderWindow(nullptr);
+  }
+
+  if (newViewNode)
+  {
+    newViewNode->SetDisplayableManagerGroup(d->DisplayableManagerGroup);
+    newViewNode->SetRenderWindow(d->RenderWindow);
+  }
+
   d->qvtkReconnect(d->MRMLViewNode, newViewNode, vtkCommand::ModifiedEvent, d, SLOT(updateWidgetFromMRML()));
+  d->qvtkReconnect(d->MRMLViewNode, newViewNode, vtkMRMLAbstractViewNode::ScheduleRenderEvent, d, SLOT(scheduleRender()));
+  d->qvtkReconnect(d->MRMLViewNode, newViewNode, vtkMRMLAbstractViewNode::ForceRenderEvent, d, SLOT(forceRender()));
 
   d->MRMLViewNode = newViewNode;
   d->DisplayableManagerGroup->SetMRMLDisplayableNode(newViewNode);

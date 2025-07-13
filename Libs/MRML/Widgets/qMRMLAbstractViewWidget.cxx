@@ -125,3 +125,23 @@ void qMRMLAbstractViewWidget::resumeRender()
     view->resumeRender();
   }
 }
+
+//---------------------------------------------------------------------------
+void qMRMLAbstractViewWidget::scheduleRender()
+{
+  ctkVTKAbstractView* view = qobject_cast<ctkVTKAbstractView*>(this->viewWidget());
+  if (view)
+  {
+    view->scheduleRender();
+  }
+}
+
+//---------------------------------------------------------------------------
+void qMRMLAbstractViewWidget::forceRender()
+{
+  ctkVTKAbstractView* view = qobject_cast<ctkVTKAbstractView*>(this->viewWidget());
+  if (view)
+  {
+    view->forceRender();
+  }
+}

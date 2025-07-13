@@ -68,6 +68,7 @@
 #include <vtkStringArray.h>
 #include <vtkTable.h>
 #include <vtkTextProperty.h>
+#include <ctkVTKAbstractView.h>
 
 //--------------------------------------------------------------------------
 // qMRMLPlotViewPrivate methods
@@ -965,6 +966,16 @@ void qMRMLPlotView::setMRMLPlotViewNode(vtkMRMLPlotViewNode* newPlotViewNode)
   if (d->MRMLPlotViewNode == newPlotViewNode)
   {
     return;
+  }
+
+  if (d->MRMLPlotViewNode)
+  {
+    d->MRMLPlotViewNode->SetRenderWindow(nullptr);
+  }
+
+  if (newPlotViewNode)
+  {
+    newPlotViewNode->SetRenderWindow(renderWindow());
   }
 
   // connect modified event on PlotViewNode to updating the widget
