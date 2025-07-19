@@ -1170,18 +1170,18 @@ void vtkMRMLModelDisplayableManager::UpdateModelMesh(vtkMRMLDisplayableNode *dis
       mapper->Delete();
     }
 
-    if (hasMesh && ait == this->Internal->DisplayedActors.end())
+    if (hasMesh && modelDisplayNode && ait == this->Internal->DisplayedActors.end())
     {
       this->GetRenderer()->AddViewProp(prop);
       this->Internal->DisplayedActors[modelDisplayNode->GetID()] = prop;
       this->Internal->DisplayedNodes[std::string(modelDisplayNode->GetID())] = modelDisplayNode;
 
-      if (clipper)
+      if (clipper && modelDisplayNode)
       {
         this->Internal->DisplayedClipState[modelDisplayNode->GetID()] = 1;
         clipper->Delete();
       }
-      else
+      else if (modelDisplayNode)
       {
         this->Internal->DisplayedClipState[modelDisplayNode->GetID()] = 0;
       }
@@ -1191,7 +1191,7 @@ void vtkMRMLModelDisplayableManager::UpdateModelMesh(vtkMRMLDisplayableNode *dis
     {
       prop->Delete();
     }
-    else
+    else if (modelDisplayNode)
     {
       if (clipper)
       {
