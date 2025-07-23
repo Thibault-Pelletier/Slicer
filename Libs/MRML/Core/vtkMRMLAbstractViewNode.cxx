@@ -714,3 +714,15 @@ std::string vtkMRMLAbstractViewNode::GetDirectionLabel(double direction[3], bool
   // should not happen, but the compiler may complain if this case is not handled
   return "?";
 }
+
+//------------------------------------------------------------------------------
+void vtkMRMLAbstractViewNode::ForceRender()
+{
+  InvokeEvent(ForceRenderEvent);
+}
+
+//------------------------------------------------------------------------------
+void vtkMRMLAbstractViewNode::ScheduleRender()
+{
+  InvokeEvent(ScheduleRenderEvent);
+}

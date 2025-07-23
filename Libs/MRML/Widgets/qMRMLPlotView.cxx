@@ -68,6 +68,7 @@
 #include <vtkStringArray.h>
 #include <vtkTable.h>
 #include <vtkTextProperty.h>
+#include <ctkVTKAbstractView.h>
 
 //--------------------------------------------------------------------------
 // qMRMLPlotViewPrivate methods

@@ -22,6 +22,7 @@
 #define __vtkMRMLAbstractViewNode_h
 
 // VTK includes
+#include <vtkCommand.h>
 #include <vtkSmartPointer.h>
 
 // MRML includes
@@ -31,6 +32,7 @@ class vtkMRMLInteractionNode;
 class vtkMRMLLayoutNode;
 class vtkMRMLModelNode;
 class vtkStringArray;
+class vtkMRMLDisplayableManagerGroup;
 
 /// \brief Abstract MRML node to represent a view.
 /// The class holds the properties common to any view type (3D, slice, chart..)
@@ -40,6 +42,17 @@ class VTK_MRML_EXPORT vtkMRMLAbstractViewNode : public vtkMRMLNode
 public:
   vtkTypeMacro(vtkMRMLAbstractViewNode, vtkMRMLNode);
   void PrintSelf(ostream& os, vtkIndent indent) override;
+
+  /// \brief View render events
+  /// These events are triggered using the associated methods.
+  /// Events are observed by ctkAbstractView deriving classes.
+  /// \sa ScheduleRender()
+  /// \sa ForceRender()
+  enum RenderEvents
+  {
+    ScheduleRenderEvent = vtkCommand::UserEvent + 1,
+    ForceRenderEvent,
+  };
 
   //--------------------------------------------------------------------------
   /// MRMLNode methods
@@ -298,6 +311,23 @@ public:
   vtkSetMacro(ScreenScaleFactor, double);
   //@}
 
+  /// \brief Invokes the ForceRenderEvent.
+  /// Force the render window immediate rendering. Use ScheduleRender instead to optimise processing time.
+  /// \sa ScheduleRender()
+  void ForceRender();
+
+  /// \brief Invokes the ScheduleRenderEvent.
+  /// Ask for a render window render. Actual rendering will depend on previously scheduled render and window
+  /// FPS limits.
+  /// \sa ForceRender()
+  void ScheduleRender();
+
+  //@{
+  /// \brief Get/Set the displayable manager group associated with the view.
+  vtkGetObjectMacro(DisplayableManagerGroup, vtkObject);
+  vtkSetObjectMacro(DisplayableManagerGroup, vtkObject);
+  //@}
+
 protected:
   vtkMRMLAbstractViewNode();
   ~vtkMRMLAbstractViewNode() override;
@@ -362,6 +392,8 @@ protected:
 
   static const char* ParentLayoutNodeReferenceRole;
   static const char* InteractionNodeReferenceRole;
+
+  vtkWeakPointer<vtkObject> DisplayableManagerGroup = nullptr;
 };
 
 //------------------------------------------------------------------------------

@@ -342,7 +342,17 @@ void qMRMLSliceView::setMRMLSliceNode(vtkMRMLSliceNode* newSliceNode)
     return;
   }
 
+  if(d->MRMLSliceNode){
+    d->MRMLSliceNode->SetDisplayableManagerGroup(nullptr);
+  }
+
+  if(newSliceNode){
+    newSliceNode->SetDisplayableManagerGroup(d->DisplayableManagerGroup);
+  }
+
   d->qvtkReconnect(d->MRMLSliceNode, newSliceNode, vtkCommand::ModifiedEvent, d, SLOT(updateWidgetFromMRML()));
+  d->qvtkReconnect(d->MRMLSliceNode, newSliceNode, vtkMRMLAbstractViewNode::ScheduleRenderEvent, d, SLOT(scheduleRender()));
+  d->qvtkReconnect(d->MRMLSliceNode, newSliceNode, vtkMRMLAbstractViewNode::ForceRenderEvent, d, SLOT(forceRender()));
 
   d->MRMLSliceNode = newSliceNode;
   d->updateWidgetFromMRML();
