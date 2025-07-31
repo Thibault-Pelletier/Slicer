@@ -35,6 +35,8 @@
 #include "vtkWeakPointer.h"
 #include "vtkSmartPointer.h"
 
+#include "vtkSegmentEditorAbstractEffect.h"
+
 class qSlicerSegmentEditorAbstractEffectPrivate;
 
 class vtkActor2D;
@@ -103,13 +105,7 @@ public:
 
   // API: Methods that are to be reimplemented in the effect subclasses
 public:
-  enum ModificationMode
-  {
-    ModificationModeSet,
-    ModificationModeAdd,
-    ModificationModeRemove,
-    ModificationModeRemoveAll
-  };
+  using ModificationMode = vtkSegmentEditorAbstractEffect::ModificationMode;
 
   enum ConfirmationResult
   {
@@ -178,9 +174,9 @@ public:
   /// \return return true to abort the event (prevent other views to receive the event)
   virtual bool processInteractionEvents(vtkRenderWindowInteractor* callerInteractor, unsigned long eid, qMRMLWidget* viewWidget)
   {
-    Q_UNUSED(callerInteractor);
-    Q_UNUSED(eid);
-    Q_UNUSED(viewWidget);
+    Q_UNUSED(callerInteractor)
+    Q_UNUSED(eid)
+    Q_UNUSED(viewWidget)
     return false;
   };
 
@@ -190,9 +186,9 @@ public:
   /// \param viewWidget Widget of the Slicer layout view. Can be \sa qMRMLSliceWidget or \sa qMRMLThreeDWidget
   virtual void processViewNodeEvents(vtkMRMLAbstractViewNode* callerViewNode, unsigned long eid, qMRMLWidget* viewWidget)
   {
-    Q_UNUSED(callerViewNode);
-    Q_UNUSED(eid);
-    Q_UNUSED(viewWidget);
+    Q_UNUSED(callerViewNode)
+    Q_UNUSED(eid)
+    Q_UNUSED(viewWidget)
   };
 
   /// Set default parameters in the parameter MRML node
@@ -236,10 +232,17 @@ public slots:
 
   // Get/set methods
 public:
+  //@{
   /// Get segment editor parameter set node
   Q_INVOKABLE vtkMRMLSegmentEditorNode* parameterSetNode();
+  Q_INVOKABLE vtkMRMLSegmentEditorNode* segmentEditorNode();
+  //@}
+
+  //@{
   /// Set segment editor parameter set node
   Q_INVOKABLE void setParameterSetNode(vtkMRMLSegmentEditorNode* node);
+  Q_INVOKABLE void setSegmentEditorNode(vtkMRMLSegmentEditorNode* node);
+  //@}
 
   /// Get MRML scene (from parameter set node)
   Q_INVOKABLE vtkMRMLScene* scene();
@@ -249,6 +252,12 @@ public:
 
   /// Get layout of options frame
   Q_INVOKABLE QFormLayout* optionsLayout();
+
+  //@{
+  /// Add / Remove view prop in the widget
+  Q_INVOKABLE void addViewProp(qMRMLWidget* viewWidget, vtkProp* actor);
+  Q_INVOKABLE void removeViewProp(qMRMLWidget* viewWidget, vtkProp* actor);
+  //@}
 
   /// Add actor to the renderer of the view widget. The effect is responsible for
   /// removing the actor when the effect is deactivated.
@@ -430,6 +439,7 @@ public:
   Q_INVOKABLE static vtkRenderer* renderer(qMRMLWidget* viewWidget);
   /// Get node for view widget
   Q_INVOKABLE static vtkMRMLAbstractViewNode* viewNode(qMRMLWidget* viewWidget);
+  Q_INVOKABLE static vtkMRMLSliceNode* sliceNode(qMRMLSliceWidget* viewWidget);
 
   /// Convert RAS position to XY in-slice position
   static QPoint rasToXy(double ras[3], qMRMLSliceWidget* sliceWidget);

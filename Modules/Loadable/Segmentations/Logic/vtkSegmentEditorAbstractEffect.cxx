@@ -20,11 +20,12 @@
 
 // Segmentations includes
 #include "vtkSegmentEditorAbstractEffect.h"
+#include "vtkSegmentEditorLogic.h"
 
 #include "vtkMRMLSegmentationNode.h"
 #include "vtkMRMLSegmentationDisplayNode.h"
-#include "vtkMRMLSegmentEditorNode.h"
 
+#include "vtkMRMLSegmentEditorNode.h"
 #include "vtkSlicerSegmentationsModuleLogic.h"
 
 // SegmentationCore includes
@@ -44,8 +45,6 @@
 #include "vtkMRMLTransformNode.h"
 
 // VTK includes
-#include <vtkImageConstantPad.h>
-#include <vtkImageShiftScale.h>
 #include <vtkImageThreshold.h>
 #include <vtkMatrix4x4.h>
 #include <vtkNew.h>
@@ -58,16 +57,12 @@
 #include <vtkWeakPointer.h>
 #include <vtkObjectFactory.h>
 
-#include "vtkMouseCursor.h"
-
-#include "vtkSegmentEditorLogic.h"
-
 //----------------------------------------------------------------------------
 /// \brief Helper class to emit pause / resume events on construction and destruction
 class RenderBlocker
 {
 public:
-  explicit RenderBlocker(const vtkSmartPointer<vtkSegmentEditorLogic>& logic)
+  explicit RenderBlocker(vtkSegmentEditorLogic* logic)
     : m_logic{ logic }
   {
     if (m_logic)
@@ -85,7 +80,7 @@ public:
   }
 
 private:
-  vtkSmartPointer<vtkSegmentEditorLogic> m_obj;
+  vtkWeakPointer<vtkSegmentEditorLogic> m_logic;
 };
 
 //----------------------------------------------------------------------------
@@ -216,8 +211,8 @@ void vtkSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOriented
                                                                      const int modificationExtent[6],
                                                                      bool bypassMasking /*=false*/)
 {
-  this->modifySegmentByLabelmap(this->parameterSetNode()->GetSegmentationNode(),
-                                this->parameterSetNode()->GetSelectedSegmentID() ? this->parameterSetNode()->GetSelectedSegmentID() : "",
+  this->modifySegmentByLabelmap(this->segmentEditorNode()->GetSegmentationNode(),
+                                this->segmentEditorNode()->GetSelectedSegmentID() ? this->segmentEditorNode()->GetSelectedSegmentID() : "",
                                 modifierLabelmap,
                                 modificationMode,
                                 modificationExtent,
@@ -243,7 +238,7 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
                                                              const int modificationExtent[6],
                                                              bool bypassMasking /*=false*/)
 {
-  vtkMRMLSegmentEditorNode* parameterSetNode = this->parameterSetNode();
+  vtkMRMLSegmentEditorNode* parameterSetNode = this->segmentEditorNode();
   if (!parameterSetNode)
   {
     vtkErrorMacro("Invalid segment editor parameter set node");
@@ -338,7 +333,7 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
 
     vtkSmartPointer<vtkOrientedImageData> segmentLayerLabelmap =
       vtkOrientedImageData::SafeDownCast(segment->GetRepresentation(segmentationNode->GetSegmentation()->GetSourceRepresentationName()));
-    if (segmentLayerLabelmap && this->parameterSetNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment
+    if (segmentLayerLabelmap && this->segmentEditorNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment
         && modificationMode == vtkSegmentEditorAbstractEffect::ModificationModeRemove)
     {
       // If we are painting inside a segment, the erase effect can modify the current segment outside the masking region by adding back regions
@@ -418,7 +413,7 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
   }
 
   std::vector<std::string> segmentIDsToOverwrite;
-  switch (this->parameterSetNode()->GetOverwriteMode())
+  switch (this->segmentEditorNode()->GetOverwriteMode())
   {
     case vtkMRMLSegmentEditorNode::OverwriteNone:
       // nothing to overwrite
@@ -588,29 +583,29 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
     }
   }
   else if (modificationMode == vtkSegmentEditorAbstractEffect::ModificationModeRemove
-           && this->parameterSetNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment && this->parameterSetNode()->GetMaskSegmentID()
-           && strcmp(this->parameterSetNode()->GetMaskSegmentID(), segmentID) != 0)
+           && this->segmentEditorNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment && this->segmentEditorNode()->GetMaskSegmentID()
+           && strcmp(this->segmentEditorNode()->GetMaskSegmentID(), segmentID) != 0)
   {
     // In general, we don't try to "add back" areas to other segments when an area is removed from the selected segment.
     // The only exception is when we draw inside one specific segment. In that case erasing adds to the mask segment. It is useful
     // for splitting a segment into two by painting.
     if (!vtkSlicerSegmentationsModuleLogic::SetBinaryLabelmapToSegment(modifierLabelmap,
                                                                        segmentationNode,
-                                                                       this->parameterSetNode()->GetMaskSegmentID(),
+                                                                       this->segmentEditorNode()->GetMaskSegmentID(),
                                                                        vtkSlicerSegmentationsModuleLogic::MODE_MERGE_MASK,
                                                                        extent,
                                                                        false,
                                                                        segmentIDsToOverwrite))
     {
-      vtkErrorMacro("Failed to add back modifier labelmap to segment " + std::string(this->parameterSetNode()->GetMaskSegmentID()));
+      vtkErrorMacro("Failed to add back modifier labelmap to segment " + std::string(this->segmentEditorNode()->GetMaskSegmentID()));
     }
   }
 
   // Make sure the segmentation node is under the same parent as the source volume
-  vtkMRMLScalarVolumeNode* sourceVolumeNode = m_ParameterSetNode->GetSourceVolumeNode();
+  vtkMRMLScalarVolumeNode* sourceVolumeNode = m_SegmentEditorNode->GetSourceVolumeNode();
   if (sourceVolumeNode)
   {
-    vtkMRMLSubjectHierarchyNode* shNode = vtkMRMLSubjectHierarchyNode::GetSubjectHierarchyNode(m_ParameterSetNode->GetScene());
+    vtkMRMLSubjectHierarchyNode* shNode = vtkMRMLSubjectHierarchyNode::GetSubjectHierarchyNode(m_SegmentEditorNode->GetScene());
     if (shNode)
     {
       vtkIdType segmentationId = shNode->GetItemByDataNode(segmentationNode);
@@ -654,7 +649,7 @@ void vtkSegmentEditorAbstractEffect::addViewProp(vtkMRMLAbstractViewNode* viewNo
 //-----------------------------------------------------------------------------
 void vtkSegmentEditorAbstractEffect::removeViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor)
 {
-  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::renderer(vtkRenderWindow::SafeDownCast(viewNode->GetRenderWindow());
+  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::renderer(vtkRenderWindow::SafeDownCast(viewNode->GetRenderWindow()));
   if (renderer)
   {
     renderer->RemoveViewProp(actor);
@@ -669,43 +664,43 @@ void vtkSegmentEditorAbstractEffect::removeViewProp(vtkMRMLAbstractViewNode* vie
 //-----------------------------------------------------------------------------
 vtkMRMLScene* vtkSegmentEditorAbstractEffect::scene()
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     return nullptr;
   }
 
-  return m_ParameterSetNode->GetScene();
+  return m_SegmentEditorNode->GetScene();
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLSegmentEditorNode* vtkSegmentEditorAbstractEffect::parameterSetNode()
+vtkMRMLSegmentEditorNode* vtkSegmentEditorAbstractEffect::segmentEditorNode()
 {
 
-  return m_ParameterSetNode.GetPointer();
+  return m_SegmentEditorNode.GetPointer();
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameterSetNode(vtkMRMLSegmentEditorNode* node)
+void vtkSegmentEditorAbstractEffect::setSegmentEditorNode(vtkMRMLSegmentEditorNode* node)
 {
 
-  m_ParameterSetNode = node;
+  m_SegmentEditorNode = node;
 }
 
 //-----------------------------------------------------------------------------
 std::string vtkSegmentEditorAbstractEffect::parameter(std::string name)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     return std::string();
   }
 
   // Get effect-specific prefixed parameter first
   std::string attributeName = getAttributeName(name);
-  const char* value = m_ParameterSetNode->GetAttribute(attributeName.c_str());
+  const char* value = m_SegmentEditorNode->GetAttribute(attributeName.c_str());
   // Look for common parameter if effect-specific one is not found
   if (!value)
   {
-    value = m_ParameterSetNode->GetAttribute(name.c_str());
+    value = m_SegmentEditorNode->GetAttribute(name.c_str());
   }
   if (!value)
   {
@@ -719,7 +714,7 @@ std::string vtkSegmentEditorAbstractEffect::parameter(std::string name)
 //-----------------------------------------------------------------------------
 int vtkSegmentEditorAbstractEffect::integerParameter(std::string name)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     return 0;
   }
@@ -738,7 +733,7 @@ int vtkSegmentEditorAbstractEffect::integerParameter(std::string name)
 //-----------------------------------------------------------------------------
 double vtkSegmentEditorAbstractEffect::doubleParameter(std::string name)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     return 0.0;
   }
@@ -757,17 +752,17 @@ double vtkSegmentEditorAbstractEffect::doubleParameter(std::string name)
 //-----------------------------------------------------------------------------
 vtkMRMLNode* vtkSegmentEditorAbstractEffect::nodeReference(std::string name)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     return nullptr;
   }
 
   // Get effect-specific prefixed parameter first
-  vtkMRMLNode* node = m_ParameterSetNode->GetNodeReference(getAttributeName(name).c_str());
+  vtkMRMLNode* node = m_SegmentEditorNode->GetNodeReference(getAttributeName(name).c_str());
   // Look for common parameter if effect-specific one is not found
   if (!node)
   {
-    node = m_ParameterSetNode->GetNodeReference(name.c_str());
+    node = m_SegmentEditorNode->GetNodeReference(name.c_str());
   }
   return node;
 }
@@ -775,7 +770,7 @@ vtkMRMLNode* vtkSegmentEditorAbstractEffect::nodeReference(std::string name)
 //-----------------------------------------------------------------------------
 void vtkSegmentEditorAbstractEffect::setParameter(std::string name, std::string value)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
     return;
@@ -794,28 +789,28 @@ bool vtkSegmentEditorAbstractEffect::parameterDefined(std::string name)
 //-----------------------------------------------------------------------------
 bool vtkSegmentEditorAbstractEffect::commonParameterDefined(std::string name)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     return false;
   }
-  const char* existingValue = m_ParameterSetNode->GetAttribute(name.c_str());
+  const char* existingValue = m_SegmentEditorNode->GetAttribute(name.c_str());
   return (existingValue != nullptr && strlen(existingValue) > 0);
 }
 
 vtkSegment* vtkSegmentEditorAbstractEffect::getSelectedSegment()
 {
-  if (!this->parameterSetNode())
+  if (!this->segmentEditorNode())
   {
     return nullptr;
   }
 
-  vtkMRMLSegmentationNode* segmentationNode = this->parameterSetNode()->GetSegmentationNode();
+  vtkMRMLSegmentationNode* segmentationNode = this->segmentEditorNode()->GetSegmentationNode();
   if (!segmentationNode)
   {
     return nullptr;
   }
 
-  char* segmentID = this->parameterSetNode()->GetSelectedSegmentID();
+  char* segmentID = this->segmentEditorNode()->GetSelectedSegmentID();
   if (!segmentID || strlen(segmentID) == 0)
   {
     return nullptr;
@@ -839,12 +834,12 @@ bool vtkSegmentEditorAbstractEffect::isSelectedSegmentVisible()
     return true;
   }
 
-  vtkMRMLSegmentationNode* segmentationNode = this->parameterSetNode()->GetSegmentationNode();
+  vtkMRMLSegmentationNode* segmentationNode = this->segmentEditorNode()->GetSegmentationNode();
   int numberOfDisplayNodes = segmentationNode->GetNumberOfDisplayNodes();
   for (int displayNodeIndex = 0; displayNodeIndex < numberOfDisplayNodes; displayNodeIndex++)
   {
     vtkMRMLSegmentationDisplayNode* displayNode = vtkMRMLSegmentationDisplayNode::SafeDownCast(segmentationNode->GetNthDisplayNode(displayNodeIndex));
-    if (displayNode && displayNode->GetVisibility() && displayNode->GetSegmentVisibility(this->parameterSetNode()->GetSelectedSegmentID()))
+    if (displayNode && displayNode->GetVisibility() && displayNode->GetSegmentVisibility(this->segmentEditorNode()->GetSelectedSegmentID()))
     {
       return true;
     }
@@ -861,7 +856,7 @@ void vtkSegmentEditorAbstractEffect::confirmWorkOnSelectedSegment(bool doShowSeg
     return;
   }
 
-  vtkMRMLSegmentationNode* segmentationNode = this->parameterSetNode()->GetSegmentationNode();
+  vtkMRMLSegmentationNode* segmentationNode = this->segmentEditorNode()->GetSegmentationNode();
 
   // User chose to show the current segment
   if (doShowSegment)
@@ -870,7 +865,7 @@ void vtkSegmentEditorAbstractEffect::confirmWorkOnSelectedSegment(bool doShowSeg
     if (displayNode)
     {
       displayNode->SetVisibility(true);
-      displayNode->SetSegmentVisibility(this->parameterSetNode()->GetSelectedSegmentID(), true);
+      displayNode->SetSegmentVisibility(this->segmentEditorNode()->GetSelectedSegmentID(), true);
     }
   }
   else
@@ -893,13 +888,13 @@ void vtkSegmentEditorAbstractEffect::setParameterDefault(std::string name, std::
 //-----------------------------------------------------------------------------
 void vtkSegmentEditorAbstractEffect::setCommonParameter(std::string name, std::string value)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
     return;
   }
 
-  const char* oldValue = m_ParameterSetNode->GetAttribute(name.c_str());
+  const char* oldValue = m_SegmentEditorNode->GetAttribute(name.c_str());
   if (oldValue == nullptr && value.empty())
   {
     // no change
@@ -912,19 +907,19 @@ void vtkSegmentEditorAbstractEffect::setCommonParameter(std::string name, std::s
   }
 
   // Disable full modified events in all cases (observe EffectParameterModified instead if necessary)
-  int disableState = m_ParameterSetNode->GetDisableModifiedEvent();
-  m_ParameterSetNode->SetDisableModifiedEvent(1);
+  int disableState = m_SegmentEditorNode->GetDisableModifiedEvent();
+  m_SegmentEditorNode->SetDisableModifiedEvent(1);
 
   // Set parameter as attribute
-  m_ParameterSetNode->SetAttribute(name.c_str(), value.c_str());
+  m_SegmentEditorNode->SetAttribute(name.c_str(), value.c_str());
 
   // Re-enable full modified events for parameter node
-  m_ParameterSetNode->SetDisableModifiedEvent(disableState);
+  m_SegmentEditorNode->SetDisableModifiedEvent(disableState);
 
   // Emit parameter modified event if requested
   // Don't pass parameter name as char pointer, as custom modified events may be compressed and invoked after EndModify()
   // and by that time the pointer may not be valid anymore.
-  m_ParameterSetNode->InvokeCustomModifiedEvent(vtkMRMLSegmentEditorNode::EffectParameterModified);
+  m_SegmentEditorNode->InvokeCustomModifiedEvent(vtkMRMLSegmentEditorNode::EffectParameterModified);
 }
 
 //-----------------------------------------------------------------------------
@@ -1004,7 +999,7 @@ void vtkSegmentEditorAbstractEffect::setCommonParameterDefault(std::string name,
 //-----------------------------------------------------------------------------
 void vtkSegmentEditorAbstractEffect::setNodeReference(std::string name, vtkMRMLNode* node)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
     return;
@@ -1018,13 +1013,13 @@ void vtkSegmentEditorAbstractEffect::setNodeReference(std::string name, vtkMRMLN
 //-----------------------------------------------------------------------------
 void vtkSegmentEditorAbstractEffect::setCommonNodeReference(std::string name, vtkMRMLNode* node)
 {
-  if (!m_ParameterSetNode)
+  if (!m_SegmentEditorNode)
   {
     vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
     return;
   }
 
-  vtkMRMLNode* oldNode = m_ParameterSetNode->GetNodeReference(name.c_str());
+  vtkMRMLNode* oldNode = m_SegmentEditorNode->GetNodeReference(name.c_str());
   if (node == oldNode)
   {
     // no change
@@ -1032,12 +1027,12 @@ void vtkSegmentEditorAbstractEffect::setCommonNodeReference(std::string name, vt
   }
 
   // Set parameter as attribute
-  m_ParameterSetNode->SetNodeReferenceID(name.c_str(), node ? node->GetID() : nullptr);
+  m_SegmentEditorNode->SetNodeReferenceID(name.c_str(), node ? node->GetID() : nullptr);
 
   // Emit parameter modified event
   // Don't pass parameter name as char pointer, as custom modified events may be compressed and invoked after EndModify()
   // and by that time the pointer may not be valid anymore.
-  m_ParameterSetNode->InvokeCustomModifiedEvent(vtkMRMLSegmentEditorNode::EffectParameterModified);
+  m_SegmentEditorNode->InvokeCustomModifiedEvent(vtkMRMLSegmentEditorNode::EffectParameterModified);
 }
 
 //-----------------------------------------------------------------------------
@@ -1369,7 +1364,7 @@ bool vtkSegmentEditorAbstractEffect::segmentationDisplayableInView(vtkMRMLAbstra
     return false;
   }
 
-  vtkMRMLSegmentEditorNode* parameterSetNode = this->parameterSetNode();
+  vtkMRMLSegmentEditorNode* parameterSetNode = this->segmentEditorNode();
   if (!parameterSetNode)
   {
     return false;
@@ -1397,23 +1392,6 @@ bool vtkSegmentEditorAbstractEffect::segmentationDisplayableInView(vtkMRMLAbstra
 std::string vtkSegmentEditorAbstractEffect::getAttributeName(const std::string& name)
 {
   return this->name() + "." + name;
-}
-
-//-----------------------------------------------------------------------------
-vtkSmartPointer<vtkMouseCursor> vtkSegmentEditorAbstractEffect::getMouseCursor() const
-{
-  return m_SavedCursor;
-}
-
-//-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setMouseCursor(vtkSmartPointer<vtkMouseCursor> cursor)
-{
-  if (m_SavedCursor == cursor)
-  {
-    return;
-  }
-  m_SavedCursor = cursor;
-  InvokeEvent(MouseCursorChangedEvent);
 }
 
 //-----------------------------------------------------------------------------

@@ -112,7 +112,7 @@ qSlicerSegmentEditorScriptedEffectPrivate::~qSlicerSegmentEditorScriptedEffectPr
 
 //-----------------------------------------------------------------------------
 qSlicerSegmentEditorScriptedEffect::qSlicerSegmentEditorScriptedEffect(QObject* parent)
-  : Superclass(parent)
+  : Superclass(nullptr, parent)
   , d_ptr(new qSlicerSegmentEditorScriptedEffectPrivate)
 {
   this->m_Name = QString("UnnamedScriptedEffect");

@@ -1020,10 +1020,10 @@ void qSlicerSegmentEditorScissorsEffectPrivate::paintApply(qMRMLWidget* viewWidg
   vtkOrientedImageDataResample::ModifyImage(modifierLabelmap, orientedBrushPositionerOutput.GetPointer(), vtkOrientedImageDataResample::OPERATION_MAXIMUM);
 
   // Notify editor about changes
-  qSlicerSegmentEditorAbstractEffect::ModificationMode modificationMode = qSlicerSegmentEditorAbstractEffect::ModificationModeAdd;
+  vtkSegmentEditorAbstractEffect::ModificationMode modificationMode = vtkSegmentEditorAbstractEffect::ModificationModeAdd;
   if (this->operationErase())
   {
-    modificationMode = qSlicerSegmentEditorAbstractEffect::ModificationModeRemove;
+    modificationMode = vtkSegmentEditorAbstractEffect::ModificationModeRemove;
   }
 
   // Select input segment and process one by one.

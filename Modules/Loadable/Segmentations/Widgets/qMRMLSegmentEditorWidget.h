@@ -37,6 +37,7 @@
 
 // STD includes
 #include <cstdlib>
+#include <vtkSmartPointer.h>
 
 class vtkMRMLNode;
 class vtkMRMLInteractionNode;
@@ -49,6 +50,7 @@ class QAbstractButton;
 class qMRMLSegmentEditorWidgetPrivate;
 class qSlicerSegmentEditorAbstractEffect;
 class qSlicerAbstractModuleWidget;
+class vtkSegmentEditorLogic;
 
 /// \brief Qt widget for editing a segment from a segmentation using Editor effects.
 ///
@@ -276,7 +278,7 @@ public:
   /// Returns true if automatic jump to current segment is enabled.
   bool jumpToSelectedSegmentEnabled() const;
 
-  Q_INVOKABLE vtkSmartPointer<vtkSegmentEditorLogic> logic() const { return m_logic; }
+  Q_INVOKABLE vtkSmartPointer<vtkSegmentEditorLogic> logic() const;
 
 public slots:
   /// Set the MRML \a scene associated with the widget

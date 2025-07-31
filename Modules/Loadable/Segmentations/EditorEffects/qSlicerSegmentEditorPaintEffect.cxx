@@ -1684,15 +1684,15 @@ void qSlicerSegmentEditorPaintEffect::paintApply(qMRMLWidget* viewWidget)
   }
 
   // Notify editor about changes
-  qSlicerSegmentEditorAbstractEffect::ModificationMode modificationMode;
+  vtkSegmentEditorAbstractEffect::ModificationMode modificationMode;
   if (this->m_AlwaysErase)
   {
     modificationMode =
-      this->integerParameter("EraseAllSegments") ? qSlicerSegmentEditorAbstractEffect::ModificationModeRemoveAll : qSlicerSegmentEditorAbstractEffect::ModificationModeRemove;
+      this->integerParameter("EraseAllSegments") ? vtkSegmentEditorAbstractEffect::ModificationModeRemoveAll : vtkSegmentEditorAbstractEffect::ModificationModeRemove;
   }
   else
   {
-    modificationMode = this->m_Erase ? qSlicerSegmentEditorAbstractEffect::ModificationModeRemove : qSlicerSegmentEditorAbstractEffect::ModificationModeAdd;
+    modificationMode = this->m_Erase ? vtkSegmentEditorAbstractEffect::ModificationModeRemove : vtkSegmentEditorAbstractEffect::ModificationModeAdd;
   }
 
   this->modifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, updateExtentList);

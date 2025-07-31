@@ -138,8 +138,6 @@ public:
   /// Simple mechanism to let the effects know that source volume has changed
   /// NOTE: Base class implementation needs to be called with the effect-specific implementation
   virtual void sourceVolumeNodeChanged() {};
-  /// Deprecated. Override sourceVolumeNodeChanged() method instead.
-  virtual void masterVolumeNodeChanged() {};
   /// Simple mechanism to let the effects know that the layout has changed
   virtual void layoutChanged() {};
   /// Let the effect know that the interaction node is modified.
@@ -155,10 +153,10 @@ public:
   virtual void cleanup() {}
 
   /// Get segment editor parameter set node
-  vtkMRMLSegmentEditorNode* parameterSetNode();
+  vtkMRMLSegmentEditorNode* segmentEditorNode();
 
   /// Set segment editor parameter set node
-  void setParameterSetNode(vtkMRMLSegmentEditorNode* node);
+  void setSegmentEditorNode(vtkMRMLSegmentEditorNode* node);
 
   /// Get MRML scene (from parameter set node)
   vtkMRMLScene* scene();
@@ -380,13 +378,10 @@ private:
   std::string getAttributeName(const std::string& name);
 
   /// Segment editor parameter set node
-  vtkWeakPointer<vtkMRMLSegmentEditorNode> m_ParameterSetNode = nullptr;
+  vtkWeakPointer<vtkMRMLSegmentEditorNode> m_SegmentEditorNode = nullptr;
 
   /// MRML scene
   vtkMRMLScene* m_Scene = nullptr;
-
-  /// Cursor to restore after custom cursor is not needed any more
-  vtkSmartPointer<vtkMouseCursor> m_SavedCursor = nullptr;
 
   /// Aligned source volume is a copy of image in source volume node
   /// resampled into the reference image geometry of the segmentation.
