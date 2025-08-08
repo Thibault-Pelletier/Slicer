@@ -83,38 +83,38 @@ public:
   };
 
   /// Get the segment editor parameter set node
-  vtkMRMLSegmentEditorNode* segmentEditorNode() const;
+  vtkMRMLSegmentEditorNode* GetSegmentEditorNode() const;
 
   /// Get currently selected segmentation MRML node
-  vtkMRMLSegmentationNode* segmentationNode() const;
+  vtkMRMLSegmentationNode* GetSegmentationNode() const;
 
   /// Get ID of currently selected segmentation node
-  std::string segmentationNodeID() const;
+  std::string GetSegmentationNodeID() const;
   /// Get currently selected source volume MRML node
-  vtkMRMLScalarVolumeNode* sourceVolumeNode() const;
+  vtkMRMLScalarVolumeNode* GetSourceVolumeNode() const;
   /// Get ID of currently selected source volume node
-  std::string sourceVolumeNodeID() const;
+  std::string GetSourceVolumeNodeID() const;
   /// Get segment ID of selected segment
-  std::string currentSegmentID();
+  std::string GetCurrentSegmentID();
 
-  bool isSegmentIDValid(const std::string& segmentId);
+  bool IsSegmentIDValid(const std::string& segmentId);
 
-  bool canAddSegments();
+  bool CanAddSegments();
 
-  bool canRemoveSegments();
+  bool CanRemoveSegments();
 
-  bool isLocked() const;
+  bool IsLocked() const;
 
-  vtkSegmentation* getSegmentation();
+  vtkSegmentation* GetSegmentation();
 
   /// Return active effect if selected, nullptr otherwise
   /// \sa m_ActiveEffect, setActiveEffect()
-  vtkSegmentEditorAbstractEffect* activeEffect() const;
+  vtkSegmentEditorAbstractEffect* GetActiveEffect() const;
   /// Set active effect
   /// \sa m_ActiveEffect, activeEffect()
-  void setActiveEffect(vtkSegmentEditorAbstractEffect* effect);
+  void SetActiveEffect(vtkSegmentEditorAbstractEffect* effect);
 
-  void selectEffect(const std::string& effect)
+  void SelectEffect(const std::string& effect)
   {
     // FIXME
     throw std::runtime_error("NOT IMPLEMENTED");
@@ -125,219 +125,219 @@ public:
   /// The captured events are propagated to the active effect if any.
   /// NOTE: This method should be called from the enter function of the
   ///   embedding module widget so that the events are correctly processed.
-  void setupViewObservations();
-  void setupViewObservations(const std::vector<vtkMRMLAbstractViewNode*>& viewNodes);
+  void SetupViewObservations();
+  void SetupViewObservations(const std::vector<vtkMRMLAbstractViewNode*>& viewNodes);
   //@}
 
   /// Remove observations
   /// NOTE: This method should be called from the exit function of the
   ///   embedding module widget so that events are not processed unnecessarily.
-  void removeViewObservations();
+  void RemoveViewObservations();
 
   /// Get maximum number of saved undo/redo states.
-  int maximumNumberOfUndoStates() const;
+  int GetMaximumNumberOfUndoStates() const;
 
   /// Get whether widget is read-only
-  bool readOnly() const;
+  bool IsReadOnly() const;
 
   /// Get current interaction node.
   /// \sa SetInteractionNode()
-  vtkMRMLInteractionNode* interactionNode() const;
+  vtkMRMLInteractionNode* GetInteractionNode() const;
 
   /// Set the MRML \a scene associated with the widget
-  void setMRMLScene(vtkMRMLScene* newScene);
+  void SetScene(vtkMRMLScene* newScene);
 
   /// Set the segment editor parameter set node
-  void setMRMLSegmentEditorNode(vtkMRMLSegmentEditorNode* newSegmentEditorNode);
+  void SetSegmentEditorNode(vtkMRMLSegmentEditorNode* newSegmentEditorNode);
 
   /// Set segmentation MRML node
-  void setSegmentationNode(vtkMRMLNode* node);
+  void SetSegmentationNode(vtkMRMLNode* node);
 
   /// Set segmentation MRML node by its ID
-  void setSegmentationNodeID(const std::string& nodeID);
+  void SetSegmentationNodeID(const std::string& nodeID);
 
   /// Set source volume MRML node.
   /// If source volume has multiple scalar components
   /// then only the first scalar component is used.
-  void setSourceVolumeNode(vtkMRMLNode* node);
+  void SetSourceVolumeNode(vtkMRMLNode* node);
 
   /// Set source volume MRML node by its ID
-  void setSourceVolumeNodeID(const std::string& nodeID);
+  void SetSourceVolumeNodeID(const std::string& nodeID);
 
   /// Set selected segment by its ID
-  void setCurrentSegmentID(const std::string segmentID);
+  void SetCurrentSegmentID(const std::string segmentID);
 
   /// Save current segmentation before performing an edit operation
   /// to allow reverting to the current state by using undo
-  void saveStateForUndo();
+  void SaveStateForUndo();
 
   /// Update modifierLabelmap, maskLabelmap, or alignedSourceVolumeNode
-  void updateVolume(void* volumePtr, bool& success);
+  void UpdateVolume(void* volumePtr, bool& success);
 
-  void createAndSetBlankSourceVolumeIfNeeded();
+  void CreateAndSetBlankSourceVolumeIfNeeded();
 
   /// Undo/redo enabled.
-  void clearUndoState();
+  void ClearUndoState();
 
   /// Set maximum number of saved undo/redo states.
-  void setMaximumNumberOfUndoStates(int);
+  void SetMaximumNumberOfUndoStates(int);
 
   /// Set whether the widget is read-only
-  void setReadOnly(bool aReadOnly);
+  void SetReadOnly(bool aReadOnly);
 
   /// Enable/disable masking using source volume intensity
-  void toggleSourceVolumeIntensityMaskEnabled();
+  void ToggleSourceVolumeIntensityMaskEnabled();
 
   /// Restores previous saved state of the segmentation
-  void undo();
+  void Undo();
 
   /// Restores next saved state of the segmentation
-  void redo();
+  void Redo();
 
   /// Convenience method to turn off lightbox view in all slice viewers.
   /// Segment editor is not compatible with lightbox view layouts.
   /// Returns true if there were lightbox views.
-  bool turnOffLightboxes();
+  bool TurnOffLightboxes();
 
   /// Unselect labelmap layer in all slice views in the active layout
-  void hideLabelLayer();
+  void HideLabelLayer();
 
   /// Show source volume in slice views by hiding foreground and label volumes.
   /// \param forceShowInBackground If set to false then views will only change
   ///   if source volume is not selected as either foreground or background volume.
   /// \param fitSlice Reset field of view to include all volumes.
-  void showSourceVolumeInSliceViewers(bool forceShowInBackground = false, bool fitSlice = false);
+  void ShowSourceVolumeInSliceViewers(bool forceShowInBackground = false, bool fitSlice = false);
 
   /// Set node used to notify active effect about interaction node changes.
   /// \sa interactionNode()
-  void setInteractionNode(vtkMRMLInteractionNode* interactionNode);
+  void SetInteractionNode(vtkMRMLInteractionNode* interactionNode);
 
   /// Select the segment above the currently selected one in the table (skipping segments that are not visible)
-  void selectPreviousSegment();
+  void SelectPreviousSegment();
 
   /// Select the segment below the currently selected one in the table (skipping segments that are not visible)
-  void selectNextSegment();
+  void SelectNextSegment();
 
-  void selectFirstSegment();
+  void SelectFirstSegment();
 
   /// Select the segment offset from the currently selected one in the table (skipping segments that are not visible)
   /// Positive offset will move down the table
   /// Negative offset will move up the table
-  void selectSegmentAtOffset(int offset);
+  void SelectSegmentAtOffset(int offset);
 
-  vtkMRMLScene* mrmlScene() const;
+  vtkMRMLScene* GetScene() const;
 
-  bool hasSelectedSegmentID(int offset = 0);
-  std::string getSelectedSegmentID(int offset = 0);
+  bool HasSelectedSegmentID(int offset = 0);
+  std::string GetSelectedSegmentID(int offset = 0);
 
-  std::vector<std::string> getVisibleSegmentIDs();
-  bool isSegmentIDVisible(const std::string& segmentID);
-  std::vector<std::string> getSegmentIDs();
+  std::vector<std::string> GetVisibleSegmentIDs();
+  bool IsSegmentIDVisible(const std::string& segmentID);
+  std::vector<std::string> GetSegmentIDs();
 
   /// Handles mouse mode changes (view / place markups)
-  static void onInteractionNodeModified(vtkObject* caller, unsigned long eid, void* clientData, void* callData);
-  void onInteractionNodeModified();
+  static void OnInteractionNodeModified(vtkObject* caller, unsigned long eid, void* clientData, void* callData);
+  void OnInteractionNodeModified();
 
   /// Handles changing of current segmentation MRML node
-  void onSegmentationNodeChanged(vtkMRMLNode* node);
+  void OnSegmentationNodeChanged(vtkMRMLNode* node);
   /// Handles changing of the current source volume MRML node
-  void onSourceVolumeNodeChanged(vtkMRMLNode* node);
+  void OnSourceVolumeNodeChanged(vtkMRMLNode* node);
 
   /// Add empty segment
-  void onAddSegment(std::string emptySegmentName, int firstVisibleStatus);
+  void OnAddSegment(std::string emptySegmentName, int firstVisibleStatus);
 
   /// Remove selected segment
-  void onRemoveSegment();
+  void OnRemoveSegment();
 
   /// Create/remove closed surface model for the segmentation that is automatically updated when editing
-  void onCreateSurfaceToggled(bool on);
+  void OnCreateSurfaceToggled(bool on);
 
   /// Handle display node view ID changes
-  void onSegmentationDisplayModified(); // FIXME: To rename
+  void OnSegmentationDisplayModified(); // FIXME: To rename
 
   /// Enable/disable threshold when checkbox is toggled
-  void onSourceVolumeIntensityMaskChecked(bool checked);
+  void OnSourceVolumeIntensityMaskChecked(bool checked);
 
   /// Handles threshold values changed event
-  void onSourceVolumeIntensityMaskRangeChanged(double low, double high);
+  void OnSourceVolumeIntensityMaskRangeChanged(double low, double high);
 
   /// Update undo/redo button states
-  bool isUndoEnabled() const;
-  bool isRedoEnabled() const;
+  bool IsUndoEnabled() const;
+  bool IsRedoEnabled() const;
 
   /// Export segment color and terminology information to a new color table
-  void onExportToColorTableActionClicked();
+  void OnExportToColorTableActionClicked();
 
   /// Callback function invoked when interaction happens
-  static void processEvents(vtkObject* caller, unsigned long eid, void* clientData, void* callData);
+  static void ProcessEvents(vtkObject* caller, unsigned long eid, void* clientData, void* callData);
 
   /// Switches the source representation to binary labelmap.
-  bool setSourceRepresentationToBinaryLabelmapWithoutConfirmation();
+  bool SetSourceRepresentationToBinaryLabelmapWithoutConfirmation();
 
-  bool isSegmentationNodeValid() const { return SegmentationNode != nullptr; }
+  bool IsSegmentationNodeValid() const { return SegmentationNode != nullptr; }
 
-  bool canTriviallyConvertSourceRepresentationToBinaryLabelMap();
+  bool CanTriviallyConvertSourceRepresentationToBinaryLabelMap();
 
-  bool trivialSetSourceRepresentationToBinaryLabelmap();
+  bool TrivialSetSourceRepresentationToBinaryLabelmap();
 
-  bool convertSourceRepresentationToBinaryLabelmap();
+  bool ConvertSourceRepresentationToBinaryLabelmap();
 
   /// \brief Trigger the PauseRenderEvent
-  void pauseRender();
+  void PauseRender();
 
   /// \brief Trigger the ResumeRenderEvent
-  void resumeRender();
+  void ResumeRender();
 
-  void refreshObservedViewNodeIds();
+  void RefreshObservedViewNodeIds();
 
   /// Updates default modifier labelmap based on reference geometry (to set origin, spacing, and directions)
   /// and existing segments (to set extents). If reference geometry conversion parameter is empty
   /// then existing segments are used for determining origin, spacing, and directions and the resulting
   /// geometry is written to reference geometry conversion parameter.
-  bool resetModifierLabelmapToDefault();
+  bool ResetModifierLabelmapToDefault();
 
   /// Updates selected segment labelmap in a geometry aligned with default modifierLabelmap.
-  bool updateSelectedSegmentLabelmap();
+  bool UpdateSelectedSegmentLabelmap();
 
   /// Updates a resampled source volume in a geometry aligned with default modifierLabelmap.
-  bool updateAlignedSourceVolume();
+  bool UpdateAlignedSourceVolume();
 
   /// Updates mask labelmap.
   /// Geometry of mask will be the same as current modifierLabelmap.
   /// This mask only considers segment-based regions (and ignores masking based on
   /// source volume intensity).
-  bool updateMaskLabelmap();
+  bool UpdateMaskLabelmap();
 
-  bool updateReferenceGeometryImage();
+  bool UpdateReferenceGeometryImage();
 
-  static std::string getReferenceImageGeometryFromSegmentation(vtkSegmentation* segmentation);
-  std::string referenceImageGeometry();
+  static std::string GetReferenceImageGeometryStringFromSegmentation(vtkSegmentation* segmentation);
+  std::string GetReferenceImageGeometryString();
 
-  bool segmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode);
+  bool IsSegmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode);
 
   /// Return segmentation node's internal labelmap IJK to renderer world coordinate transform.
   /// If cannot be retrieved (segmentation is not defined, non-linearly transformed, etc.)
   /// then false is returned;
-  bool segmentationIJKToRAS(vtkMatrix4x4* ijkToRas);
+  bool GetSegmentationIJKToRAS(vtkMatrix4x4* ijkToRas);
 
-  vtkOrientedImageData* alignedSourceVolume() const;
-  vtkOrientedImageData* modifierLabelmap() const;
-  vtkOrientedImageData* maskLabelmap() const;
-  vtkOrientedImageData* selectedSegmentLabelmap() const;
-  vtkOrientedImageData* referenceGeometryImage() const;
-  vtkSmartPointer<vtkSegmentationHistory> segmentationHistory() const;
-  bool viewsObserved() const;
-  void setLocked(bool isLocked);
+  vtkOrientedImageData* GetAlignedSourceVolume() const;
+  vtkOrientedImageData* GetModifierLabelmap() const;
+  vtkOrientedImageData* GetMaskLabelmap() const;
+  vtkOrientedImageData* GetSelectedSegmentLabelmap() const;
+  vtkOrientedImageData* GetReferenceGeometryImage() const;
+  vtkSmartPointer<vtkSegmentationHistory> GetSegmentationHistory() const;
+  bool AreViewsObserved() const;
+  void SetLocked(bool isLocked);
 
 protected:
   vtkSegmentEditorLogic();
   ~vtkSegmentEditorLogic() override;
 
 private:
-  vtkSmartPointer<vtkSegmentEditorEventCallbackCommand> createViewInteractionCallbackCommand(vtkRenderWindow* renderWindow, vtkMRMLAbstractViewNode* viewNode);
-  SegmentEditorEventObservation createSlicePoseModifiedEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand);
-  SegmentEditorEventObservation createViewNodeModifiedEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand);
-  SegmentEditorEventObservation createInteractorEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand);
+  vtkSmartPointer<vtkSegmentEditorEventCallbackCommand> CreateViewInteractionCallbackCommand(vtkRenderWindow* renderWindow, vtkMRMLAbstractViewNode* viewNode);
+  SegmentEditorEventObservation CreateSlicePoseModifiedEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand);
+  SegmentEditorEventObservation CreateViewNodeModifiedEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand);
+  SegmentEditorEventObservation CreateInteractorEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand);
 
   /// Segment editor parameter set node containing all selections and working images
   vtkWeakPointer<vtkMRMLSegmentEditorNode> SegmentEditorNode;

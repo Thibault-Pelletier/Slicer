@@ -138,13 +138,13 @@ vtkSegmentEditorLogic::vtkSegmentEditorLogic()
 //-----------------------------------------------------------------------------
 vtkSegmentEditorLogic::~vtkSegmentEditorLogic()
 {
-  removeViewObservations();
+  RemoveViewObservations();
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::resetModifierLabelmapToDefault()
+bool vtkSegmentEditorLogic::ResetModifierLabelmapToDefault()
 {
-  std::string referenceImageGeometry = this->referenceImageGeometry();
+  std::string referenceImageGeometry = this->GetReferenceImageGeometryString();
   if (referenceImageGeometry.empty())
   {
     vtkErrorMacro(": Cannot determine default modifierLabelmap geometry");
@@ -165,7 +165,7 @@ bool vtkSegmentEditorLogic::resetModifierLabelmapToDefault()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::updateSelectedSegmentLabelmap()
+bool vtkSegmentEditorLogic::UpdateSelectedSegmentLabelmap()
 {
   if (!this->SegmentEditorNode)
   {
@@ -174,7 +174,7 @@ bool vtkSegmentEditorLogic::updateSelectedSegmentLabelmap()
   }
 
   vtkMRMLSegmentationNode* segmentationNode = this->SegmentEditorNode->GetSegmentationNode();
-  std::string referenceImageGeometry = this->referenceImageGeometry();
+  std::string referenceImageGeometry = this->GetReferenceImageGeometryString();
   if (!segmentationNode || referenceImageGeometry.empty())
   {
     return false;
@@ -228,7 +228,7 @@ bool vtkSegmentEditorLogic::updateSelectedSegmentLabelmap()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::updateAlignedSourceVolume()
+bool vtkSegmentEditorLogic::UpdateAlignedSourceVolume()
 {
   if (!this->SegmentEditorNode)
   {
@@ -238,7 +238,7 @@ bool vtkSegmentEditorLogic::updateAlignedSourceVolume()
 
   vtkMRMLSegmentationNode* segmentationNode = this->SegmentEditorNode->GetSegmentationNode();
   vtkMRMLScalarVolumeNode* sourceVolumeNode = this->SegmentEditorNode->GetSourceVolumeNode();
-  std::string referenceImageGeometry = this->referenceImageGeometry();
+  std::string referenceImageGeometry = this->GetReferenceImageGeometryString();
   if (!segmentationNode || !sourceVolumeNode || !sourceVolumeNode->GetImageData() //
       || !sourceVolumeNode->GetImageData()->GetPointData() || referenceImageGeometry.empty())
   {
@@ -322,7 +322,7 @@ bool vtkSegmentEditorLogic::updateAlignedSourceVolume()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::updateMaskLabelmap()
+bool vtkSegmentEditorLogic::UpdateMaskLabelmap()
 {
   if (!this->SegmentEditorNode)
   {
@@ -336,7 +336,7 @@ bool vtkSegmentEditorLogic::updateMaskLabelmap()
     return false;
   }
 
-  std::string referenceGeometryStr = this->referenceImageGeometry();
+  std::string referenceGeometryStr = this->GetReferenceImageGeometryString();
   if (referenceGeometryStr.empty())
   {
     vtkErrorMacro(": Cannot determine mask labelmap geometry");
@@ -366,9 +366,9 @@ bool vtkSegmentEditorLogic::updateMaskLabelmap()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::updateReferenceGeometryImage()
+bool vtkSegmentEditorLogic::UpdateReferenceGeometryImage()
 {
-  std::string geometry = this->referenceImageGeometry();
+  std::string geometry = this->GetReferenceImageGeometryString();
   if (geometry.empty())
   {
     return false;
@@ -377,7 +377,7 @@ bool vtkSegmentEditorLogic::updateReferenceGeometryImage()
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorLogic::getReferenceImageGeometryFromSegmentation(vtkSegmentation* segmentation)
+std::string vtkSegmentEditorLogic::GetReferenceImageGeometryStringFromSegmentation(vtkSegmentation* segmentation)
 {
   if (!segmentation)
   {
@@ -424,7 +424,7 @@ std::string vtkSegmentEditorLogic::getReferenceImageGeometryFromSegmentation(vtk
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorLogic::referenceImageGeometry()
+std::string vtkSegmentEditorLogic::GetReferenceImageGeometryString()
 {
   if (!this->SegmentEditorNode)
   {
@@ -441,7 +441,7 @@ std::string vtkSegmentEditorLogic::referenceImageGeometry()
   }
 
   std::string referenceImageGeometry;
-  referenceImageGeometry = this->getReferenceImageGeometryFromSegmentation(segmentation);
+  referenceImageGeometry = this->GetReferenceImageGeometryStringFromSegmentation(segmentation);
   if (referenceImageGeometry.empty())
   {
     // If no reference image geometry could be determined then use the source volume's geometry
@@ -454,13 +454,13 @@ std::string vtkSegmentEditorLogic::referenceImageGeometry()
     // Update the referenceImageGeometry parameter for next time
     segmentationNode->SetReferenceImageGeometryParameterFromVolumeNode(sourceVolumeNode);
     // Update extents to include all existing segments
-    referenceImageGeometry = this->getReferenceImageGeometryFromSegmentation(segmentation);
+    referenceImageGeometry = this->GetReferenceImageGeometryStringFromSegmentation(segmentation);
   }
   return referenceImageGeometry;
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::segmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode)
+bool vtkSegmentEditorLogic::IsSegmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode)
 {
   if (!viewNode)
   {
@@ -489,13 +489,13 @@ bool vtkSegmentEditorLogic::segmentationDisplayableInView(vtkMRMLAbstractViewNod
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::segmentationIJKToRAS(vtkMatrix4x4* ijkToRas)
+bool vtkSegmentEditorLogic::GetSegmentationIJKToRAS(vtkMatrix4x4* ijkToRas)
 {
   if (!this->SegmentEditorNode)
   {
     return false;
   }
-  if (!this->updateReferenceGeometryImage())
+  if (!this->UpdateReferenceGeometryImage())
   {
     return false;
   }
@@ -525,57 +525,57 @@ bool vtkSegmentEditorLogic::segmentationIJKToRAS(vtkMatrix4x4* ijkToRas)
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorLogic::alignedSourceVolume() const
+vtkOrientedImageData* vtkSegmentEditorLogic::GetAlignedSourceVolume() const
 {
   return AlignedSourceVolume;
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorLogic::modifierLabelmap() const
+vtkOrientedImageData* vtkSegmentEditorLogic::GetModifierLabelmap() const
 {
   return ModifierLabelmap;
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorLogic::maskLabelmap() const
+vtkOrientedImageData* vtkSegmentEditorLogic::GetMaskLabelmap() const
 {
   return MaskLabelmap;
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorLogic::selectedSegmentLabelmap() const
+vtkOrientedImageData* vtkSegmentEditorLogic::GetSelectedSegmentLabelmap() const
 {
   return SelectedSegmentLabelmap;
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorLogic::referenceGeometryImage() const
+vtkOrientedImageData* vtkSegmentEditorLogic::GetReferenceGeometryImage() const
 {
   return ReferenceGeometryImage;
 }
 
 //-----------------------------------------------------------------------------
-vtkSmartPointer<vtkSegmentationHistory> vtkSegmentEditorLogic::segmentationHistory() const
+vtkSmartPointer<vtkSegmentationHistory> vtkSegmentEditorLogic::GetSegmentationHistory() const
 {
   return SegmentationHistory;
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::viewsObserved() const
+bool vtkSegmentEditorLogic::AreViewsObserved() const
 {
   return ViewsObserved;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setLocked(bool isLocked)
+void vtkSegmentEditorLogic::SetLocked(bool isLocked)
 {
   Locked = isLocked;
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::canTriviallyConvertSourceRepresentationToBinaryLabelMap()
+bool vtkSegmentEditorLogic::CanTriviallyConvertSourceRepresentationToBinaryLabelMap()
 {
-  if (!isSegmentationNodeValid())
+  if (!IsSegmentationNodeValid())
   {
     return false;
   }
@@ -593,9 +593,9 @@ bool vtkSegmentEditorLogic::canTriviallyConvertSourceRepresentationToBinaryLabel
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::trivialSetSourceRepresentationToBinaryLabelmap()
+bool vtkSegmentEditorLogic::TrivialSetSourceRepresentationToBinaryLabelmap()
 {
-  if (canTriviallyConvertSourceRepresentationToBinaryLabelMap())
+  if (CanTriviallyConvertSourceRepresentationToBinaryLabelMap())
   {
     MRMLNodeModifyBlocker blocker(SegmentationNode);
     SegmentationNode->GetSegmentation()->SetSourceRepresentationName(vtkSegmentationConverter::GetSegmentationBinaryLabelmapRepresentationName());
@@ -605,9 +605,9 @@ bool vtkSegmentEditorLogic::trivialSetSourceRepresentationToBinaryLabelmap()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::convertSourceRepresentationToBinaryLabelmap()
+bool vtkSegmentEditorLogic::ConvertSourceRepresentationToBinaryLabelmap()
 {
-  if (!isSegmentationNodeValid())
+  if (!IsSegmentationNodeValid())
   {
     return false;
   }
@@ -645,23 +645,23 @@ bool vtkSegmentEditorLogic::convertSourceRepresentationToBinaryLabelmap()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::setSourceRepresentationToBinaryLabelmapWithoutConfirmation()
+bool vtkSegmentEditorLogic::SetSourceRepresentationToBinaryLabelmapWithoutConfirmation()
 {
-  if (!trivialSetSourceRepresentationToBinaryLabelmap())
+  if (!TrivialSetSourceRepresentationToBinaryLabelmap())
   {
     return true;
   }
-  return convertSourceRepresentationToBinaryLabelmap();
+  return ConvertSourceRepresentationToBinaryLabelmap();
 }
 
 //-----------------------------------------------------------------------------
-vtkSegmentEditorAbstractEffect* vtkSegmentEditorLogic::activeEffect() const
+vtkSegmentEditorAbstractEffect* vtkSegmentEditorLogic::GetActiveEffect() const
 {
   return ActiveEffect;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setActiveEffect(vtkSegmentEditorAbstractEffect* effect)
+void vtkSegmentEditorLogic::SetActiveEffect(vtkSegmentEditorAbstractEffect* effect)
 {
   if (ActiveEffect == effect)
   {
@@ -678,19 +678,19 @@ void vtkSegmentEditorLogic::setActiveEffect(vtkSegmentEditorAbstractEffect* effe
   }
 
   ActiveEffect = effect;
-  SegmentEditorNode->SetActiveEffectName(effect ? effect->name().c_str() : "");
+  SegmentEditorNode->SetActiveEffectName(effect ? effect->GetName().c_str() : "");
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLScene* vtkSegmentEditorLogic::mrmlScene() const
+vtkMRMLScene* vtkSegmentEditorLogic::GetScene() const
 {
   return MRMLScene;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setMRMLScene(vtkMRMLScene* newScene)
+void vtkSegmentEditorLogic::SetScene(vtkMRMLScene* newScene)
 {
-  if (newScene == this->mrmlScene())
+  if (newScene == this->GetScene())
   {
     return;
   }
@@ -702,11 +702,11 @@ void vtkSegmentEditorLogic::setMRMLScene(vtkMRMLScene* newScene)
   {
     interactionNode = vtkMRMLInteractionNode::SafeDownCast(newScene->GetNodeByID("vtkMRMLInteractionNodeSingleton"));
   }
-  setInteractionNode(interactionNode);
+  SetInteractionNode(interactionNode);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setMRMLSegmentEditorNode(vtkMRMLSegmentEditorNode* newSegmentEditorNode)
+void vtkSegmentEditorLogic::SetSegmentEditorNode(vtkMRMLSegmentEditorNode* newSegmentEditorNode)
 {
   if (SegmentEditorNode == newSegmentEditorNode)
   {
@@ -717,16 +717,16 @@ void vtkSegmentEditorLogic::setMRMLSegmentEditorNode(vtkMRMLSegmentEditorNode* n
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onInteractionNodeModified(vtkObject* caller, unsigned long eid, void* clientData, void* callData)
+void vtkSegmentEditorLogic::OnInteractionNodeModified(vtkObject* caller, unsigned long eid, void* clientData, void* callData)
 {
   auto self = reinterpret_cast<vtkSegmentEditorLogic*>(clientData);
   if (!self)
     return;
-  self->onInteractionNodeModified();
+  self->OnInteractionNodeModified();
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onInteractionNodeModified()
+void vtkSegmentEditorLogic::OnInteractionNodeModified()
 {
   if (!InteractionNode || !ActiveEffect)
   {
@@ -734,23 +734,23 @@ void vtkSegmentEditorLogic::onInteractionNodeModified()
   }
   // Only notify the active effect about interaction node changes
   // (inactive effects should not interact with the user)
-  ActiveEffect->interactionNodeModified(InteractionNode);
+  ActiveEffect->InteractionNodeModified(InteractionNode);
 }
 
 //------------------------------------------------------------------------------
-vtkMRMLSegmentEditorNode* vtkSegmentEditorLogic::segmentEditorNode() const
+vtkMRMLSegmentEditorNode* vtkSegmentEditorLogic::GetSegmentEditorNode() const
 {
   return SegmentEditorNode;
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLInteractionNode* vtkSegmentEditorLogic::interactionNode() const
+vtkMRMLInteractionNode* vtkSegmentEditorLogic::GetInteractionNode() const
 {
   return InteractionNode;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setInteractionNode(vtkMRMLInteractionNode* interactionNode)
+void vtkSegmentEditorLogic::SetInteractionNode(vtkMRMLInteractionNode* interactionNode)
 {
   if (InteractionNode == interactionNode)
   {
@@ -766,13 +766,13 @@ void vtkSegmentEditorLogic::setInteractionNode(vtkMRMLInteractionNode* interacti
   {
     auto callback = vtkSmartPointer<vtkCallbackCommand>::New();
     callback->SetClientData(this);
-    callback->SetCallback(&vtkSegmentEditorLogic::onInteractionNodeModified);
+    callback->SetCallback(&vtkSegmentEditorLogic::OnInteractionNodeModified);
     InteractionNodeObs = InteractionNode->AddObserver(vtkCommand::ModifiedEvent, callback);
   }
 }
 
 //------------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setSegmentationNode(vtkMRMLNode* node)
+void vtkSegmentEditorLogic::SetSegmentationNode(vtkMRMLNode* node)
 {
   if (!SegmentEditorNode)
   {
@@ -788,56 +788,56 @@ void vtkSegmentEditorLogic::setSegmentationNode(vtkMRMLNode* node)
     return;
   }
 
-  this->setActiveEffect(nullptr); // deactivate current effect when we switch to a different segmentation
+  this->SetActiveEffect(nullptr); // deactivate current effect when we switch to a different segmentation
   SegmentEditorNode->SetAndObserveSegmentationNode(vtkMRMLSegmentationNode::SafeDownCast(node));
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLSegmentationNode* vtkSegmentEditorLogic::segmentationNode() const
+vtkMRMLSegmentationNode* vtkSegmentEditorLogic::GetSegmentationNode() const
 {
   return SegmentationNode;
 }
 
 //------------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setSegmentationNodeID(const std::string& nodeID)
+void vtkSegmentEditorLogic::SetSegmentationNodeID(const std::string& nodeID)
 {
-  if (!this->mrmlScene())
+  if (!this->GetScene())
   {
     vtkErrorMacro(" failed: MRML scene is not set");
     return;
   }
-  this->setSegmentationNode(vtkMRMLSegmentationNode::SafeDownCast(this->mrmlScene()->GetNodeByID(nodeID.c_str())));
+  this->SetSegmentationNode(vtkMRMLSegmentationNode::SafeDownCast(this->GetScene()->GetNodeByID(nodeID.c_str())));
 }
 
 //------------------------------------------------------------------------------
-std::string vtkSegmentEditorLogic::segmentationNodeID() const
+std::string vtkSegmentEditorLogic::GetSegmentationNodeID() const
 {
   return SegmentationNode ? SegmentationNode->GetID() : "";
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorLogic::currentSegmentID()
+std::string vtkSegmentEditorLogic::GetCurrentSegmentID()
 {
-  return getSelectedSegmentID();
+  return GetSelectedSegmentID();
 }
 
 //-----------------------------------------------------------------------------
-vtkSegmentation* vtkSegmentEditorLogic::getSegmentation()
+vtkSegmentation* vtkSegmentEditorLogic::GetSegmentation()
 {
-  if (!isSegmentationNodeValid())
+  if (!IsSegmentationNodeValid())
     return nullptr;
-  return segmentationNode()->GetSegmentation();
+  return GetSegmentationNode()->GetSegmentation();
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::isSegmentIDValid(const std::string& segmentId)
+bool vtkSegmentEditorLogic::IsSegmentIDValid(const std::string& segmentId)
 {
   if (segmentId.empty())
   {
     return false;
   }
 
-  auto segmentation = getSegmentation();
+  auto segmentation = GetSegmentation();
   if (!segmentation)
   {
     return false;
@@ -846,30 +846,30 @@ bool vtkSegmentEditorLogic::isSegmentIDValid(const std::string& segmentId)
 }
 
 //------------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::canAddSegments()
+bool vtkSegmentEditorLogic::CanAddSegments()
 {
   // Disable adding new segments until source volume is set (or reference geometry is specified for the segmentation).
   // This forces the user to select a source volume before start adding segments.
-  return ((getSegmentation() != nullptr) && !Locked && (SourceVolumeNode != nullptr) && (!referenceImageGeometry().empty()));
+  return ((GetSegmentation() != nullptr) && !Locked && (SourceVolumeNode != nullptr) && (!GetReferenceImageGeometryString().empty()));
 }
 
 //------------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::canRemoveSegments()
+bool vtkSegmentEditorLogic::CanRemoveSegments()
 {
   // Only enable remove button if a segment is selected
-  return (!Locked) && isSegmentIDValid(currentSegmentID());
+  return (!Locked) && IsSegmentIDValid(GetCurrentSegmentID());
 }
 
 //------------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::isLocked() const
+bool vtkSegmentEditorLogic::IsLocked() const
 {
   return Locked;
 }
 
 //------------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setSourceVolumeNode(vtkMRMLNode* node)
+void vtkSegmentEditorLogic::SetSourceVolumeNode(vtkMRMLNode* node)
 {
-  if (!SegmentEditorNode || !this->segmentationNode())
+  if (!SegmentEditorNode || !this->GetSegmentationNode())
   {
     if (node)
     {
@@ -889,7 +889,7 @@ void vtkSegmentEditorLogic::setSourceVolumeNode(vtkMRMLNode* node)
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLScalarVolumeNode* vtkSegmentEditorLogic::sourceVolumeNode() const
+vtkMRMLScalarVolumeNode* vtkSegmentEditorLogic::GetSourceVolumeNode() const
 {
   if (!SegmentEditorNode)
   {
@@ -899,20 +899,20 @@ vtkMRMLScalarVolumeNode* vtkSegmentEditorLogic::sourceVolumeNode() const
 }
 
 //------------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setSourceVolumeNodeID(const std::string& nodeID)
+void vtkSegmentEditorLogic::SetSourceVolumeNodeID(const std::string& nodeID)
 {
-  if (!this->mrmlScene())
+  if (!this->GetScene())
   {
     vtkErrorMacro(" failed: MRML scene is not set");
     return;
   }
-  this->setSourceVolumeNode(this->mrmlScene()->GetNodeByID(nodeID.c_str()));
+  this->SetSourceVolumeNode(this->GetScene()->GetNodeByID(nodeID.c_str()));
 }
 
 //------------------------------------------------------------------------------
-std::string vtkSegmentEditorLogic::sourceVolumeNodeID() const
+std::string vtkSegmentEditorLogic::GetSourceVolumeNodeID() const
 {
-  vtkMRMLNode* sourceVolumeNode = this->sourceVolumeNode();
+  vtkMRMLNode* sourceVolumeNode = this->GetSourceVolumeNode();
   if (!sourceVolumeNode || !sourceVolumeNode->GetID())
   {
     return "";
@@ -921,17 +921,17 @@ std::string vtkSegmentEditorLogic::sourceVolumeNodeID() const
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onSegmentationNodeChanged(vtkMRMLNode* node)
+void vtkSegmentEditorLogic::OnSegmentationNodeChanged(vtkMRMLNode* node)
 {
-  if (!this->mrmlScene() || this->mrmlScene()->IsBatchProcessing())
+  if (!this->GetScene() || this->GetScene()->IsBatchProcessing())
   {
     return;
   }
-  this->setSegmentationNode(node);
+  this->SetSegmentationNode(node);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setCurrentSegmentID(const std::string segmentID)
+void vtkSegmentEditorLogic::SetCurrentSegmentID(const std::string segmentID)
 {
   if (SegmentEditorNode)
   {
@@ -940,17 +940,17 @@ void vtkSegmentEditorLogic::setCurrentSegmentID(const std::string segmentID)
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onSourceVolumeNodeChanged(vtkMRMLNode* node)
+void vtkSegmentEditorLogic::OnSourceVolumeNodeChanged(vtkMRMLNode* node)
 {
-  if (!this->mrmlScene() || this->mrmlScene()->IsBatchProcessing())
+  if (!this->GetScene() || this->GetScene()->IsBatchProcessing())
   {
     return;
   }
-  this->setSourceVolumeNode(node);
+  this->SetSourceVolumeNode(node);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onAddSegment(std::string emptySegmentName, int firstVisibleStatus)
+void vtkSegmentEditorLogic::OnAddSegment(std::string emptySegmentName, int firstVisibleStatus)
 {
   if (!SegmentEditorNode)
   {
@@ -1010,13 +1010,13 @@ void vtkSegmentEditorLogic::onAddSegment(std::string emptySegmentName, int first
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::hasSelectedSegmentID(int offset)
+bool vtkSegmentEditorLogic::HasSelectedSegmentID(int offset)
 {
-  return !(getSelectedSegmentID(offset).empty());
+  return !(GetSelectedSegmentID(offset).empty());
 }
 
 //-----------------------------------------------------------------------------
-std::vector<std::string> vtkSegmentEditorLogic::getSegmentIDs()
+std::vector<std::string> vtkSegmentEditorLogic::GetSegmentIDs()
 {
   vtkMRMLSegmentationNode* segmentationNode = SegmentEditorNode ? SegmentEditorNode->GetSegmentationNode() : nullptr;
   vtkSegmentation* segmentation = segmentationNode ? segmentationNode->GetSegmentation() : nullptr;
@@ -1031,12 +1031,12 @@ std::vector<std::string> vtkSegmentEditorLogic::getSegmentIDs()
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorLogic::getSelectedSegmentID(int offset)
+std::string vtkSegmentEditorLogic::GetSelectedSegmentID(int offset)
 {
-  std::vector<std::string> segmentIDs = getSegmentIDs();
+  std::vector<std::string> segmentIDs = GetSegmentIDs();
 
   // Find the currently selected segment iterator. If no valid selection, return empty ID
-  auto currentIt = std::find(std::begin(segmentIDs), std::end(segmentIDs), currentSegmentID());
+  auto currentIt = std::find(std::begin(segmentIDs), std::end(segmentIDs), GetCurrentSegmentID());
   if (currentIt == std::end(segmentIDs))
   {
     return {};
@@ -1054,7 +1054,7 @@ std::string vtkSegmentEditorLogic::getSelectedSegmentID(int offset)
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onRemoveSegment()
+void vtkSegmentEditorLogic::OnRemoveSegment()
 {
   if (!SegmentEditorNode)
   {
@@ -1073,10 +1073,10 @@ void vtkSegmentEditorLogic::onRemoveSegment()
 
   // Switch to a new valid segment now (to avoid transient state when no segments are selected
   // as it could deactivate current effect).
-  std::string newId = getSelectedSegmentID(1);
+  std::string newId = GetSelectedSegmentID(1);
   if (newId.empty())
   {
-    newId = getSelectedSegmentID(-1);
+    newId = GetSelectedSegmentID(-1);
   }
   if (!newId.empty())
   {
@@ -1088,7 +1088,7 @@ void vtkSegmentEditorLogic::onRemoveSegment()
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onCreateSurfaceToggled(bool on)
+void vtkSegmentEditorLogic::OnCreateSurfaceToggled(bool on)
 {
   if (!SegmentEditorNode)
   {
@@ -1134,9 +1134,9 @@ void vtkSegmentEditorLogic::onCreateSurfaceToggled(bool on)
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::showSourceVolumeInSliceViewers(bool forceShowInBackground /*=false*/, bool fitSlice /*=false*/)
+void vtkSegmentEditorLogic::ShowSourceVolumeInSliceViewers(bool forceShowInBackground /*=false*/, bool fitSlice /*=false*/)
 {
-  auto sliceNodes = mrmlScene()->GetNodesByClass<vtkMRMLSliceNode>("vtkMRMLSliceNode");
+  auto sliceNodes = GetScene()->GetNodesByClass<vtkMRMLSliceNode>("vtkMRMLSliceNode");
 
   if (!SegmentEditorNode->GetSourceVolumeNode())
   {
@@ -1153,7 +1153,7 @@ void vtkSegmentEditorLogic::showSourceVolumeInSliceViewers(bool forceShowInBackg
     {
       continue;
     }
-    if (!segmentationDisplayableInView(sliceNode))
+    if (!IsSegmentationDisplayableInView(sliceNode))
     {
       continue;
     }
@@ -1180,19 +1180,19 @@ void vtkSegmentEditorLogic::showSourceVolumeInSliceViewers(bool forceShowInBackg
 }
 
 //---------------------------------------------------------------------------
-vtkSmartPointer<vtkSegmentEditorEventCallbackCommand> vtkSegmentEditorLogic::createViewInteractionCallbackCommand(vtkRenderWindow* renderWindow, vtkMRMLAbstractViewNode* viewNode)
+vtkSmartPointer<vtkSegmentEditorEventCallbackCommand> vtkSegmentEditorLogic::CreateViewInteractionCallbackCommand(vtkRenderWindow* renderWindow, vtkMRMLAbstractViewNode* viewNode)
 {
   auto interactionCallbackCommand = vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>::New();
   interactionCallbackCommand->EditorWidget = this;
   interactionCallbackCommand->ViewNode = viewNode;
   interactionCallbackCommand->ViewRenderWindow = renderWindow;
   interactionCallbackCommand->SetClientData(reinterpret_cast<void*>(interactionCallbackCommand.GetPointer()));
-  interactionCallbackCommand->SetCallback(vtkSegmentEditorLogic::processEvents);
+  interactionCallbackCommand->SetCallback(vtkSegmentEditorLogic::ProcessEvents);
   return interactionCallbackCommand;
 }
 
 //---------------------------------------------------------------------------
-SegmentEditorEventObservation vtkSegmentEditorLogic::createInteractorEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand)
+SegmentEditorEventObservation vtkSegmentEditorLogic::CreateInteractorEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand)
 {
   // Connect interactor events
   auto renderWindow = vtkRenderWindow::SafeDownCast(interactionCallbackCommand->ViewNode->GetRenderWindow());
@@ -1229,7 +1229,7 @@ SegmentEditorEventObservation vtkSegmentEditorLogic::createInteractorEventObserv
 }
 
 //---------------------------------------------------------------------------
-SegmentEditorEventObservation vtkSegmentEditorLogic::createViewNodeModifiedEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand)
+SegmentEditorEventObservation vtkSegmentEditorLogic::CreateViewNodeModifiedEventObservation(const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand)
 {
   SegmentEditorEventObservation viewNodeObservation;
   viewNodeObservation.CallbackCommand = interactionCallbackCommand;
@@ -1239,7 +1239,7 @@ SegmentEditorEventObservation vtkSegmentEditorLogic::createViewNodeModifiedEvent
 }
 
 //---------------------------------------------------------------------------
-SegmentEditorEventObservation vtkSegmentEditorLogic::createSlicePoseModifiedEventObservation(
+SegmentEditorEventObservation vtkSegmentEditorLogic::CreateSlicePoseModifiedEventObservation(
   const vtkSmartPointer<vtkSegmentEditorEventCallbackCommand>& interactionCallbackCommand)
 {
   auto sliceNode = vtkMRMLSliceNode::SafeDownCast(interactionCallbackCommand->ViewNode);
@@ -1254,7 +1254,7 @@ SegmentEditorEventObservation vtkSegmentEditorLogic::createSlicePoseModifiedEven
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setupViewObservations(const std::vector<vtkMRMLAbstractViewNode*>& viewNodes)
+void vtkSegmentEditorLogic::SetupViewObservations(const std::vector<vtkMRMLAbstractViewNode*>& viewNodes)
 {
   for (const auto& viewNode : viewNodes)
   {
@@ -1269,10 +1269,10 @@ void vtkSegmentEditorLogic::setupViewObservations(const std::vector<vtkMRMLAbstr
       continue;
     }
 
-    auto interactionCallback = createViewInteractionCallbackCommand(renderWindow, viewNode);
-    std::vector<SegmentEditorEventObservation> observations{ createInteractorEventObservation(interactionCallback),
-                                                             createViewNodeModifiedEventObservation(interactionCallback),
-                                                             createSlicePoseModifiedEventObservation(interactionCallback) };
+    auto interactionCallback = CreateViewInteractionCallbackCommand(renderWindow, viewNode);
+    std::vector<SegmentEditorEventObservation> observations{ CreateInteractorEventObservation(interactionCallback),
+                                                             CreateViewNodeModifiedEventObservation(interactionCallback),
+                                                             CreateSlicePoseModifiedEventObservation(interactionCallback) };
 
     for (const auto& observation : observations)
     {
@@ -1285,7 +1285,7 @@ void vtkSegmentEditorLogic::setupViewObservations(const std::vector<vtkMRMLAbstr
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::refreshObservedViewNodeIds()
+void vtkSegmentEditorLogic::RefreshObservedViewNodeIds()
 {
   ObservedViewNodeIDs.clear();
   if (!SegmentationNode)
@@ -1307,22 +1307,22 @@ void vtkSegmentEditorLogic::refreshObservedViewNodeIds()
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setupViewObservations()
+void vtkSegmentEditorLogic::SetupViewObservations()
 {
   // Make sure previous observations are cleared before setting up the new ones
-  this->removeViewObservations();
+  this->RemoveViewObservations();
 
   // Setup observations for slice and threed views
-  setupViewObservations(mrmlScene()->GetNodesByClass<vtkMRMLAbstractViewNode>("vtkMRMLAbstractViewNode"));
+  SetupViewObservations(GetScene()->GetNodesByClass<vtkMRMLAbstractViewNode>("vtkMRMLAbstractViewNode"));
 
   // Refresh observed view node ids
-  refreshObservedViewNodeIds();
+  RefreshObservedViewNodeIds();
 
   ViewsObserved = true;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::removeViewObservations()
+void vtkSegmentEditorLogic::RemoveViewObservations()
 {
   for (const SegmentEditorEventObservation& eventObservation : EventObservations)
   {
@@ -1339,7 +1339,7 @@ void vtkSegmentEditorLogic::removeViewObservations()
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::saveStateForUndo()
+void vtkSegmentEditorLogic::SaveStateForUndo()
 {
   if (SegmentationHistory->GetMaximumNumberOfStates() > 0)
   {
@@ -1348,27 +1348,27 @@ void vtkSegmentEditorLogic::saveStateForUndo()
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::updateVolume(void* volumeToUpdate, bool& success)
+void vtkSegmentEditorLogic::UpdateVolume(void* volumeToUpdate, bool& success)
 {
   if (volumeToUpdate == AlignedSourceVolume)
   {
-    success = updateAlignedSourceVolume();
+    success = UpdateAlignedSourceVolume();
   }
   else if (volumeToUpdate == ModifierLabelmap)
   {
-    success = resetModifierLabelmapToDefault();
+    success = ResetModifierLabelmapToDefault();
   }
   else if (volumeToUpdate == MaskLabelmap)
   {
-    success = updateMaskLabelmap();
+    success = UpdateMaskLabelmap();
   }
   else if (volumeToUpdate == SelectedSegmentLabelmap)
   {
-    success = updateSelectedSegmentLabelmap();
+    success = UpdateSelectedSegmentLabelmap();
   }
   else if (volumeToUpdate == ReferenceGeometryImage)
   {
-    success = updateReferenceGeometryImage();
+    success = UpdateReferenceGeometryImage();
   }
   else
   {
@@ -1378,7 +1378,7 @@ void vtkSegmentEditorLogic::updateVolume(void* volumeToUpdate, bool& success)
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::processEvents(vtkObject* caller, unsigned long eid, void* clientData, void* vtkNotUsed(callData))
+void vtkSegmentEditorLogic::ProcessEvents(vtkObject* caller, unsigned long eid, void* clientData, void* vtkNotUsed(callData))
 {
   // Get and parse client data
   vtkSegmentEditorEventCallbackCommand* callbackCommand = static_cast<vtkSegmentEditorEventCallbackCommand*>(clientData);
@@ -1392,12 +1392,12 @@ void vtkSegmentEditorLogic::processEvents(vtkObject* caller, unsigned long eid, 
   }
 
   // Do nothing if scene is closing
-  if (!self->mrmlScene() || self->mrmlScene()->IsClosing())
+  if (!self->GetScene() || self->GetScene()->IsClosing())
   {
     return;
   }
   // If the segment editor node is no longer valid then ignore all events
-  if (!self->segmentEditorNode())
+  if (!self->GetSegmentEditorNode())
   {
     return;
   }
@@ -1410,7 +1410,7 @@ void vtkSegmentEditorLogic::processEvents(vtkObject* caller, unsigned long eid, 
   }
 
   // Get active effect
-  vtkSegmentEditorAbstractEffect* activeEffect = self->activeEffect();
+  vtkSegmentEditorAbstractEffect* activeEffect = self->GetActiveEffect();
   if (!activeEffect)
   {
     return;
@@ -1449,7 +1449,7 @@ void vtkSegmentEditorLogic::processEvents(vtkObject* caller, unsigned long eid, 
       }
     }
 
-    bool abortEvent = activeEffect->processInteractionEvents(callerInteractor, eid, viewRenderWindow, viewNode);
+    bool abortEvent = activeEffect->ProcessInteractionEvents(callerInteractor, eid, viewRenderWindow, viewNode);
     if (abortEvent)
     {
       /// Set the AbortFlag on the vtkCommand associated with the event.
@@ -1459,7 +1459,7 @@ void vtkSegmentEditorLogic::processEvents(vtkObject* caller, unsigned long eid, 
   }
   else if (callerViewNode)
   {
-    activeEffect->processViewNodeEvents(callerViewNode, eid, viewRenderWindow);
+    activeEffect->ProcessViewNodeEvents(callerViewNode, eid, viewRenderWindow);
   }
   else
   {
@@ -1468,7 +1468,7 @@ void vtkSegmentEditorLogic::processEvents(vtkObject* caller, unsigned long eid, 
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onSourceVolumeIntensityMaskChecked(bool checked)
+void vtkSegmentEditorLogic::OnSourceVolumeIntensityMaskChecked(bool checked)
 {
   if (!SegmentEditorNode)
   {
@@ -1479,7 +1479,7 @@ void vtkSegmentEditorLogic::onSourceVolumeIntensityMaskChecked(bool checked)
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onSourceVolumeIntensityMaskRangeChanged(double min, double max)
+void vtkSegmentEditorLogic::OnSourceVolumeIntensityMaskRangeChanged(double min, double max)
 {
   if (!SegmentEditorNode)
   {
@@ -1490,41 +1490,41 @@ void vtkSegmentEditorLogic::onSourceVolumeIntensityMaskRangeChanged(double min, 
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::clearUndoState()
+void vtkSegmentEditorLogic::ClearUndoState()
 {
   SegmentationHistory->RemoveAllStates();
 }
 
 //-----------------------------------------------------------------------------
-int vtkSegmentEditorLogic::maximumNumberOfUndoStates() const
+int vtkSegmentEditorLogic::GetMaximumNumberOfUndoStates() const
 {
   return SegmentationHistory->GetMaximumNumberOfStates();
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setMaximumNumberOfUndoStates(int maxNumberOfStates)
+void vtkSegmentEditorLogic::SetMaximumNumberOfUndoStates(int maxNumberOfStates)
 {
   SegmentationHistory->SetMaximumNumberOfStates(maxNumberOfStates);
 }
 
 //------------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::readOnly() const
+bool vtkSegmentEditorLogic::IsReadOnly() const
 {
   return Locked;
 }
 
 //------------------------------------------------------------------------------
-void vtkSegmentEditorLogic::setReadOnly(bool aReadOnly)
+void vtkSegmentEditorLogic::SetReadOnly(bool aReadOnly)
 {
   Locked = aReadOnly;
   if (aReadOnly)
   {
-    setActiveEffect(nullptr);
+    SetActiveEffect(nullptr);
   }
 }
 
 //------------------------------------------------------------------------------
-void vtkSegmentEditorLogic::toggleSourceVolumeIntensityMaskEnabled()
+void vtkSegmentEditorLogic::ToggleSourceVolumeIntensityMaskEnabled()
 {
   if (!SegmentEditorNode)
   {
@@ -1535,7 +1535,7 @@ void vtkSegmentEditorLogic::toggleSourceVolumeIntensityMaskEnabled()
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::undo()
+void vtkSegmentEditorLogic::Undo()
 {
   if (!SegmentationNode)
   {
@@ -1548,7 +1548,7 @@ void vtkSegmentEditorLogic::undo()
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::redo()
+void vtkSegmentEditorLogic::Redo()
 {
   if (!SegmentationNode)
   {
@@ -1561,21 +1561,21 @@ void vtkSegmentEditorLogic::redo()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::isUndoEnabled() const
+bool vtkSegmentEditorLogic::IsUndoEnabled() const
 {
   return !Locked && SegmentationHistory->IsRestorePreviousStateAvailable();
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::isRedoEnabled() const
+bool vtkSegmentEditorLogic::IsRedoEnabled() const
 {
   return !Locked && SegmentationHistory->IsRestoreNextStateAvailable();
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::hideLabelLayer()
+void vtkSegmentEditorLogic::HideLabelLayer()
 {
-  auto sliceNodes = mrmlScene()->GetNodesByClass<vtkMRMLSliceNode>("vtkMRMLSliceNode");
+  auto sliceNodes = GetScene()->GetNodesByClass<vtkMRMLSliceNode>("vtkMRMLSliceNode");
   for (const auto& sliceNode : sliceNodes)
   {
     if (!sliceNode)
@@ -1588,7 +1588,7 @@ void vtkSegmentEditorLogic::hideLabelLayer()
     {
       continue;
     }
-    if (!segmentationDisplayableInView(sliceLogic->GetSliceNode()))
+    if (!IsSegmentationDisplayableInView(sliceLogic->GetSliceNode()))
     {
       continue;
     }
@@ -1602,13 +1602,13 @@ void vtkSegmentEditorLogic::hideLabelLayer()
 }
 
 //---------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::turnOffLightboxes()
+bool vtkSegmentEditorLogic::TurnOffLightboxes()
 {
-  auto sliceNodes = mrmlScene()->GetNodesByClass<vtkMRMLSliceNode>("vtkMRMLSliceNode");
+  auto sliceNodes = GetScene()->GetNodesByClass<vtkMRMLSliceNode>("vtkMRMLSliceNode");
   bool lightboxFound = false;
   for (const auto& sliceNode : sliceNodes)
   {
-    if (!sliceNode || !segmentationDisplayableInView(sliceNode))
+    if (!sliceNode || !IsSegmentationDisplayableInView(sliceNode))
     {
       continue;
     }
@@ -1624,7 +1624,7 @@ bool vtkSegmentEditorLogic::turnOffLightboxes()
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onExportToColorTableActionClicked()
+void vtkSegmentEditorLogic::OnExportToColorTableActionClicked()
 {
   vtkMRMLSegmentationNode* segmentationNode = SegmentEditorNode ? SegmentEditorNode->GetSegmentationNode() : nullptr;
   if (!segmentationNode)
@@ -1650,7 +1650,7 @@ void vtkSegmentEditorLogic::onExportToColorTableActionClicked()
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorLogic::onSegmentationDisplayModified()
+void vtkSegmentEditorLogic::OnSegmentationDisplayModified()
 {
   // Update observed views
   if (!ViewsObserved)
@@ -1698,13 +1698,13 @@ void vtkSegmentEditorLogic::onSegmentationDisplayModified()
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::createAndSetBlankSourceVolumeIfNeeded()
+void vtkSegmentEditorLogic::CreateAndSetBlankSourceVolumeIfNeeded()
 {
   // If no source volume is selected but a valid geometry is specified then create a blank source volume
   if (SegmentEditorNode->GetSourceVolumeNode() != nullptr)
     return;
 
-  std::string referenceImageGeometry = getReferenceImageGeometryFromSegmentation(SegmentationNode->GetSegmentation());
+  std::string referenceImageGeometry = GetReferenceImageGeometryStringFromSegmentation(SegmentationNode->GetSegmentation());
   vtkNew<vtkMatrix4x4> referenceGeometryMatrix;
   int referenceExtent[6] = { 0, -1, 0, -1, 0, -1 };
   vtkSegmentationConverter::DeserializeImageGeometry(referenceImageGeometry, referenceGeometryMatrix.GetPointer(), referenceExtent);
@@ -1719,44 +1719,43 @@ void vtkSegmentEditorLogic::createAndSetBlankSourceVolumeIfNeeded()
 
     // Create volume node from blank image
     std::string sourceVolumeNodeName = (SegmentationNode->GetName() ? SegmentationNode->GetName() : "Volume") + std::string(" source volume");
-    vtkMRMLScalarVolumeNode* sourceVolumeNode =
-      vtkMRMLScalarVolumeNode::SafeDownCast(this->mrmlScene()->AddNewNodeByClass("vtkMRMLScalarVolumeNode", sourceVolumeNodeName.c_str()));
+    vtkMRMLScalarVolumeNode* sourceVolumeNode = vtkMRMLScalarVolumeNode::SafeDownCast(this->GetScene()->AddNewNodeByClass("vtkMRMLScalarVolumeNode", sourceVolumeNodeName.c_str()));
     sourceVolumeNode->SetAndObserveTransformNodeID(SegmentationNode->GetTransformNodeID());
     vtkSlicerSegmentationsModuleLogic::CopyOrientedImageDataToVolumeNode(blankImage.GetPointer(), sourceVolumeNode);
 
     // Use blank volume as master
-    this->setSourceVolumeNode(sourceVolumeNode);
+    this->SetSourceVolumeNode(sourceVolumeNode);
   }
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::selectFirstSegment()
+void vtkSegmentEditorLogic::SelectFirstSegment()
 {
-  auto segmentIds = getSegmentIDs();
+  auto segmentIds = GetSegmentIDs();
   if (segmentIds.empty())
   {
     return;
   }
 
-  setCurrentSegmentID(segmentIds[0]);
+  SetCurrentSegmentID(segmentIds[0]);
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::selectPreviousSegment()
+void vtkSegmentEditorLogic::SelectPreviousSegment()
 {
-  this->selectSegmentAtOffset(-1);
+  this->SelectSegmentAtOffset(-1);
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::selectNextSegment()
+void vtkSegmentEditorLogic::SelectNextSegment()
 {
-  this->selectSegmentAtOffset(1);
+  this->SelectSegmentAtOffset(1);
 }
 
 //---------------------------------------------------------------------------
-std::vector<std::string> vtkSegmentEditorLogic::getVisibleSegmentIDs()
+std::vector<std::string> vtkSegmentEditorLogic::GetVisibleSegmentIDs()
 {
-  vtkMRMLSegmentationNode* segmentationNode = vtkMRMLSegmentationNode::SafeDownCast(this->segmentationNode());
+  vtkMRMLSegmentationNode* segmentationNode = vtkMRMLSegmentationNode::SafeDownCast(this->GetSegmentationNode());
   if (segmentationNode == nullptr || segmentationNode->GetDisplayNode() == nullptr)
   {
     return {};
@@ -1778,34 +1777,34 @@ bool isSegmentIDValid(const std::string& segmentID)
 }
 
 //---------------------------------------------------------------------------
-bool vtkSegmentEditorLogic::isSegmentIDVisible(const std::string& segmentID)
+bool vtkSegmentEditorLogic::IsSegmentIDVisible(const std::string& segmentID)
 {
-  std::vector<std::string> visibleSegmentIDs = getVisibleSegmentIDs();
+  std::vector<std::string> visibleSegmentIDs = GetVisibleSegmentIDs();
   return std::find(std::begin(visibleSegmentIDs), std::end(visibleSegmentIDs), segmentID) != std::end(visibleSegmentIDs);
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::selectSegmentAtOffset(int offset)
+void vtkSegmentEditorLogic::SelectSegmentAtOffset(int offset)
 {
-  std::vector<std::string> visibleSegmentIDs = getVisibleSegmentIDs();
+  std::vector<std::string> visibleSegmentIDs = GetVisibleSegmentIDs();
 
-  auto newId = getSelectedSegmentID(offset);
+  auto newId = GetSelectedSegmentID(offset);
   bool isValid = !newId.empty();
   bool isDisplayed = std::find(std::begin(visibleSegmentIDs), std::end(visibleSegmentIDs), newId) != std::end(visibleSegmentIDs);
   if (isValid && isDisplayed)
   {
-    this->setCurrentSegmentID(newId.c_str());
+    this->SetCurrentSegmentID(newId.c_str());
   }
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::pauseRender()
+void vtkSegmentEditorLogic::PauseRender()
 {
   InvokeEvent(PauseRenderEvent);
 }
 
 //---------------------------------------------------------------------------
-void vtkSegmentEditorLogic::resumeRender()
+void vtkSegmentEditorLogic::ResumeRender()
 {
   InvokeEvent(ResumeRenderEvent);
 }

@@ -22,8 +22,6 @@ set(${KIT}_SRCS
   vtkSegmentEditorAbstractEffect.h
   vtkSegmentEditorLogic.cxx
   vtkSegmentEditorLogic.h
-  vtkMouseCursor.cxx
-  vtkMouseCursor.h
   )
 
 set(${KIT}_TARGET_LIBRARIES

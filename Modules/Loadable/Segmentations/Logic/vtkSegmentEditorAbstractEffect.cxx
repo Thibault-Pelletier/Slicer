@@ -67,7 +67,7 @@ public:
   {
     if (m_logic)
     {
-      m_logic->pauseRender();
+      m_logic->PauseRender();
     }
   }
 
@@ -75,7 +75,7 @@ public:
   {
     if (m_logic)
     {
-      m_logic->resumeRender();
+      m_logic->ResumeRender();
     }
   }
 
@@ -93,9 +93,9 @@ vtkSegmentEditorAbstractEffect::vtkSegmentEditorAbstractEffect() = default;
 vtkSegmentEditorAbstractEffect::~vtkSegmentEditorAbstractEffect() = default;
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorAbstractEffect::name() const
+std::string vtkSegmentEditorAbstractEffect::GetName() const
 {
-  if (m_Name.empty())
+  if (this->m_Name.empty())
   {
     vtkErrorMacro("Empty effect name!");
   }
@@ -103,13 +103,13 @@ std::string vtkSegmentEditorAbstractEffect::name() const
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setName(const std::string& name)
+void vtkSegmentEditorAbstractEffect::SetName(const std::string& name)
 {
-  m_Name = name;
+  this->m_Name = name;
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorAbstractEffect::title() const
+std::string vtkSegmentEditorAbstractEffect::GetTitle() const
 {
   if (!this->m_Title.empty())
   {
@@ -127,56 +127,56 @@ std::string vtkSegmentEditorAbstractEffect::title() const
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setTitle(std::string title)
+void vtkSegmentEditorAbstractEffect::SetTitle(std::string title)
 {
   this->m_Title = title;
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::perSegment() const
+bool vtkSegmentEditorAbstractEffect::IsPerSegment() const
 {
   return this->m_PerSegment;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setPerSegment(bool perSegment)
+void vtkSegmentEditorAbstractEffect::SetPerSegment(bool perSegment)
 {
   (void)(perSegment);
   vtkErrorMacro("Cannot set per-segment flag by method, only in constructor!");
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::requireSegments() const
+bool vtkSegmentEditorAbstractEffect::RequireSegments() const
 {
   return this->m_RequireSegments;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setRequireSegments(bool requireSegments)
+void vtkSegmentEditorAbstractEffect::SetRequireSegments(bool requireSegments)
 {
   this->m_RequireSegments = requireSegments;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::activate()
+void vtkSegmentEditorAbstractEffect::Activate()
 {
   this->m_Active = true;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::deactivate()
+void vtkSegmentEditorAbstractEffect::Deactivate()
 {
   this->m_Active = false;
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::active()
+bool vtkSegmentEditorAbstractEffect::IsActive()
 {
   return m_Active;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::applyImageMask(vtkOrientedImageData* input, vtkOrientedImageData* mask, double fillValue, bool notMask /*=false*/)
+void vtkSegmentEditorAbstractEffect::ApplyImageMask(vtkOrientedImageData* input, vtkOrientedImageData* mask, double fillValue, bool notMask /*=false*/)
 {
   // The method is now moved to vtkOrientedImageDataResample::ApplyImageMask but kept here
   // for a while for backward compatibility.
@@ -184,14 +184,14 @@ void vtkSegmentEditorAbstractEffect::applyImageMask(vtkOrientedImageData* input,
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, bool bypassMasking /*=false*/)
+void vtkSegmentEditorAbstractEffect::ModifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, bool bypassMasking /*=false*/)
 {
   int modificationExtent[6] = { 0, -1, 0, -1, 0, -1 };
-  this->modifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
+  this->ModifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap,
+void vtkSegmentEditorAbstractEffect::ModifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap,
                                                                      ModificationMode modificationMode,
                                                                      const std::vector<int>& extent,
                                                                      bool bypassMasking /*=false*/)
@@ -202,17 +202,17 @@ void vtkSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOriented
     return;
   }
   int modificationExtent[6] = { extent[0], extent[1], extent[2], extent[3], extent[4], extent[5] };
-  this->modifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
+  this->ModifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap,
+void vtkSegmentEditorAbstractEffect::ModifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap,
                                                                      ModificationMode modificationMode,
                                                                      const int modificationExtent[6],
                                                                      bool bypassMasking /*=false*/)
 {
-  this->modifySegmentByLabelmap(this->segmentEditorNode()->GetSegmentationNode(),
-                                this->segmentEditorNode()->GetSelectedSegmentID() ? this->segmentEditorNode()->GetSelectedSegmentID() : "",
+  this->ModifySegmentByLabelmap(this->GetSegmentEditorNode()->GetSegmentationNode(),
+                                this->GetSegmentEditorNode()->GetSelectedSegmentID() ? this->GetSegmentEditorNode()->GetSelectedSegmentID() : "",
                                 modifierLabelmap,
                                 modificationMode,
                                 modificationExtent,
@@ -220,36 +220,36 @@ void vtkSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOriented
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
+void vtkSegmentEditorAbstractEffect::ModifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
                                                              const char* segmentID,
                                                              vtkOrientedImageData* modifierLabelmap,
                                                              ModificationMode modificationMode,
                                                              bool bypassMasking /*=false*/)
 {
   int modificationExtent[6] = { 0, -1, 0, -1, 0, -1 };
-  this->modifySegmentByLabelmap(segmentationNode, segmentID, modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
+  this->ModifySegmentByLabelmap(segmentationNode, segmentID, modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
+void vtkSegmentEditorAbstractEffect::ModifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
                                                              const char* segmentID,
                                                              vtkOrientedImageData* modifierLabelmapInput,
                                                              ModificationMode modificationMode,
                                                              const int modificationExtent[6],
                                                              bool bypassMasking /*=false*/)
 {
-  vtkMRMLSegmentEditorNode* parameterSetNode = this->segmentEditorNode();
+  vtkMRMLSegmentEditorNode* parameterSetNode = this->GetSegmentEditorNode();
   if (!parameterSetNode)
   {
     vtkErrorMacro("Invalid segment editor parameter set node");
-    this->defaultModifierLabelmap();
+    this->GetDefaultModifierLabelmap();
     return;
   }
 
   if (!segmentationNode)
   {
     vtkErrorMacro("Invalid segmentation");
-    this->defaultModifierLabelmap();
+    this->GetDefaultModifierLabelmap();
     return;
   }
 
@@ -261,18 +261,18 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
   if (!segment)
   {
     vtkErrorMacro("Invalid segment");
-    this->defaultModifierLabelmap();
+    this->GetDefaultModifierLabelmap();
     return;
   }
 
   if (!modifierLabelmapInput)
   {
     // If per-segment flag is off, then it is not an error (the effect itself has written it back to segmentation)
-    if (this->perSegment())
+    if (this->IsPerSegment())
     {
       vtkErrorMacro("Cannot apply edit operation because modifier labelmap cannot be accessed");
     }
-    this->defaultModifierLabelmap();
+    this->GetDefaultModifierLabelmap();
     return;
   }
 
@@ -293,24 +293,24 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
     // Apply mask to modifier labelmap if masking is enabled
     if (!bypassMasking && parameterSetNode->GetMaskMode() != vtkMRMLSegmentationNode::EditAllowedEverywhere)
     {
-      vtkOrientedImageDataResample::ModifyImage(maskImage, this->maskLabelmap(), vtkOrientedImageDataResample::OPERATION_MAXIMUM);
+      vtkOrientedImageDataResample::ModifyImage(maskImage, this->GetMaskLabelmap(), vtkOrientedImageDataResample::OPERATION_MAXIMUM);
     }
 
     // Apply threshold mask if paint threshold is turned on
     if (parameterSetNode->GetSourceVolumeIntensityMask())
     {
-      vtkOrientedImageData* sourceVolumeOrientedImageData = this->sourceVolumeImageData();
+      vtkOrientedImageData* sourceVolumeOrientedImageData = this->GetSourceVolumeImageData();
       if (!sourceVolumeOrientedImageData)
       {
         vtkErrorMacro("Unable to get source volume image");
-        this->defaultModifierLabelmap();
+        this->GetDefaultModifierLabelmap();
         return;
       }
       // Make sure the modifier labelmap has the same geometry as the source volume
       if (!vtkOrientedImageDataResample::DoGeometriesMatch(modifierLabelmap, sourceVolumeOrientedImageData))
       {
         vtkErrorMacro("Modifier labelmap should have the same geometry as the source volume");
-        this->defaultModifierLabelmap();
+        this->GetDefaultModifierLabelmap();
         return;
       }
 
@@ -333,7 +333,7 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
 
     vtkSmartPointer<vtkOrientedImageData> segmentLayerLabelmap =
       vtkOrientedImageData::SafeDownCast(segment->GetRepresentation(segmentationNode->GetSegmentation()->GetSourceRepresentationName()));
-    if (segmentLayerLabelmap && this->segmentEditorNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment
+    if (segmentLayerLabelmap && this->GetSegmentEditorNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment
         && modificationMode == vtkSegmentEditorAbstractEffect::ModificationModeRemove)
     {
       // If we are painting inside a segment, the erase effect can modify the current segment outside the masking region by adding back regions
@@ -413,7 +413,7 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
   }
 
   std::vector<std::string> segmentIDsToOverwrite;
-  switch (this->segmentEditorNode()->GetOverwriteMode())
+  switch (this->GetSegmentEditorNode()->GetOverwriteMode())
   {
     case vtkMRMLSegmentEditorNode::OverwriteNone:
       // nothing to overwrite
@@ -583,21 +583,21 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
     }
   }
   else if (modificationMode == vtkSegmentEditorAbstractEffect::ModificationModeRemove
-           && this->segmentEditorNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment && this->segmentEditorNode()->GetMaskSegmentID()
-           && strcmp(this->segmentEditorNode()->GetMaskSegmentID(), segmentID) != 0)
+           && this->GetSegmentEditorNode()->GetMaskMode() == vtkMRMLSegmentationNode::EditAllowedInsideSingleSegment && this->GetSegmentEditorNode()->GetMaskSegmentID()
+           && strcmp(this->GetSegmentEditorNode()->GetMaskSegmentID(), segmentID) != 0)
   {
     // In general, we don't try to "add back" areas to other segments when an area is removed from the selected segment.
     // The only exception is when we draw inside one specific segment. In that case erasing adds to the mask segment. It is useful
     // for splitting a segment into two by painting.
     if (!vtkSlicerSegmentationsModuleLogic::SetBinaryLabelmapToSegment(modifierLabelmap,
                                                                        segmentationNode,
-                                                                       this->segmentEditorNode()->GetMaskSegmentID(),
+                                                                       this->GetSegmentEditorNode()->GetMaskSegmentID(),
                                                                        vtkSlicerSegmentationsModuleLogic::MODE_MERGE_MASK,
                                                                        extent,
                                                                        false,
                                                                        segmentIDsToOverwrite))
     {
-      vtkErrorMacro("Failed to add back modifier labelmap to segment " + std::string(this->segmentEditorNode()->GetMaskSegmentID()));
+      vtkErrorMacro("Failed to add back modifier labelmap to segment " + std::string(this->GetSegmentEditorNode()->GetMaskSegmentID()));
     }
   }
 
@@ -623,18 +623,18 @@ void vtkSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmentation
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::selectEffect(std::string effectName)
+void vtkSegmentEditorAbstractEffect::SelectEffect(std::string effectName)
 {
   if (m_Logic)
   {
-    m_Logic->selectEffect(effectName);
+    m_Logic->SelectEffect(effectName);
   }
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::addViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor)
+void vtkSegmentEditorAbstractEffect::AddViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor)
 {
-  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::renderer(vtkRenderWindow::SafeDownCast(viewNode->GetRenderWindow()));
+  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::GetRenderer(vtkRenderWindow::SafeDownCast(viewNode->GetRenderWindow()));
   if (renderer)
   {
     renderer->AddViewProp(actor);
@@ -647,9 +647,9 @@ void vtkSegmentEditorAbstractEffect::addViewProp(vtkMRMLAbstractViewNode* viewNo
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::removeViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor)
+void vtkSegmentEditorAbstractEffect::RemoveViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor)
 {
-  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::renderer(vtkRenderWindow::SafeDownCast(viewNode->GetRenderWindow()));
+  vtkRenderer* renderer = vtkSegmentEditorAbstractEffect::GetRenderer(vtkRenderWindow::SafeDownCast(viewNode->GetRenderWindow()));
   if (renderer)
   {
     renderer->RemoveViewProp(actor);
@@ -662,7 +662,7 @@ void vtkSegmentEditorAbstractEffect::removeViewProp(vtkMRMLAbstractViewNode* vie
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLScene* vtkSegmentEditorAbstractEffect::scene()
+vtkMRMLScene* vtkSegmentEditorAbstractEffect::GetScene()
 {
   if (!m_SegmentEditorNode)
   {
@@ -673,21 +673,21 @@ vtkMRMLScene* vtkSegmentEditorAbstractEffect::scene()
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLSegmentEditorNode* vtkSegmentEditorAbstractEffect::segmentEditorNode()
+vtkMRMLSegmentEditorNode* vtkSegmentEditorAbstractEffect::GetSegmentEditorNode()
 {
 
   return m_SegmentEditorNode.GetPointer();
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setSegmentEditorNode(vtkMRMLSegmentEditorNode* node)
+void vtkSegmentEditorAbstractEffect::SetSegmentEditorNode(vtkMRMLSegmentEditorNode* node)
 {
 
   m_SegmentEditorNode = node;
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorAbstractEffect::parameter(std::string name)
+std::string vtkSegmentEditorAbstractEffect::GetParameter(std::string name)
 {
   if (!m_SegmentEditorNode)
   {
@@ -695,7 +695,7 @@ std::string vtkSegmentEditorAbstractEffect::parameter(std::string name)
   }
 
   // Get effect-specific prefixed parameter first
-  std::string attributeName = getAttributeName(name);
+  std::string attributeName = GetAttributeName(name);
   const char* value = m_SegmentEditorNode->GetAttribute(attributeName.c_str());
   // Look for common parameter if effect-specific one is not found
   if (!value)
@@ -704,7 +704,7 @@ std::string vtkSegmentEditorAbstractEffect::parameter(std::string name)
   }
   if (!value)
   {
-    vtkErrorMacro("Parameter named " + name + " cannot be found for effect " + this->name());
+    vtkErrorMacro("Parameter named " + name + " cannot be found for effect " + this->GetName());
     return std::string();
   }
 
@@ -712,7 +712,7 @@ std::string vtkSegmentEditorAbstractEffect::parameter(std::string name)
 }
 
 //-----------------------------------------------------------------------------
-int vtkSegmentEditorAbstractEffect::integerParameter(std::string name)
+int vtkSegmentEditorAbstractEffect::GetIntegerParameter(std::string name)
 {
   if (!m_SegmentEditorNode)
   {
@@ -721,7 +721,7 @@ int vtkSegmentEditorAbstractEffect::integerParameter(std::string name)
 
   try
   {
-    return std::stoi(this->parameter(name));
+    return std::stoi(this->GetParameter(name));
   }
   catch (...)
   {
@@ -731,7 +731,7 @@ int vtkSegmentEditorAbstractEffect::integerParameter(std::string name)
 }
 
 //-----------------------------------------------------------------------------
-double vtkSegmentEditorAbstractEffect::doubleParameter(std::string name)
+double vtkSegmentEditorAbstractEffect::GetDoubleParameter(std::string name)
 {
   if (!m_SegmentEditorNode)
   {
@@ -740,7 +740,7 @@ double vtkSegmentEditorAbstractEffect::doubleParameter(std::string name)
 
   try
   {
-    return std::stod(this->parameter(name));
+    return std::stod(this->GetParameter(name));
   }
   catch (...)
   {
@@ -750,7 +750,7 @@ double vtkSegmentEditorAbstractEffect::doubleParameter(std::string name)
 }
 
 //-----------------------------------------------------------------------------
-vtkMRMLNode* vtkSegmentEditorAbstractEffect::nodeReference(std::string name)
+vtkMRMLNode* vtkSegmentEditorAbstractEffect::GetNodeReference(std::string name)
 {
   if (!m_SegmentEditorNode)
   {
@@ -758,7 +758,7 @@ vtkMRMLNode* vtkSegmentEditorAbstractEffect::nodeReference(std::string name)
   }
 
   // Get effect-specific prefixed parameter first
-  vtkMRMLNode* node = m_SegmentEditorNode->GetNodeReference(getAttributeName(name).c_str());
+  vtkMRMLNode* node = m_SegmentEditorNode->GetNodeReference(GetAttributeName(name).c_str());
   // Look for common parameter if effect-specific one is not found
   if (!node)
   {
@@ -768,26 +768,26 @@ vtkMRMLNode* vtkSegmentEditorAbstractEffect::nodeReference(std::string name)
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameter(std::string name, std::string value)
+void vtkSegmentEditorAbstractEffect::SetParameter(std::string name, std::string value)
 {
   if (!m_SegmentEditorNode)
   {
-    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
+    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->GetName());
     return;
   }
 
   // Set parameter as attribute
-  this->setCommonParameter(getAttributeName(name), value);
+  this->SetCommonParameter(GetAttributeName(name), value);
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::parameterDefined(std::string name)
+bool vtkSegmentEditorAbstractEffect::IsParameterDefined(std::string name)
 {
-  return this->commonParameterDefined(getAttributeName(name));
+  return this->IsCommonParameterDefined(GetAttributeName(name));
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::commonParameterDefined(std::string name)
+bool vtkSegmentEditorAbstractEffect::IsCommonParameterDefined(std::string name)
 {
   if (!m_SegmentEditorNode)
   {
@@ -797,20 +797,20 @@ bool vtkSegmentEditorAbstractEffect::commonParameterDefined(std::string name)
   return (existingValue != nullptr && strlen(existingValue) > 0);
 }
 
-vtkSegment* vtkSegmentEditorAbstractEffect::getSelectedSegment()
+vtkSegment* vtkSegmentEditorAbstractEffect::GetSelectedSegment()
 {
-  if (!this->segmentEditorNode())
+  if (!this->GetSegmentEditorNode())
   {
     return nullptr;
   }
 
-  vtkMRMLSegmentationNode* segmentationNode = this->segmentEditorNode()->GetSegmentationNode();
+  vtkMRMLSegmentationNode* segmentationNode = this->GetSegmentEditorNode()->GetSegmentationNode();
   if (!segmentationNode)
   {
     return nullptr;
   }
 
-  char* segmentID = this->segmentEditorNode()->GetSelectedSegmentID();
+  char* segmentID = this->GetSegmentEditorNode()->GetSelectedSegmentID();
   if (!segmentID || strlen(segmentID) == 0)
   {
     return nullptr;
@@ -825,21 +825,21 @@ vtkSegment* vtkSegmentEditorAbstractEffect::getSelectedSegment()
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::isSelectedSegmentVisible()
+bool vtkSegmentEditorAbstractEffect::IsSelectedSegmentVisible()
 {
-  auto selectedSegment = getSelectedSegment();
+  auto selectedSegment = GetSelectedSegment();
 
   if (!selectedSegment || (this->m_AlreadyConfirmedSegmentVisible == selectedSegment))
   {
     return true;
   }
 
-  vtkMRMLSegmentationNode* segmentationNode = this->segmentEditorNode()->GetSegmentationNode();
+  vtkMRMLSegmentationNode* segmentationNode = this->GetSegmentEditorNode()->GetSegmentationNode();
   int numberOfDisplayNodes = segmentationNode->GetNumberOfDisplayNodes();
   for (int displayNodeIndex = 0; displayNodeIndex < numberOfDisplayNodes; displayNodeIndex++)
   {
     vtkMRMLSegmentationDisplayNode* displayNode = vtkMRMLSegmentationDisplayNode::SafeDownCast(segmentationNode->GetNthDisplayNode(displayNodeIndex));
-    if (displayNode && displayNode->GetVisibility() && displayNode->GetSegmentVisibility(this->segmentEditorNode()->GetSelectedSegmentID()))
+    if (displayNode && displayNode->GetVisibility() && displayNode->GetSegmentVisibility(this->GetSegmentEditorNode()->GetSelectedSegmentID()))
     {
       return true;
     }
@@ -848,15 +848,15 @@ bool vtkSegmentEditorAbstractEffect::isSelectedSegmentVisible()
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::confirmWorkOnSelectedSegment(bool doShowSegment)
+void vtkSegmentEditorAbstractEffect::ConfirmWorkOnSelectedSegment(bool doShowSegment)
 {
-  auto selectedSegment = getSelectedSegment();
+  auto selectedSegment = GetSelectedSegment();
   if (!selectedSegment)
   {
     return;
   }
 
-  vtkMRMLSegmentationNode* segmentationNode = this->segmentEditorNode()->GetSegmentationNode();
+  vtkMRMLSegmentationNode* segmentationNode = this->GetSegmentEditorNode()->GetSegmentationNode();
 
   // User chose to show the current segment
   if (doShowSegment)
@@ -865,7 +865,7 @@ void vtkSegmentEditorAbstractEffect::confirmWorkOnSelectedSegment(bool doShowSeg
     if (displayNode)
     {
       displayNode->SetVisibility(true);
-      displayNode->SetSegmentVisibility(this->segmentEditorNode()->GetSelectedSegmentID(), true);
+      displayNode->SetSegmentVisibility(this->GetSegmentEditorNode()->GetSelectedSegmentID(), true);
     }
   }
   else
@@ -876,21 +876,21 @@ void vtkSegmentEditorAbstractEffect::confirmWorkOnSelectedSegment(bool doShowSeg
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameterDefault(std::string name, std::string value)
+void vtkSegmentEditorAbstractEffect::SetParameterDefault(std::string name, std::string value)
 {
-  if (this->parameterDefined(name))
+  if (this->IsParameterDefined(name))
   {
     return;
   }
-  this->setParameter(name, value);
+  this->SetParameter(name, value);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonParameter(std::string name, std::string value)
+void vtkSegmentEditorAbstractEffect::SetCommonParameter(std::string name, std::string value)
 {
   if (!m_SegmentEditorNode)
   {
-    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
+    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->GetName());
     return;
   }
 
@@ -923,99 +923,99 @@ void vtkSegmentEditorAbstractEffect::setCommonParameter(std::string name, std::s
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonParameterDefault(std::string name, std::string value)
+void vtkSegmentEditorAbstractEffect::SetCommonParameterDefault(std::string name, std::string value)
 {
-  if (this->commonParameterDefined(name))
+  if (this->IsCommonParameterDefined(name))
   {
     return;
   }
-  this->setCommonParameter(name, value);
+  this->SetCommonParameter(name, value);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameter(std::string name, int value)
+void vtkSegmentEditorAbstractEffect::SetParameter(std::string name, int value)
 {
-  this->setParameter(name, std::to_string(value));
+  this->SetParameter(name, std::to_string(value));
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameterDefault(std::string name, int value)
+void vtkSegmentEditorAbstractEffect::SetParameterDefault(std::string name, int value)
 {
-  if (this->parameterDefined(name))
+  if (this->IsParameterDefined(name))
   {
     return;
   }
-  this->setParameter(name, value);
+  this->SetParameter(name, value);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonParameter(std::string name, int value)
+void vtkSegmentEditorAbstractEffect::SetCommonParameter(std::string name, int value)
 {
-  this->setCommonParameter(name, std::to_string(value));
+  this->SetCommonParameter(name, std::to_string(value));
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonParameterDefault(std::string name, int value)
+void vtkSegmentEditorAbstractEffect::SetCommonParameterDefault(std::string name, int value)
 {
-  if (this->commonParameterDefined(name))
+  if (this->IsCommonParameterDefined(name))
   {
     return;
   }
-  this->setCommonParameter(name, value);
+  this->SetCommonParameter(name, value);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameter(std::string name, double value)
+void vtkSegmentEditorAbstractEffect::SetParameter(std::string name, double value)
 {
-  this->setParameter(name, std::to_string(value));
+  this->SetParameter(name, std::to_string(value));
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setParameterDefault(std::string name, double value)
+void vtkSegmentEditorAbstractEffect::SetParameterDefault(std::string name, double value)
 {
-  if (this->parameterDefined(name))
+  if (this->IsParameterDefined(name))
   {
     return;
   }
-  this->setParameter(name, value);
+  this->SetParameter(name, value);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonParameter(std::string name, double value)
+void vtkSegmentEditorAbstractEffect::SetCommonParameter(std::string name, double value)
 {
-  this->setCommonParameter(name, std::to_string(value));
+  this->SetCommonParameter(name, std::to_string(value));
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonParameterDefault(std::string name, double value)
+void vtkSegmentEditorAbstractEffect::SetCommonParameterDefault(std::string name, double value)
 {
-  if (this->commonParameterDefined(name))
+  if (this->IsCommonParameterDefined(name))
   {
     return;
   }
-  this->setCommonParameter(name, value);
+  this->SetCommonParameter(name, value);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setNodeReference(std::string name, vtkMRMLNode* node)
+void vtkSegmentEditorAbstractEffect::SetNodeReference(std::string name, vtkMRMLNode* node)
 {
   if (!m_SegmentEditorNode)
   {
-    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
+    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->GetName());
     return;
   }
 
   // Set parameter as attribute
-  std::string attributeName = getAttributeName(name);
-  this->setCommonNodeReference(attributeName, node);
+  std::string attributeName = GetAttributeName(name);
+  this->SetCommonNodeReference(attributeName, node);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setCommonNodeReference(std::string name, vtkMRMLNode* node)
+void vtkSegmentEditorAbstractEffect::SetCommonNodeReference(std::string name, vtkMRMLNode* node)
 {
   if (!m_SegmentEditorNode)
   {
-    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->name());
+    vtkErrorMacro("Invalid segment editor parameter set node set to effect " + this->GetName());
     return;
   }
 
@@ -1036,7 +1036,7 @@ void vtkSegmentEditorAbstractEffect::setCommonNodeReference(std::string name, vt
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setVolumes(vtkOrientedImageData* alignedSourceVolume,
+void vtkSegmentEditorAbstractEffect::SetVolumes(vtkOrientedImageData* alignedSourceVolume,
                                                 vtkOrientedImageData* modifierLabelmap,
                                                 vtkOrientedImageData* maskLabelmap,
                                                 vtkOrientedImageData* selectedSegmentLabelmap,
@@ -1050,7 +1050,7 @@ void vtkSegmentEditorAbstractEffect::setVolumes(vtkOrientedImageData* alignedSou
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::updateVolume(vtkOrientedImageData* volume)
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::UpdateVolume(vtkOrientedImageData* volume)
 {
   if (!m_Logic)
   {
@@ -1058,7 +1058,7 @@ vtkOrientedImageData* vtkSegmentEditorAbstractEffect::updateVolume(vtkOrientedIm
   }
 
   bool success = false;
-  m_Logic->updateVolume(volume, success);
+  m_Logic->UpdateVolume(volume, success);
   if (!success)
   {
     return nullptr;
@@ -1067,52 +1067,52 @@ vtkOrientedImageData* vtkSegmentEditorAbstractEffect::updateVolume(vtkOrientedIm
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::defaultModifierLabelmap()
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::GetDefaultModifierLabelmap()
 {
-  return updateVolume(m_ModifierLabelmap);
+  return UpdateVolume(m_ModifierLabelmap);
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::modifierLabelmap()
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::GetModifierLabelmap()
 {
   return m_ModifierLabelmap;
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::maskLabelmap()
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::GetMaskLabelmap()
 {
-  return updateVolume(m_MaskLabelmap);
+  return UpdateVolume(m_MaskLabelmap);
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::sourceVolumeImageData()
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::GetSourceVolumeImageData()
 {
-  return updateVolume(m_AlignedSourceVolume);
+  return UpdateVolume(m_AlignedSourceVolume);
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::selectedSegmentLabelmap()
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::GetSelectedSegmentLabelmap()
 {
-  return updateVolume(m_SelectedSegmentLabelmap);
+  return UpdateVolume(m_SelectedSegmentLabelmap);
 }
 
 //-----------------------------------------------------------------------------
-vtkOrientedImageData* vtkSegmentEditorAbstractEffect::referenceGeometryImage()
+vtkOrientedImageData* vtkSegmentEditorAbstractEffect::GetReferenceGeometryImage()
 {
-  return updateVolume(m_ReferenceGeometryImage);
+  return UpdateVolume(m_ReferenceGeometryImage);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::saveStateForUndo()
+void vtkSegmentEditorAbstractEffect::SaveStateForUndo()
 {
   if (m_Logic)
   {
-    m_Logic->saveStateForUndo();
+    m_Logic->SaveStateForUndo();
   }
 }
 
 //-----------------------------------------------------------------------------
-vtkRenderer* vtkSegmentEditorAbstractEffect::renderer(vtkRenderWindow* renderWindow)
+vtkRenderer* vtkSegmentEditorAbstractEffect::GetRenderer(vtkRenderWindow* renderWindow)
 {
   if (!renderWindow)
   {
@@ -1123,7 +1123,7 @@ vtkRenderer* vtkSegmentEditorAbstractEffect::renderer(vtkRenderWindow* renderWin
 }
 
 //-----------------------------------------------------------------------------
-std::array<int, 2> vtkSegmentEditorAbstractEffect::rasToXy(double ras[3], vtkMRMLSliceNode* sliceNode)
+std::array<int, 2> vtkSegmentEditorAbstractEffect::RasToXy(double ras[3], vtkMRMLSliceNode* sliceNode)
 {
   std::array<int, 2> xy{};
 
@@ -1146,7 +1146,7 @@ std::array<int, 2> vtkSegmentEditorAbstractEffect::rasToXy(double ras[3], vtkMRM
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::xyzToRas(double inputXyz[3], double outputRas[3], vtkMRMLSliceNode* sliceNode)
+void vtkSegmentEditorAbstractEffect::XyzToRas(double inputXyz[3], double outputRas[3], vtkMRMLSliceNode* sliceNode)
 {
   outputRas[0] = outputRas[1] = outputRas[2] = 0.0;
 
@@ -1168,38 +1168,38 @@ void vtkSegmentEditorAbstractEffect::xyzToRas(double inputXyz[3], double outputR
 }
 
 //-----------------------------------------------------------------------------
-std::array<double, 3> vtkSegmentEditorAbstractEffect::xyzToRas(double inputXyz[3], vtkMRMLSliceNode* sliceNode)
+std::array<double, 3> vtkSegmentEditorAbstractEffect::XyzToRas(double inputXyz[3], vtkMRMLSliceNode* sliceNode)
 {
   std::array<double, 3> outputRas = { 0.0, 0.0, 0.0 };
-  xyzToRas(inputXyz, outputRas.data(), sliceNode);
+  XyzToRas(inputXyz, outputRas.data(), sliceNode);
   return outputRas;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::xyToRas(int xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode)
+void vtkSegmentEditorAbstractEffect::XyToRas(int xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode)
 {
   double xyz[3] = { static_cast<double>(xy[0]), static_cast<double>(xy[1]), 0.0 };
 
-  vtkSegmentEditorAbstractEffect::xyzToRas(xyz, outputRas, sliceNode);
+  vtkSegmentEditorAbstractEffect::XyzToRas(xyz, outputRas, sliceNode);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::xyToRas(double xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode)
+void vtkSegmentEditorAbstractEffect::XyToRas(double xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode)
 {
   double xyz[3] = { xy[0], xy[1], 0.0 };
-  vtkSegmentEditorAbstractEffect::xyzToRas(xyz, outputRas, sliceNode);
+  vtkSegmentEditorAbstractEffect::XyzToRas(xyz, outputRas, sliceNode);
 }
 
 //-----------------------------------------------------------------------------
-std::array<double, 3> vtkSegmentEditorAbstractEffect::xyToRas(int xy[2], vtkMRMLSliceNode* sliceNode)
+std::array<double, 3> vtkSegmentEditorAbstractEffect::XyToRas(int xy[2], vtkMRMLSliceNode* sliceNode)
 {
   std::array<double, 3> outputRas = { 0.0, 0.0, 0.0 };
-  vtkSegmentEditorAbstractEffect::xyToRas(xy, outputRas.data(), sliceNode);
+  vtkSegmentEditorAbstractEffect::XyToRas(xy, outputRas.data(), sliceNode);
   return outputRas;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::xyzToIjk(double inputXyz[3],
+void vtkSegmentEditorAbstractEffect::XyzToIjk(double inputXyz[3],
                                               int outputIjk[3],
                                               vtkMRMLSliceNode* sliceNode,
                                               vtkOrientedImageData* image,
@@ -1214,7 +1214,7 @@ void vtkSegmentEditorAbstractEffect::xyzToIjk(double inputXyz[3],
 
   // Convert from XY to RAS first
   double ras[3] = { 0.0, 0.0, 0.0 };
-  vtkSegmentEditorAbstractEffect::xyzToRas(inputXyz, ras, sliceNode);
+  vtkSegmentEditorAbstractEffect::XyzToRas(inputXyz, ras, sliceNode);
 
   // Move point from world to same transform as image
   if (parentTransformNode)
@@ -1250,51 +1250,51 @@ void vtkSegmentEditorAbstractEffect::xyzToIjk(double inputXyz[3],
 }
 
 //-----------------------------------------------------------------------------
-std::array<int, 3> vtkSegmentEditorAbstractEffect::xyzToIjk(double inputXyz[3],
+std::array<int, 3> vtkSegmentEditorAbstractEffect::XyzToIjk(double inputXyz[3],
                                                             vtkMRMLSliceNode* sliceNode,
                                                             vtkOrientedImageData* image,
                                                             vtkMRMLTransformNode* parentTransformNode /*=nullptr*/)
 {
   std::array<int, 3> outputIjk = { 0, 0, 0 };
-  vtkSegmentEditorAbstractEffect::xyzToIjk(inputXyz, outputIjk.data(), sliceNode, image, parentTransformNode);
+  vtkSegmentEditorAbstractEffect::XyzToIjk(inputXyz, outputIjk.data(), sliceNode, image, parentTransformNode);
   return outputIjk;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::xyToIjk(int xy[2],
+void vtkSegmentEditorAbstractEffect::XyToIjk(int xy[2],
                                              int outputIjk[3],
                                              vtkMRMLSliceNode* sliceNode,
                                              vtkOrientedImageData* image,
                                              vtkMRMLTransformNode* parentTransformNode /*=nullptr*/)
 {
   double xyz[3] = { static_cast<double>(xy[0]), static_cast<double>(xy[1]), 0.0 };
-  vtkSegmentEditorAbstractEffect::xyzToIjk(xyz, outputIjk, sliceNode, image, parentTransformNode);
+  vtkSegmentEditorAbstractEffect::XyzToIjk(xyz, outputIjk, sliceNode, image, parentTransformNode);
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::xyToIjk(double xy[2],
+void vtkSegmentEditorAbstractEffect::XyToIjk(double xy[2],
                                              int outputIjk[3],
                                              vtkMRMLSliceNode* sliceNode,
                                              vtkOrientedImageData* image,
                                              vtkMRMLTransformNode* parentTransformNode /*=nullptr*/)
 {
   double xyz[3] = { xy[0], xy[0], 0.0 };
-  vtkSegmentEditorAbstractEffect::xyzToIjk(xyz, outputIjk, sliceNode, image, parentTransformNode);
+  vtkSegmentEditorAbstractEffect::XyzToIjk(xyz, outputIjk, sliceNode, image, parentTransformNode);
 }
 
 //-----------------------------------------------------------------------------
-std::array<int, 3> vtkSegmentEditorAbstractEffect::xyToIjk(int xy[2],
+std::array<int, 3> vtkSegmentEditorAbstractEffect::XyToIjk(int xy[2],
                                                            vtkMRMLSliceNode* sliceNode,
                                                            vtkOrientedImageData* image,
                                                            vtkMRMLTransformNode* parentTransformNode /*=nullptr*/)
 {
   std::array<int, 3> outputIjk = { 0, 0, 0 };
-  vtkSegmentEditorAbstractEffect::xyToIjk(xy, outputIjk.data(), sliceNode, image, parentTransformNode);
+  vtkSegmentEditorAbstractEffect::XyToIjk(xy, outputIjk.data(), sliceNode, image, parentTransformNode);
   return outputIjk;
 }
 
 //----------------------------------------------------------------------------
-double vtkSegmentEditorAbstractEffect::sliceSpacing(vtkMRMLSliceNode* sliceNode)
+double vtkSegmentEditorAbstractEffect::GetSliceSpacing(vtkMRMLSliceNode* sliceNode)
 {
   double defaultSpacing = 1.0;
   if (!sliceNode)
@@ -1317,31 +1317,31 @@ double vtkSegmentEditorAbstractEffect::sliceSpacing(vtkMRMLSliceNode* sliceNode)
 }
 
 //----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::showEffectCursorInSliceView()
+bool vtkSegmentEditorAbstractEffect::IsShownEffectCursorInSliceView()
 {
   return m_ShowEffectCursorInSliceView;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setShowEffectCursorInSliceView(bool show)
+void vtkSegmentEditorAbstractEffect::SetShowEffectCursorInSliceView(bool show)
 {
   this->m_ShowEffectCursorInSliceView = show;
 }
 
 //----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::showEffectCursorInThreeDView()
+bool vtkSegmentEditorAbstractEffect::IsShownEffectCursorInThreeDView()
 {
   return m_ShowEffectCursorInThreeDView;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setShowEffectCursorInThreeDView(bool show)
+void vtkSegmentEditorAbstractEffect::SetShowEffectCursorInThreeDView(bool show)
 {
   this->m_ShowEffectCursorInThreeDView = show;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::interactionNodeModified(vtkMRMLInteractionNode* interactionNode)
+void vtkSegmentEditorAbstractEffect::InteractionNodeModified(vtkMRMLInteractionNode* interactionNode)
 {
   if (interactionNode == nullptr)
   {
@@ -1351,12 +1351,12 @@ void vtkSegmentEditorAbstractEffect::interactionNodeModified(vtkMRMLInteractionN
   // to avoid double effect (e.g., paint & place fiducial at the same time)
   if (interactionNode->GetCurrentInteractionMode() != vtkMRMLInteractionNode::ViewTransform)
   {
-    this->selectEffect("");
+    this->SelectEffect("");
   }
 }
 
 //-----------------------------------------------------------------------------
-bool vtkSegmentEditorAbstractEffect::segmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode)
+bool vtkSegmentEditorAbstractEffect::IsSegmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode)
 {
   if (!viewNode)
   {
@@ -1364,7 +1364,7 @@ bool vtkSegmentEditorAbstractEffect::segmentationDisplayableInView(vtkMRMLAbstra
     return false;
   }
 
-  vtkMRMLSegmentEditorNode* parameterSetNode = this->segmentEditorNode();
+  vtkMRMLSegmentEditorNode* parameterSetNode = this->GetSegmentEditorNode();
   if (!parameterSetNode)
   {
     return false;
@@ -1389,19 +1389,19 @@ bool vtkSegmentEditorAbstractEffect::segmentationDisplayableInView(vtkMRMLAbstra
 }
 
 //-----------------------------------------------------------------------------
-std::string vtkSegmentEditorAbstractEffect::getAttributeName(const std::string& name)
+std::string vtkSegmentEditorAbstractEffect::GetAttributeName(const std::string& name)
 {
-  return this->name() + "." + name;
+  return this->GetName() + "." + name;
 }
 
 //-----------------------------------------------------------------------------
-void vtkSegmentEditorAbstractEffect::setSegmentEditorLogic(vtkSegmentEditorLogic* logic)
+void vtkSegmentEditorAbstractEffect::SetSegmentEditorLogic(vtkSegmentEditorLogic* logic)
 {
   m_Logic = logic;
 }
 
 //-----------------------------------------------------------------------------
-vtkSegmentEditorLogic* vtkSegmentEditorAbstractEffect::segmentEditorLogic() const
+vtkSegmentEditorLogic* vtkSegmentEditorAbstractEffect::GetSegmentEditorLogic() const
 {
   return m_Logic;
 }

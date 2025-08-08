@@ -31,7 +31,6 @@
 #include <vtkSmartPointer.h>
 #include <vtkWeakPointer.h>
 #include <vtkObject.h>
-#include <vtkCommand.h>
 
 class vtkMRMLAbstractViewNode;
 class vtkMRMLInteractionNode;
@@ -66,34 +65,34 @@ public:
   };
 
   /// Get help text for effect to be displayed in the help box
-  virtual const std::string helpText() const { return {}; };
+  virtual const std::string GetHelpText() const { return {}; };
 
   /// Get icon segment editor icon path
-  virtual const std::string icon() const { return {}; };
+  virtual const std::string GetIcon() const { return {}; };
 
   /// Clone editor effect. Override to return a new instance of the effect sub-class
-  virtual vtkSegmentEditorAbstractEffect* clone() { throw std::runtime_error("Unimplemented method "); }
+  virtual vtkSegmentEditorAbstractEffect* Clone() { throw std::runtime_error("Unimplemented method "); }
 
   /// Perform actions to activate the effect (show options frame, etc.)
   /// NOTE: Base class implementation needs to be called BEFORE the effect-specific implementation
-  virtual void activate();
+  virtual void Activate();
 
   /// Perform actions to deactivate the effect (hide options frame, destroy actors, etc.)
   /// NOTE: Base class implementation needs to be called BEFORE the effect-specific implementation
-  virtual void deactivate();
+  virtual void Deactivate();
 
   /// Returns true if the effect is currently active (activated and has not deactivated since then)
-  bool active();
+  bool IsActive();
 
-  void modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, const int modificationExtent[6], bool bypassMasking = false);
-  void modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, bool bypassMasking = false);
-  void modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, const std::vector<int>& extent, bool bypassMasking = false);
-  void modifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
+  void ModifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, const int modificationExtent[6], bool bypassMasking = false);
+  void ModifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, bool bypassMasking = false);
+  void ModifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, const std::vector<int>& extent, bool bypassMasking = false);
+  void ModifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
                                const char* segmentID,
                                vtkOrientedImageData* modifierLabelmap,
                                ModificationMode modificationMode,
                                bool bypassMasking = false);
-  void modifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
+  void ModifySegmentByLabelmap(vtkMRMLSegmentationNode* segmentationNode,
                                const char* segmentID,
                                vtkOrientedImageData* modifierLabelmap,
                                ModificationMode modificationMode,
@@ -103,14 +102,14 @@ public:
   /// Apply mask image on an input image.
   /// This method is kept here for backward compatibility only and will be removed in the future.
   /// Use vtkOrientedImageDataResample::ApplyImageMask method instead.
-  static void applyImageMask(vtkOrientedImageData* input, vtkOrientedImageData* mask, double fillValue, bool notMask = false);
+  static void ApplyImageMask(vtkOrientedImageData* input, vtkOrientedImageData* mask, double fillValue, bool notMask = false);
 
   /// Callback function invoked when interaction happens
   /// \param callerInteractor Interactor object that was observed to catch the event
   /// \param eid Event identifier
   /// \param viewWidget Widget of the Slicer layout view. Can be \sa qMRMLSliceWidget or \sa qMRMLThreeDWidget
   /// \return return true to abort the event (prevent other views to receive the event)
-  virtual bool processInteractionEvents(vtkRenderWindowInteractor* callerInteractor, unsigned long eid, vtkRenderWindow* renderWindow, vtkMRMLAbstractViewNode* viewNode)
+  virtual bool ProcessInteractionEvents(vtkRenderWindowInteractor* callerInteractor, unsigned long eid, vtkRenderWindow* renderWindow, vtkMRMLAbstractViewNode* viewNode)
   {
     (void)callerInteractor;
     (void)eid;
@@ -122,7 +121,7 @@ public:
   /// Callback function invoked when view node is modified
   /// \param callerViewNode View node that was observed to catch the event. Can be either \sa vtkMRMLSliceNode or \sa vtkMRMLViewNode
   /// \param eid Event identifier
-  virtual void processViewNodeEvents(vtkMRMLAbstractViewNode* callerViewNode, unsigned long eid, vtkRenderWindow* renderWindow)
+  virtual void ProcessViewNodeEvents(vtkMRMLAbstractViewNode* callerViewNode, unsigned long eid, vtkRenderWindow* renderWindow)
   {
     (void)callerViewNode;
     (void)eid;
@@ -130,19 +129,19 @@ public:
 
   /// Set default parameters in the parameter MRML node
   /// NOTE: Base class implementation needs to be called with the effect-specific implementation
-  virtual void setMRMLDefaults() {}
+  virtual void SetMRMLDefaults() {}
 
   /// Simple mechanism to let the effects know that reference geometry has changed
   /// NOTE: Base class implementation needs to be called with the effect-specific implementation.
-  virtual void referenceGeometryChanged() {};
+  virtual void ReferenceGeometryChanged() {};
   /// Simple mechanism to let the effects know that source volume has changed
   /// NOTE: Base class implementation needs to be called with the effect-specific implementation
-  virtual void sourceVolumeNodeChanged() {};
+  virtual void SourceVolumeNodeChanged() {};
   /// Simple mechanism to let the effects know that the layout has changed
-  virtual void layoutChanged() {};
+  virtual void LayoutChanged() {};
   /// Let the effect know that the interaction node is modified.
   /// Default behavior is to deactivate the effect if not in view mode.
-  virtual void interactionNodeModified(vtkMRMLInteractionNode* interactionNode);
+  virtual void InteractionNodeModified(vtkMRMLInteractionNode* interactionNode);
   /// Clean up resources, event observers before deletion.
   ///
   /// This ensures proper object destruction, as active signal/slot connections
@@ -150,57 +149,57 @@ public:
   /// method to handle additional cleanup as needed.
   ///
   /// For more details, see: https://github.com/Slicer/Slicer/issues/7392
-  virtual void cleanup() {}
+  virtual void Cleanup() {}
 
   /// Get segment editor parameter set node
-  vtkMRMLSegmentEditorNode* segmentEditorNode();
+  vtkMRMLSegmentEditorNode* GetSegmentEditorNode();
 
   /// Set segment editor parameter set node
-  void setSegmentEditorNode(vtkMRMLSegmentEditorNode* node);
+  void SetSegmentEditorNode(vtkMRMLSegmentEditorNode* node);
 
   /// Get MRML scene (from parameter set node)
-  vtkMRMLScene* scene();
+  vtkMRMLScene* GetScene();
 
   /// Add actor to the renderer of the view widget. The effect is responsible for
   /// removing the actor when the effect is deactivated.
-  void addViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor);
+  void AddViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor);
 
   /// Remove actor from the renderer of the widget.
-  void removeViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor);
+  void RemoveViewProp(vtkMRMLAbstractViewNode* viewNode, vtkProp* actor);
 
   /// Get name of effect.
   /// This name is used by various modules for accessing an effect.
   /// This string is not displayed on the user interface and must not be translated.
-  virtual std::string name() const;
+  virtual std::string GetName() const;
 
   /// Set the name of the effect.
   /// NOTE: name must be defined in constructor in C++ effects, this can only be used in python scripted ones
-  virtual void setName(const std::string& name);
+  virtual void SetName(const std::string& name);
 
   /// Get title of effect.
   /// This string is displayed on the application GUI and it is translated.
   /// Returns the effect's name when the title is empty.
-  virtual std::string title() const;
+  virtual std::string GetTitle() const;
   /// Set the title of the effect
-  virtual void setTitle(std::string title);
+  virtual void SetTitle(std::string title);
 
   /// Get flag indicating whether effect operates on segments (true) or the whole segmentation (false).
-  virtual bool perSegment() const;
+  virtual bool IsPerSegment() const;
   /// Set flag indicating whether effect operates on segments (true) or the whole segmentation (false).
   /// NOTE: name must be defined in constructor in C++ effects, this can only be used in python scripted ones
-  virtual void setPerSegment(bool perSegment);
+  virtual void SetPerSegment(bool perSegment);
 
   /// If this property is set to true then this effect is enabled only when the segmentation has segment(s) in it.
-  virtual bool requireSegments() const;
+  virtual bool RequireSegments() const;
   /// If this property is set to true then this effect is enabled only when the segmentation has segment(s) in it.
-  virtual void setRequireSegments(bool requireSegments);
+  virtual void SetRequireSegments(bool requireSegments);
 
   /// Emit signal that causes active effect to be changed to the specified one.
   /// If the effect name is empty, then the active effect is de-selected.
-  void selectEffect(std::string effectName);
+  void SelectEffect(std::string effectName);
 
   /// Called by the editor widget.
-  void setVolumes(vtkOrientedImageData* alignedSourceVolume,
+  void SetVolumes(vtkOrientedImageData* alignedSourceVolume,
                   vtkOrientedImageData* modifierLabelmap,
                   vtkOrientedImageData* maskLabelmap,
                   vtkOrientedImageData* selectedSegmentLabelmap,
@@ -208,149 +207,149 @@ public:
 
   // Effect parameter functions
   /// Get effect-specific or common string type parameter from effect parameter set node.
-  std::string parameter(std::string name);
+  std::string GetParameter(std::string name);
 
   /// Get effect-specific or common integer type parameter from effect parameter set node.
-  int integerParameter(std::string name);
+  int GetIntegerParameter(std::string name);
 
   /// Get effect-specific or common double type parameter from effect parameter set node.
-  double doubleParameter(std::string name);
+  double GetDoubleParameter(std::string name);
 
   /// Get effect-specific or common node reference type parameter from effect parameter set node.
-  vtkMRMLNode* nodeReference(std::string name);
+  vtkMRMLNode* GetNodeReference(std::string name);
 
   /// Set effect parameter in effect parameter set node. This function is called by both convenience functions.
   /// \param name Parameter name string
   /// \param value Parameter value string
-  void setParameter(std::string name, std::string value);
+  void SetParameter(std::string name, std::string value);
   /// Set parameter only if it is not defined already.
   /// \sa setParameter
-  void setParameterDefault(std::string name, std::string value);
+  void SetParameterDefault(std::string name, std::string value);
   /// Set parameters that are common for multiple effects. Typically used by base class effects, such
   ///   as label \sa setParameter
   /// By default the parameter names are prefixed for each effect, so they are unique for effects.
   /// This method does not prefix the parameter, so can be the same for multiple effects.
   /// Note: Parameter getter functions look for effect parameters first, then common parameter if the
   ///   effect-specific is not found.
-  void setCommonParameter(std::string name, std::string value);
+  void SetCommonParameter(std::string name, std::string value);
   /// Set parameter only if it is not defined already.
   /// \sa setCommonParameter
-  void setCommonParameterDefault(std::string name, std::string value);
+  void SetCommonParameterDefault(std::string name, std::string value);
 
   /// Convenience function to set integer parameter
   /// \param name Parameter name string
   /// \param value Parameter value integer
-  void setParameter(std::string name, int value);
+  void SetParameter(std::string name, int value);
   /// Set parameter only if it is not defined already.
   /// \sa setParameter
-  void setParameterDefault(std::string name, int value);
+  void SetParameterDefault(std::string name, int value);
   /// Convenience function to set integer common parameter \sa setCommonParameter
-  void setCommonParameter(std::string name, int value);
+  void SetCommonParameter(std::string name, int value);
   /// Set parameter only if it is not defined already.
   /// \sa setCommonParameter
-  void setCommonParameterDefault(std::string name, int value);
+  void SetCommonParameterDefault(std::string name, int value);
 
   /// Convenience function to set double parameter
   /// \param name Parameter name string
   /// \param value Parameter value double
-  void setParameter(std::string name, double value);
+  void SetParameter(std::string name, double value);
   /// Set parameter only if it is not defined already.
   /// \sa setParameter
-  void setParameterDefault(std::string name, double value);
+  void SetParameterDefault(std::string name, double value);
   /// Convenience function to set double common parameter \sa setCommonParameter
-  void setCommonParameter(std::string name, double value);
+  void SetCommonParameter(std::string name, double value);
   /// Set parameter only if it is not defined already.
   /// \sa setCommonParameter
-  void setCommonParameterDefault(std::string name, double value);
+  void SetCommonParameterDefault(std::string name, double value);
 
   /// Convenience function to set node reference parameter
   /// \param name Parameter name string
   /// \param value Parameter node reference
-  void setNodeReference(std::string name, vtkMRMLNode* node);
+  void SetNodeReference(std::string name, vtkMRMLNode* node);
   /// Convenience function to set node reference common parameter \sa setCommonParameter
-  void setCommonNodeReference(std::string name, vtkMRMLNode* node);
+  void SetCommonNodeReference(std::string name, vtkMRMLNode* node);
 
   // Utility functions
   /// Returns true if the effect-specific parameter is already defined.
-  bool parameterDefined(std::string name);
+  bool IsParameterDefined(std::string name);
 
   /// Returns true if the common parameter is already defined.
-  bool commonParameterDefined(std::string name);
+  bool IsCommonParameterDefined(std::string name);
 
-  vtkSegment* getSelectedSegment();
-  bool isSelectedSegmentVisible();
-  void confirmWorkOnSelectedSegment(bool doShowSegment);
+  vtkSegment* GetSelectedSegment();
+  bool IsSelectedSegmentVisible();
+  void ConfirmWorkOnSelectedSegment(bool doShowSegment);
 
-  vtkOrientedImageData* modifierLabelmap();
+  vtkOrientedImageData* GetModifierLabelmap();
 
   /// Reset modifier labelmap to default (resets geometry, clears content)
   /// and return it.
-  vtkOrientedImageData* defaultModifierLabelmap();
+  vtkOrientedImageData* GetDefaultModifierLabelmap();
 
-  vtkOrientedImageData* maskLabelmap();
+  vtkOrientedImageData* GetMaskLabelmap();
 
-  vtkOrientedImageData* selectedSegmentLabelmap();
+  vtkOrientedImageData* GetSelectedSegmentLabelmap();
 
-  vtkOrientedImageData* referenceGeometryImage();
+  vtkOrientedImageData* GetReferenceGeometryImage();
 
-  void setShowEffectCursorInSliceView(bool show);
-  void setShowEffectCursorInThreeDView(bool show);
+  void SetShowEffectCursorInSliceView(bool show);
+  void SetShowEffectCursorInThreeDView(bool show);
 
-  bool showEffectCursorInSliceView();
-  bool showEffectCursorInThreeDView();
+  bool IsShownEffectCursorInSliceView();
+  bool IsShownEffectCursorInThreeDView();
 
   /// Get image data of source volume aligned with the modifier labelmap.
   /// \return Pointer to the image data
-  vtkOrientedImageData* sourceVolumeImageData();
+  vtkOrientedImageData* GetSourceVolumeImageData();
 
   /// Signal to the editor that current state has to be saved (for allowing reverting
   /// to current segmentation state by undo operation)
-  void saveStateForUndo();
+  void SaveStateForUndo();
 
   /// Get renderer for view widget
-  static vtkRenderer* renderer(vtkRenderWindow* renderWindow);
+  static vtkRenderer* GetRenderer(vtkRenderWindow* renderWindow);
 
   /// Convert RAS position to XY in-slice position
-  static std::array<int, 2> rasToXy(double ras[3], vtkMRMLSliceNode* sliceNode);
+  static std::array<int, 2> RasToXy(double ras[3], vtkMRMLSliceNode* sliceNode);
   /// Convert XYZ slice view position to RAS position:
   /// x,y uses slice (canvas) coordinate system and actually has a 3rd z component (index into the
   /// slice you're looking at), hence xyToRAS is really performing xyzToRAS. RAS is patient world
   /// coordinate system. Note the 1 is because the transform uses homogeneous coordinates.
-  static void xyzToRas(double inputXyz[3], double outputRas[3], vtkMRMLSliceNode* sliceNode);
-  static std::array<double, 3> xyzToRas(double inputXyz[3], vtkMRMLSliceNode* sliceNode);
+  static void XyzToRas(double inputXyz[3], double outputRas[3], vtkMRMLSliceNode* sliceNode);
+  static std::array<double, 3> XyzToRas(double inputXyz[3], vtkMRMLSliceNode* sliceNode);
 
   /// Convert XY in-slice position to RAS position
-  static void xyToRas(int xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode);
+  static void XyToRas(int xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode);
   /// Convert XY in-slice position to RAS position
-  static void xyToRas(double xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode);
+  static void XyToRas(double xy[2], double outputRas[3], vtkMRMLSliceNode* sliceNode);
   /// Convert XY in-slice position to RAS position, python accessor method
-  static std::array<double, 3> xyToRas(int xy[2], vtkMRMLSliceNode* sliceNode);
+  static std::array<double, 3> XyToRas(int xy[2], vtkMRMLSliceNode* sliceNode);
   /// Convert XYZ slice view position to image IJK position, \sa xyzToRas
-  static void xyzToIjk(double inputXyz[3], int outputIjk[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
+  static void XyzToIjk(double inputXyz[3], int outputIjk[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
   /// Convert XYZ slice view position to image IJK position, python accessor method, \sa xyzToRas
-  static std::array<int, 3> xyzToIjk(double inputXyz[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
+  static std::array<int, 3> XyzToIjk(double inputXyz[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
   /// Convert XY in-slice position to image IJK position
-  static void xyToIjk(int xy[2], int outputIjk[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
+  static void XyToIjk(int xy[2], int outputIjk[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
   /// Convert XY in-slice position to image IJK position
-  static void xyToIjk(double xy[2], int outputIjk[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
+  static void XyToIjk(double xy[2], int outputIjk[3], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
   /// Convert XY in-slice position to image IJK position, python accessor method
-  static std::array<int, 3> xyToIjk(int xy[2], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
+  static std::array<int, 3> XyToIjk(int xy[2], vtkMRMLSliceNode* sliceNode, vtkOrientedImageData* image, vtkMRMLTransformNode* parentTransform = nullptr);
 
-  static void forceRender(vtkMRMLAbstractViewNode* viewNode);
-  static void scheduleRender(vtkMRMLAbstractViewNode* viewNode);
+  static void ForceRender(vtkMRMLAbstractViewNode* viewNode);
+  static void ScheduleRender(vtkMRMLAbstractViewNode* viewNode);
 
-  static double sliceSpacing(vtkMRMLSliceNode* sliceNode);
+  static double GetSliceSpacing(vtkMRMLSliceNode* sliceNode);
 
-  bool segmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode);
+  bool IsSegmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode);
 
-  void setSegmentEditorLogic(vtkSegmentEditorLogic* logic);
-  vtkSegmentEditorLogic* segmentEditorLogic() const;
+  void SetSegmentEditorLogic(vtkSegmentEditorLogic* logic);
+  vtkSegmentEditorLogic* GetSegmentEditorLogic() const;
 
 protected:
   vtkSegmentEditorAbstractEffect();
   ~vtkSegmentEditorAbstractEffect() override;
 
-  vtkOrientedImageData* updateVolume(vtkOrientedImageData* volume);
+  vtkOrientedImageData* UpdateVolume(vtkOrientedImageData* volume);
 
   std::string m_Name;
   bool m_Active{ false };
@@ -375,7 +374,7 @@ protected:
   vtkWeakPointer<vtkSegment> m_AlreadyConfirmedSegmentVisible;
 
 private:
-  std::string getAttributeName(const std::string& name);
+  std::string GetAttributeName(const std::string& name);
 
   /// Segment editor parameter set node
   vtkWeakPointer<vtkMRMLSegmentEditorNode> m_SegmentEditorNode = nullptr;

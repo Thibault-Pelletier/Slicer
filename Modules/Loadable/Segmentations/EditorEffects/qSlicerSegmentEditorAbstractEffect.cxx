@@ -122,7 +122,7 @@ qSlicerSegmentEditorAbstractEffect::~qSlicerSegmentEditorAbstractEffect() = defa
 //-----------------------------------------------------------------------------
 QString qSlicerSegmentEditorAbstractEffect::name() const
 {
-  return QString::fromStdString(m_EffectLogic->name());
+  return QString::fromStdString(m_EffectLogic->GetName());
 }
 
 //-----------------------------------------------------------------------------
@@ -135,19 +135,19 @@ void qSlicerSegmentEditorAbstractEffect::setName(QString name)
 //-----------------------------------------------------------------------------
 QString qSlicerSegmentEditorAbstractEffect::title() const
 {
-  return QString::fromStdString(m_EffectLogic->title());
+  return QString::fromStdString(m_EffectLogic->GetTitle());
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setTitle(QString title)
 {
-  m_EffectLogic->setTitle(title.toStdString());
+  m_EffectLogic->SetTitle(title.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::perSegment() const
 {
-  return m_EffectLogic->perSegment();
+  return m_EffectLogic->IsPerSegment();
 }
 
 //-----------------------------------------------------------------------------
@@ -160,13 +160,13 @@ void qSlicerSegmentEditorAbstractEffect::setPerSegment(bool perSegment)
 //-----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::requireSegments() const
 {
-  return m_EffectLogic->requireSegments();
+  return m_EffectLogic->RequireSegments();
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setRequireSegments(bool requireSegments)
 {
-  m_EffectLogic->setRequireSegments(requireSegments);
+  m_EffectLogic->SetRequireSegments(requireSegments);
 }
 
 //-----------------------------------------------------------------------------
@@ -177,7 +177,7 @@ void qSlicerSegmentEditorAbstractEffect::activate()
   // Show options frame
   d->OptionsFrame->setVisible(true);
 
-  m_EffectLogic->activate();
+  m_EffectLogic->Activate();
 
   this->updateGUIFromMRML();
 }
@@ -190,25 +190,25 @@ void qSlicerSegmentEditorAbstractEffect::deactivate()
   // Hide options frame
   d->OptionsFrame->setVisible(false);
 
-  m_EffectLogic->deactivate();
+  m_EffectLogic->Deactivate();
 }
 
 //-----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::active()
 {
-  return m_EffectLogic->active();
+  return m_EffectLogic->IsActive();
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::applyImageMask(vtkOrientedImageData* input, vtkOrientedImageData* mask, double fillValue, bool notMask /*=false*/)
 {
-  vtkSegmentEditorAbstractEffect::applyImageMask(input, mask, fillValue, notMask);
+  vtkSegmentEditorAbstractEffect::ApplyImageMask(input, mask, fillValue, notMask);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOrientedImageData* modifierLabelmap, ModificationMode modificationMode, bool bypassMasking /*=false*/)
 {
-  m_EffectLogic->modifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, bypassMasking);
+  m_EffectLogic->ModifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
@@ -217,7 +217,7 @@ void qSlicerSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOrie
                                                                          QList<int> extent,
                                                                          bool bypassMasking /*=false*/)
 {
-  m_EffectLogic->modifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, std::vector<int>(extent.begin(), extent.end()), bypassMasking);
+  m_EffectLogic->ModifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, std::vector<int>(extent.begin(), extent.end()), bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
@@ -226,7 +226,7 @@ void qSlicerSegmentEditorAbstractEffect::modifySelectedSegmentByLabelmap(vtkOrie
                                                                          const int modificationExtent[6],
                                                                          bool bypassMasking /*=false*/)
 {
-  m_EffectLogic->modifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
+  m_EffectLogic->ModifySelectedSegmentByLabelmap(modifierLabelmap, modificationMode, modificationExtent, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
@@ -236,7 +236,7 @@ void qSlicerSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmenta
                                                                  ModificationMode modificationMode,
                                                                  bool bypassMasking /*=false*/)
 {
-  m_EffectLogic->modifySegmentByLabelmap(segmentationNode, segmentID, modifierLabelmap, modificationMode, bypassMasking);
+  m_EffectLogic->ModifySegmentByLabelmap(segmentationNode, segmentID, modifierLabelmap, modificationMode, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
@@ -247,13 +247,13 @@ void qSlicerSegmentEditorAbstractEffect::modifySegmentByLabelmap(vtkMRMLSegmenta
                                                                  const int modificationExtent[6],
                                                                  bool bypassMasking /*=false*/)
 {
-  m_EffectLogic->modifySegmentByLabelmap(segmentationNode, segmentID, modifierLabelmapInput, modificationMode, modificationExtent, bypassMasking);
+  m_EffectLogic->ModifySegmentByLabelmap(segmentationNode, segmentID, modifierLabelmapInput, modificationMode, modificationExtent, bypassMasking);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::selectEffect(QString effectName)
 {
-  m_EffectLogic->selectEffect(effectName.toStdString());
+  m_EffectLogic->SelectEffect(effectName.toStdString());
 }
 
 //-----------------------------------------------------------------------------
@@ -335,13 +335,13 @@ void qSlicerSegmentEditorAbstractEffect::cursorOn(qMRMLWidget* viewWidget)
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::addViewProp(qMRMLWidget* viewWidget, vtkProp* actor)
 {
-  m_EffectLogic->addViewProp(viewNode(viewWidget), actor);
+  m_EffectLogic->AddViewProp(viewNode(viewWidget), actor);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::removeViewProp(qMRMLWidget* viewWidget, vtkProp* actor)
 {
-  m_EffectLogic->removeViewProp(viewNode(viewWidget), actor);
+  m_EffectLogic->RemoveViewProp(viewNode(viewWidget), actor);
 }
 
 //-----------------------------------------------------------------------------
@@ -427,13 +427,13 @@ QWidget* qSlicerSegmentEditorAbstractEffect::addLabeledOptionsWidget(QString lab
 //-----------------------------------------------------------------------------
 vtkMRMLScene* qSlicerSegmentEditorAbstractEffect::scene()
 {
-  return m_EffectLogic->scene();
+  return m_EffectLogic->GetScene();
 }
 
 //-----------------------------------------------------------------------------
 vtkMRMLSegmentEditorNode* qSlicerSegmentEditorAbstractEffect::segmentEditorNode()
 {
-  return m_EffectLogic->segmentEditorNode();
+  return m_EffectLogic->GetSegmentEditorNode();
 }
 
 //-----------------------------------------------------------------------------
@@ -445,7 +445,7 @@ vtkMRMLSegmentEditorNode* qSlicerSegmentEditorAbstractEffect::parameterSetNode()
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setSegmentEditorNode(vtkMRMLSegmentEditorNode* node)
 {
-  m_EffectLogic->setSegmentEditorNode(node);
+  m_EffectLogic->SetSegmentEditorNode(node);
 }
 
 //-----------------------------------------------------------------------------
@@ -457,49 +457,49 @@ void qSlicerSegmentEditorAbstractEffect::setParameterSetNode(vtkMRMLSegmentEdito
 //-----------------------------------------------------------------------------
 QString qSlicerSegmentEditorAbstractEffect::parameter(QString name)
 {
-  return QString::fromStdString(m_EffectLogic->parameter(name.toStdString()));
+  return QString::fromStdString(m_EffectLogic->GetParameter(name.toStdString()));
 }
 
 //-----------------------------------------------------------------------------
 int qSlicerSegmentEditorAbstractEffect::integerParameter(QString name)
 {
-  return m_EffectLogic->integerParameter(name.toStdString());
+  return m_EffectLogic->GetIntegerParameter(name.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 double qSlicerSegmentEditorAbstractEffect::doubleParameter(QString name)
 {
-  return m_EffectLogic->doubleParameter(name.toStdString());
+  return m_EffectLogic->GetDoubleParameter(name.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 vtkMRMLNode* qSlicerSegmentEditorAbstractEffect::nodeReference(QString name)
 {
-  return m_EffectLogic->nodeReference(name.toStdString());
+  return m_EffectLogic->GetNodeReference(name.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setParameter(QString name, QString value)
 {
-  m_EffectLogic->setParameter(name.toStdString(), value.toStdString());
+  m_EffectLogic->SetParameter(name.toStdString(), value.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::parameterDefined(QString name)
 {
-  return m_EffectLogic->parameterDefined(name.toStdString());
+  return m_EffectLogic->IsParameterDefined(name.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::commonParameterDefined(QString name)
 {
-  return m_EffectLogic->commonParameterDefined(name.toStdString());
+  return m_EffectLogic->IsCommonParameterDefined(name.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 int qSlicerSegmentEditorAbstractEffect::confirmCurrentSegmentVisible()
 {
-  if (m_EffectLogic->isSelectedSegmentVisible())
+  if (m_EffectLogic->IsSelectedSegmentVisible())
   {
     // no parameter set node - do not prevent operation
     return ConfirmedWithoutDialog;
@@ -535,86 +535,86 @@ int qSlicerSegmentEditorAbstractEffect::confirmCurrentSegmentVisible()
     return NotConfirmed;
   }
 
-  m_EffectLogic->confirmWorkOnSelectedSegment(resultCode == QMessageBox::Yes);
+  m_EffectLogic->ConfirmWorkOnSelectedSegment(resultCode == QMessageBox::Yes);
   return ConfirmedWithDialog;
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setParameterDefault(QString name, QString value)
 {
-  m_EffectLogic->setParameterDefault(name.toStdString(), value.toStdString());
+  m_EffectLogic->SetParameterDefault(name.toStdString(), value.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonParameter(QString name, QString value)
 {
-  m_EffectLogic->setCommonParameter(name.toStdString(), value.toStdString());
+  m_EffectLogic->SetCommonParameter(name.toStdString(), value.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonParameterDefault(QString name, QString value)
 {
-  m_EffectLogic->setCommonParameterDefault(name.toStdString(), value.toStdString());
+  m_EffectLogic->SetCommonParameterDefault(name.toStdString(), value.toStdString());
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setParameter(QString name, int value)
 {
-  m_EffectLogic->setParameter(name.toStdString(), value);
+  m_EffectLogic->SetParameter(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setParameterDefault(QString name, int value)
 {
-  m_EffectLogic->setParameterDefault(name.toStdString(), value);
+  m_EffectLogic->SetParameterDefault(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonParameter(QString name, int value)
 {
-  m_EffectLogic->setCommonParameter(name.toStdString(), value);
+  m_EffectLogic->SetCommonParameter(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonParameterDefault(QString name, int value)
 {
-  m_EffectLogic->setCommonParameterDefault(name.toStdString(), value);
+  m_EffectLogic->SetCommonParameterDefault(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setParameter(QString name, double value)
 {
-  m_EffectLogic->setParameter(name.toStdString(), value);
+  m_EffectLogic->SetParameter(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setParameterDefault(QString name, double value)
 {
-  m_EffectLogic->setParameterDefault(name.toStdString(), value);
+  m_EffectLogic->SetParameterDefault(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonParameter(QString name, double value)
 {
-  m_EffectLogic->setCommonParameter(name.toStdString(), value);
+  m_EffectLogic->SetCommonParameter(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonParameterDefault(QString name, double value)
 {
-  m_EffectLogic->setCommonParameterDefault(name.toStdString(), value);
+  m_EffectLogic->SetCommonParameterDefault(name.toStdString(), value);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setNodeReference(QString name, vtkMRMLNode* node)
 {
-  m_EffectLogic->setNodeReference(name.toStdString(), node);
+  m_EffectLogic->SetNodeReference(name.toStdString(), node);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setCommonNodeReference(QString name, vtkMRMLNode* node)
 {
-  m_EffectLogic->setCommonNodeReference(name.toStdString(), node);
+  m_EffectLogic->SetCommonNodeReference(name.toStdString(), node);
 }
 
 //-----------------------------------------------------------------------------
@@ -624,31 +624,31 @@ void qSlicerSegmentEditorAbstractEffect::setVolumes(vtkOrientedImageData* aligne
                                                     vtkOrientedImageData* selectedSegmentLabelmap,
                                                     vtkOrientedImageData* referenceGeometryImage)
 {
-  m_EffectLogic->setVolumes(alignedSourceVolume, modifierLabelmap, maskLabelmap, selectedSegmentLabelmap, referenceGeometryImage);
+  m_EffectLogic->SetVolumes(alignedSourceVolume, modifierLabelmap, maskLabelmap, selectedSegmentLabelmap, referenceGeometryImage);
 }
 
 //-----------------------------------------------------------------------------
 vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::defaultModifierLabelmap()
 {
-  return m_EffectLogic->defaultModifierLabelmap();
+  return m_EffectLogic->GetDefaultModifierLabelmap();
 }
 
 //-----------------------------------------------------------------------------
 vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::modifierLabelmap()
 {
-  return m_EffectLogic->modifierLabelmap();
+  return m_EffectLogic->GetModifierLabelmap();
 }
 
 //-----------------------------------------------------------------------------
 vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::maskLabelmap()
 {
-  return m_EffectLogic->maskLabelmap();
+  return m_EffectLogic->GetMaskLabelmap();
 }
 
 //-----------------------------------------------------------------------------
 vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::sourceVolumeImageData()
 {
-  return m_EffectLogic->sourceVolumeImageData();
+  return m_EffectLogic->GetSourceVolumeImageData();
 }
 
 //-----------------------------------------------------------------------------
@@ -662,19 +662,19 @@ vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::masterVolumeImageData(
 //-----------------------------------------------------------------------------
 vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::selectedSegmentLabelmap()
 {
-  return m_EffectLogic->selectedSegmentLabelmap();
+  return m_EffectLogic->GetSelectedSegmentLabelmap();
 }
 
 //-----------------------------------------------------------------------------
 vtkOrientedImageData* qSlicerSegmentEditorAbstractEffect::referenceGeometryImage()
 {
-  return m_EffectLogic->referenceGeometryImage();
+  return m_EffectLogic->GetReferenceGeometryImage();
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::saveStateForUndo()
 {
-  m_EffectLogic->saveStateForUndo();
+  m_EffectLogic->SaveStateForUndo();
 }
 
 //-----------------------------------------------------------------------------
@@ -713,7 +713,7 @@ vtkRenderWindow* qSlicerSegmentEditorAbstractEffect::renderWindow(qMRMLWidget* v
 //-----------------------------------------------------------------------------
 vtkRenderer* qSlicerSegmentEditorAbstractEffect::renderer(qMRMLWidget* viewWidget)
 {
-  return vtkSegmentEditorAbstractEffect::renderer(renderWindow(viewWidget));
+  return vtkSegmentEditorAbstractEffect::GetRenderer(renderWindow(viewWidget));
 }
 
 //-----------------------------------------------------------------------------
@@ -753,7 +753,7 @@ vtkMRMLSliceNode* qSlicerSegmentEditorAbstractEffect::sliceNode(qMRMLSliceWidget
 //-----------------------------------------------------------------------------
 QPoint qSlicerSegmentEditorAbstractEffect::rasToXy(double ras[3], qMRMLSliceWidget* sliceWidget)
 {
-  auto xy = vtkSegmentEditorAbstractEffect::rasToXy(ras, sliceNode(sliceWidget));
+  auto xy = vtkSegmentEditorAbstractEffect::RasToXy(ras, sliceNode(sliceWidget));
   return { xy[0], xy[1] };
 }
 
@@ -767,7 +767,7 @@ QPoint qSlicerSegmentEditorAbstractEffect::rasToXy(QVector3D rasVector, qMRMLSli
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::xyzToRas(double inputXyz[3], double outputRas[3], qMRMLSliceWidget* sliceWidget)
 {
-  vtkSegmentEditorAbstractEffect::xyzToRas(inputXyz, outputRas, sliceNode(sliceWidget));
+  vtkSegmentEditorAbstractEffect::XyzToRas(inputXyz, outputRas, sliceNode(sliceWidget));
 }
 
 //-----------------------------------------------------------------------------
@@ -811,7 +811,7 @@ void qSlicerSegmentEditorAbstractEffect::xyzToIjk(double inputXyz[3],
                                                   vtkOrientedImageData* image,
                                                   vtkMRMLTransformNode* parentTransformNode /*=nullptr*/)
 {
-  vtkSegmentEditorAbstractEffect::xyzToIjk(inputXyz, outputIjk, sliceNode(sliceWidget), image, parentTransformNode);
+  vtkSegmentEditorAbstractEffect::XyzToIjk(inputXyz, outputIjk, sliceNode(sliceWidget), image, parentTransformNode);
 }
 
 //-----------------------------------------------------------------------------
@@ -882,43 +882,43 @@ void qSlicerSegmentEditorAbstractEffect::scheduleRender(qMRMLWidget* viewWidget)
 //----------------------------------------------------------------------------
 double qSlicerSegmentEditorAbstractEffect::sliceSpacing(qMRMLSliceWidget* sliceWidget)
 {
-  return vtkSegmentEditorAbstractEffect::sliceSpacing(sliceNode(sliceWidget));
+  return vtkSegmentEditorAbstractEffect::GetSliceSpacing(sliceNode(sliceWidget));
 }
 
 //----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::showEffectCursorInSliceView()
 {
-  return m_EffectLogic->showEffectCursorInSliceView();
+  return m_EffectLogic->IsShownEffectCursorInSliceView();
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setShowEffectCursorInSliceView(bool show)
 {
-  m_EffectLogic->setShowEffectCursorInSliceView(show);
+  m_EffectLogic->SetShowEffectCursorInSliceView(show);
 }
 
 //----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::showEffectCursorInThreeDView()
 {
-  return m_EffectLogic->showEffectCursorInThreeDView();
+  return m_EffectLogic->IsShownEffectCursorInThreeDView();
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::setShowEffectCursorInThreeDView(bool show)
 {
-  m_EffectLogic->setShowEffectCursorInThreeDView(show);
+  m_EffectLogic->SetShowEffectCursorInThreeDView(show);
 }
 
 //-----------------------------------------------------------------------------
 void qSlicerSegmentEditorAbstractEffect::interactionNodeModified(vtkMRMLInteractionNode* interactionNode)
 {
-  m_EffectLogic->interactionNodeModified(interactionNode);
+  m_EffectLogic->InteractionNodeModified(interactionNode);
 }
 
 //-----------------------------------------------------------------------------
 bool qSlicerSegmentEditorAbstractEffect::segmentationDisplayableInView(vtkMRMLAbstractViewNode* viewNode)
 {
-  return m_EffectLogic->segmentationDisplayableInView(viewNode);
+  return m_EffectLogic->IsSegmentationDisplayableInView(viewNode);
 }
 
 //-----------------------------------------------------------------------------
