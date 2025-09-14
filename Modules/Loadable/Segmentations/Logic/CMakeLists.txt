@@ -1,10 +1,11 @@
 project(vtkSlicerSegmentationsModuleLogic)
 
 set(classes
-  vtkSlicerSegmentationsModuleLogic
-  vtkSlicerSegmentationGeometryLogic
-  vtkImageGrowCutSegment
   FibHeap
+  vtkImageGrowCutSegment
+  vtkSegmentEditorLogic
+  vtkSlicerSegmentationGeometryLogic
+  vtkSlicerSegmentationsModuleLogic
   )
 
 vtk_module_add_module(VTK::SlicerSegmentationsModuleLogic
