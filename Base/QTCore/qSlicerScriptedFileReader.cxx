@@ -98,6 +98,7 @@ QString qSlicerScriptedFileReader::pythonSource() const
 bool qSlicerScriptedFileReader::setPythonSource(const QString& filePath, const QString& _className, bool missingClassIsExpected)
 {
   Q_D(qSlicerScriptedFileReader);
+  PYTHONQT_GIL_SCOPE;
 
   if (!Py_IsInitialized())
   {
@@ -175,7 +176,7 @@ PyObject* qSlicerScriptedFileReader::self() const
 QString qSlicerScriptedFileReader::description() const
 {
   Q_D(const qSlicerScriptedFileReader);
-
+  PYTHONQT_GIL_SCOPE;
   PyObject* result = d->PythonCppAPI.callMethod(d->DescriptionMethod);
   if (!result)
   {
@@ -195,7 +196,7 @@ QString qSlicerScriptedFileReader::description() const
 qSlicerIO::IOFileType qSlicerScriptedFileReader::fileType() const
 {
   Q_D(const qSlicerScriptedFileReader);
-
+  PYTHONQT_GIL_SCOPE;
   PyObject* result = d->PythonCppAPI.callMethod(d->FileTypeMethod);
   if (!result)
   {
@@ -214,6 +215,7 @@ qSlicerIO::IOFileType qSlicerScriptedFileReader::fileType() const
 QStringList qSlicerScriptedFileReader::extensions() const
 {
   Q_D(const qSlicerScriptedFileReader);
+  PYTHONQT_GIL_SCOPE;
   PyObject* result = d->PythonCppAPI.callMethod(d->ExtensionsMethod);
   if (!result)
   {
@@ -246,6 +248,7 @@ QStringList qSlicerScriptedFileReader::extensions() const
 bool qSlicerScriptedFileReader::canLoadFile(const QString& file) const
 {
   Q_D(const qSlicerScriptedFileReader);
+  PYTHONQT_GIL_SCOPE;
   PyObject* arguments = PyTuple_New(1);
   PyTuple_SET_ITEM(arguments, 0, PyUnicode_FromString(file.toUtf8()));
   PyObject* result = d->PythonCppAPI.callMethod(d->CanLoadFileMethod, arguments);
@@ -268,6 +271,7 @@ bool qSlicerScriptedFileReader::canLoadFile(const QString& file) const
 double qSlicerScriptedFileReader::canLoadFileConfidence(const QString& file) const
 {
   Q_D(const qSlicerScriptedFileReader);
+  PYTHONQT_GIL_SCOPE;
   PyObject* arguments = PyTuple_New(1);
   PyTuple_SET_ITEM(arguments, 0, PyUnicode_FromString(file.toUtf8()));
   PyObject* result = d->PythonCppAPI.callMethod(d->CanLoadFileConfidenceMethod, arguments);
@@ -291,6 +295,7 @@ double qSlicerScriptedFileReader::canLoadFileConfidence(const QString& file) con
 bool qSlicerScriptedFileReader::load(const qSlicerIO::IOProperties& properties)
 {
   Q_D(qSlicerScriptedFileReader);
+  PYTHONQT_GIL_SCOPE;
   PyObject* arguments = PyTuple_New(1);
   PyTuple_SET_ITEM(arguments, 0, PythonQtConv::QVariantMapToPyObject(properties));
   PyObject* result = d->PythonCppAPI.callMethod(d->LoadMethod, arguments);
