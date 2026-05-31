@@ -35,6 +35,9 @@
 // MRML includes
 #include "vtkMRMLColorLogic.h"
 
+// MRMLDM includes
+#include "vtkMRMLModelDMPipelineCreatorLogic.h"
+
 // SubjectHierarchy Plugins includes
 #include "qSlicerSubjectHierarchyPluginHandler.h"
 #include "qSlicerSubjectHierarchyModelsPlugin.h"
@@ -137,6 +140,9 @@ void qSlicerModelsModule::setup()
 
   // Register Subject Hierarchy core plugins
   qSlicerSubjectHierarchyPluginHandler::instance()->registerPlugin(new qSlicerSubjectHierarchyModelsPlugin());
+
+  // Register DM classes
+  vtkMRMLModelDMPipelineCreatorLogic::RegisterPipelines();
 }
 
 //-----------------------------------------------------------------------------
