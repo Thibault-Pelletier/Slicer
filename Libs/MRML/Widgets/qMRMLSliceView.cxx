@@ -133,12 +133,11 @@ void qMRMLSliceViewPrivate::initDisplayableManagers()
   vtkMRMLSliceViewDisplayableManagerFactory* factory = vtkMRMLSliceViewDisplayableManagerFactory::GetInstance();
 
   QStringList displayableManagers;
-  displayableManagers << "vtkMRMLVolumeGlyphSliceDisplayableManager";
-  displayableManagers << "vtkMRMLModelSliceDisplayableManager";
-  displayableManagers << "vtkMRMLCrosshairDisplayableManager";
-  displayableManagers << "vtkMRMLOrientationMarkerDisplayableManager";
-  displayableManagers << "vtkMRMLRulerDisplayableManager";
-  displayableManagers << "vtkMRMLScalarBarDisplayableManager";
+  displayableManagers << "vtkMRMLVolumeGlyphSliceDisplayableManager"
+                      << "vtkMRMLCrosshairDisplayableManager"
+                      << "vtkMRMLOrientationMarkerDisplayableManager"
+                      << "vtkMRMLRulerDisplayableManager"
+                      << "vtkMRMLScalarBarDisplayableManager";
   for (const QString& displayableManager : displayableManagers)
   {
     if (!factory->IsDisplayableManagerRegistered(displayableManager.toUtf8()))

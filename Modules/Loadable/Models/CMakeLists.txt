@@ -6,6 +6,7 @@ string(TOUPPER ${MODULE_NAME} MODULE_NAME_UPPER)
 
 #-----------------------------------------------------------------------------
 add_subdirectory(Logic)
+add_subdirectory(MRMLDM)
 add_subdirectory(SubjectHierarchyPlugins)
 add_subdirectory(Widgets)
 
@@ -46,6 +47,7 @@ set(MODULE_UI_SRCS
 set(MODULE_TARGET_LIBRARIES
   qSlicer${MODULE_NAME}ModuleWidgets
   vtkSlicer${MODULE_NAME}ModuleLogic
+  vtkSlicer${MODULE_NAME}ModuleMRMLDisplayableManager
   qSlicer${MODULE_NAME}SubjectHierarchyPlugins
   qSlicerColorsModuleWidgets
   vtkSlicerColorsModuleLogic
