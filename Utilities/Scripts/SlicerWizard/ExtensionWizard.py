@@ -131,11 +131,23 @@ class ExtensionWizard:
                      :meth:`.TemplateManager.copyTemplate`
         """
 
+        def _toSnakeCase(_name):
+            import re
+
+            _name = re.sub(r"(.)([A-Z][a-z]+)", r"\1_\2", _name)
+            return re.sub(r"([a-z0-9])([A-Z])", r"\1_\2", _name).lower()
+
         try:
             dest = args.destination
             p = ExtensionProject(dest)
-            p.addModule(name)
-            self._templateManager.copyTemplate(dest, "modules", kind, name)
+            replacements = None
+            if kind.lower() == "python":
+                # Python installable modules are not added to the CMakeLists.txt
+                # Skipping p.addModule and using python snake_case package convention
+                replacements = {"SlicerExtPackageName": "slicer_ext_" + _toSnakeCase(name)}
+            else:
+                p.addModule(name)
+            self._templateManager.copyTemplate(dest, "modules", kind, name, replacements=replacements)
             p.save()
             logging.info("created module '%s'" % name)
 

@@ -10,6 +10,7 @@ import qt
 import vtk  # noqa: F401
 
 import slicer
+import slicer.extensions
 
 # Import everything from slicer.util to make frequently used functions conveniently available in the Python console
 from slicer.util import *
@@ -159,6 +160,7 @@ class _Internal:
 
         # Listen factory and module manager to update slicer.{modules, moduleNames} when appropriate
         moduleManager = slicer.app.moduleManager()
+        self.factoryManager = None
 
         # If the qSlicerApplication is only minimally initialized, the factoryManager
         # does *NOT* exist.
@@ -166,8 +168,8 @@ class _Internal:
         # use qSlicerApplication for tcl access but without all the managers.
         # Note: This is not the default behavior.
         if hasattr(moduleManager, "factoryManager"):
-            factoryManager = moduleManager.factoryManager()
-            factoryManager.connect("modulesRegistered(QStringList)", self.setSlicerModuleNames)
+            self.factoryManager = moduleManager.factoryManager()
+            self.factoryManager.connect("modulesRegistered(QStringList)", self.onModulesRegistered)
             moduleManager.connect("moduleLoaded(QString)", self.setSlicerModules)
             moduleManager.connect("moduleAboutToBeUnloaded(QString)", self.unsetSlicerModule)
 
@@ -192,6 +194,13 @@ class _Internal:
             timer.start(msec)
 
         qt.QTimer.singleShot = staticmethod(_singleShot)
+
+    def onModulesRegistered(self, moduleNames):
+        # Load installed modules
+        moduleNames += slicer.extensions.registerInstalledModules(self.factoryManager)
+
+        # Update the slicer module names from registered module list
+        self.setSlicerModuleNames(moduleNames)
 
     def setSlicerModuleNames(self, moduleNames):
         """Add module names as attributes of module slicer.moduleNames"""

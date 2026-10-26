@@ -17,6 +17,7 @@ available as ``slicer.util.pip_install`` and ``slicer.util.pip_uninstall``.
 
 from __future__ import annotations
 
+import functools
 import importlib
 import importlib.metadata
 import logging
@@ -523,6 +524,32 @@ def _isMainQtThread() -> bool:
     return qt.QThread.currentThread() == slicer.app.thread()
 
 
+def _refresh_installed_modules() -> None:
+    if not _isSlicerAppAvailable() or not _isMainQtThread():
+        return
+    importlib.invalidate_caches()
+    try:
+        from slicer import extensions
+    except ImportError:
+        return
+    try:
+        extensions.loadInstalledModules()
+    except Exception:
+        logging.warning("Failed to refresh installed modules", exc_info=True)
+
+
+def _refresh_installed_modules_after(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        returnCode = args[0] if args and isinstance(args[0], int) else None
+        if returnCode in (None, 0):
+            _refresh_installed_modules()
+        return result
+
+    return wrapper
+
+
 def pip_install(
     requirements: str | list[str],
     constraints: str | Path | None = None,
@@ -693,6 +720,7 @@ def pip_install(
     return None
 
 
+@_refresh_installed_modules_after
 def _pip_install_simple(
     requirements: str | list[str],
     constraints: str | Path | None = None,
@@ -853,6 +881,7 @@ def _pip_install_nonblocking(
     _pip_install_in_progress = True
 
     # Wrapper to clear the flag when the operation completes
+    @_refresh_installed_modules_after
     def wrappedCompletedCallback(returnCode):
         global _pip_install_in_progress
         _pip_install_in_progress = False
@@ -960,6 +989,7 @@ def _build_pip_args(
     return args
 
 
+@_refresh_installed_modules_after
 def _pip_install_with_skips(
     requirements: str | list[str],
     skip_packages: list[str],

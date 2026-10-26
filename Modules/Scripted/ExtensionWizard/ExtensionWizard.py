@@ -411,17 +411,27 @@ class ExtensionWizardWidget:
             # against that just in case...
             return
 
+        templates = self.templateManager.templates("modules")
         dlg = CreateComponentDialog("module", self.parent.window())
-        dlg.setTemplates(self.templateManager.templates("modules"),
-                         default="scripted")
+        dlg.setTemplates(templates,
+                         default="python" if "python" in templates else "scripted")
         dlg.showDestination = False
 
         while dlg.exec_() == qt.QDialog.Accepted:
             name = dlg.componentName
+            kind = dlg.componentType
+            pythonPackage = kind == "python"
+
+            replacements = None
+            if pythonPackage:
+                replacements = {
+                    "SlicerExtPackageName": "slicer_ext_" + SlicerWizard.Utilities.toSnakeCase(name),
+                }
 
             try:
-                self.templateManager.copyTemplate(self.extensionLocation, "modules",
-                                                  dlg.componentType, name)
+                self.templateManager.copyTemplate(
+                    self.extensionLocation, "modules", kind, name,
+                    replacements=replacements)
 
             except:
                 if not slicer.util.confirmRetryCloseDisplay(_("An error occurred while trying to create the module."),
@@ -430,6 +440,9 @@ class ExtensionWizardWidget:
                     return
 
                 continue
+
+            if pythonPackage:
+                return
 
             try:
                 self.extensionProject.addModule(name)

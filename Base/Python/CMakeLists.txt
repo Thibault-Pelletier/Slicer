@@ -2,6 +2,7 @@
 set(Slicer_PYTHON_SCRIPTS
   slicer/__init__
   slicer/cli
+  slicer/extensions
   slicer/i18n
   slicer/logic
   slicer/parameterNodeWrapper/__init__

@@ -19,6 +19,7 @@ _sourcePatterns = [
     "*.png",
     "*.dox",
     "*.sha256",
+    "*.toml",
     "requirements.txt",
 ]
 
@@ -79,8 +80,13 @@ class TemplateManager:
         return "TemplateKey"
 
     # ---------------------------------------------------------------------------
-    def _copyAndReplace(self, inFile, template, destination, key, name):
-        outFile = os.path.join(destination, inFile.replace(key, name))
+    def _copyAndReplace(self, inFile, template, destination, key, name, replacements=None):
+        replacements = replacements or {}
+        replacements[key] = name
+        outFile = inFile
+        for old, new in replacements.items():
+            outFile = outFile.replace(old, new)
+        outFile = os.path.join(destination, outFile)
         logging.info("creating '%s'" % outFile)
         path = os.path.dirname(outFile)
         if not os.path.exists(path):
@@ -91,37 +97,33 @@ class TemplateManager:
         with open(p, "rb") as fp:
             contents = fp.read()
 
-        # Replace template key with copy name
-        if isinstance(name, bytes):
-            # If replacement is just bytes, we can just do the replacement...
-            contents = contents.replace(key, name)
-            contents = contents.replace(key.upper(), name.upper())
+        # Decode if needed
+        needsDecoding = not all(isinstance(_value, bytes) for _value in replacements.values())
+        encoding, confidence = detectEncoding(contents) if needsDecoding else (None, 1.0)
 
-        else:
-            # ...else we have to try to guess the template file encoding in order to
-            # convert it to unicode and back
-            encoding, confidence = detectEncoding(contents)
+        if encoding is not None:
+            if confidence < 0.5:
+                logging.warning("%s: encoding detection confidence is %f:"
+                                " copied file might be corrupt" % (p, confidence))
 
-            if encoding is not None:
-                if confidence < 0.5:
-                    logging.warning("%s: encoding detection confidence is %f:"
-                                    " copied file might be corrupt" % (p, confidence))
+            contents = contents.decode(encoding)
 
-                contents = contents.decode(encoding)
-                contents = contents.replace(key, name)
-                contents = contents.replace(key.upper(), name.upper())
-                contents = contents.encode(encoding)
+        # Replace template keys with replacement values
+        if not needsDecoding or encoding is not None:
+            for _key, _value in replacements.items():
+                contents = contents.replace(_key, _value)
+                contents = contents.replace(_key.upper(), _value.upper())
 
-            else:
-                # Looks like a binary file; don't perform replacement
-                pass
+        # Re-encode if needed
+        if encoding is not None:
+            contents = contents.encode(encoding)
 
         # Write adjusted contents
         with open(outFile, "wb") as fp:
             fp.write(contents)
 
     # ---------------------------------------------------------------------------
-    def copyTemplate(self, destination, category, kind, name, createInSubdirectory=True, requireEmptyDirectory=True):
+    def copyTemplate(self, destination, category, kind, name, createInSubdirectory=True, requireEmptyDirectory=True, replacements=None):
         """Copy (instantiate) a template.
 
         :param destination: Directory in which to create the template copy.
@@ -136,6 +138,8 @@ class TemplateManager:
         :type name: :class:`bool`
         :param requireEmptyDirectory: If True then files are only copied if the target directory is empty.
         :type name: :class:`bool`
+        :param replacements: Additional literal replacements to apply to file names and contents.
+        :type replacements: :class:`dict`
 
         :return:
           Path to the new instance (``os.path.join(destination, name)``).
@@ -176,7 +180,7 @@ class TemplateManager:
         logging.info("copy template '%s' to '%s', replacing '%s' -> '%s'" %
                      (template, destination, key, name))
         for f in _listSources(template):
-            self._copyAndReplace(f, template, destination, key, name)
+            self._copyAndReplace(f, template, destination, key, name, replacements)
 
         return destination
 

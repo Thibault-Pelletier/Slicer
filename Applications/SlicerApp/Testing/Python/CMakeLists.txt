@@ -413,6 +413,11 @@ slicer_add_python_unittest(
   TESTNAME_PREFIX nomainwindow_
   )
 
+slicer_add_python_unittest(
+  SCRIPT ${Slicer_SOURCE_DIR}/Base/Python/slicer/tests/test_slicer_extensions.py
+  SLICER_ARGS --disable-builtin-modules --ignore-slicerrc
+  )
+
 # Test multi-shell DWI I/O
 slicer_add_python_test(
   SCRIPT DWMRIMultishellIOTests.py
